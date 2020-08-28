@@ -3,9 +3,11 @@ module Lib (someFunc, checkTime, checkTimes, checkSchedule) where
 --(forever)
 --(threadDelay)
 
+import AppState
 import Config
 import Control.Concurrent
 import Control.Monad
+import qualified Data.Map as Map
 import Data.Maybe (fromJust)
 import Data.Time
 import Data.Time.Calendar
@@ -16,15 +18,10 @@ import System.IO
 import System.Process
 import Text.Printf
 
-data AppState = AppState
-  { usedMinutes :: Int
-  }
-  deriving (Eq, Show)
-
 someFunc :: IO ()
 someFunc = do
   config <- readConfig
-  state <- newMVar AppState {usedMinutes = 0}
+  state <- newMVar AppState {userStates = Map.empty}
   putStrLn $ show config
   --  let (Just val) = config
   loop config state
@@ -59,20 +56,20 @@ fakeKill :: String -> IO ()
 fakeKill userName =
   putStrLn (printf "User %s has been killed" userName)
 
-check :: String -> MVar AppState -> (String -> IO ()) -> IO ()
-check userName state killFn = do
+-- | Return true if user in a system
+check :: String -> IO Bool
+check userName = do
   (_, Just hout, _, _) <- createProcess (shell ("who | grep " ++ userName)) {std_out = CreatePipe}
   isEOF <- hIsEOF (hout)
-  if isEOF then return () else killFn userName -- kill user if it is in the system
-
--- skill -KILL -u $USER
--- (_, Just hout, _, _) <- createProcess (shell ("skill -KILL -u " ++ userName)) { std_out = CreatePipe }
---  putStrLn (printf "User %s has been killed" userName)
+  return $ not isEOF
 
 checkUser :: LocalTime -> MVar AppState -> (String -> IO ()) -> User -> IO ()
 checkUser localTime state killFn userConfig = do
-  let isAllowed = checkSchedule (schedule userConfig) localTime
-  if (isAllowed == False) then check (login userConfig) state killFn else return ()
+  let isScheduled = checkSchedule (schedule userConfig) localTime
+      userName = login userConfig
+  inTheSystem <- check userName
+  st <- takeMVar state
+  if (isScheduled == False && inTheSystem == True) then killFn userName else return ()
 
 --    return ()
 
@@ -81,6 +78,6 @@ loop config state = forever $ do
   now <- getCurrentTime
   timezone <- getCurrentTimeZone
   let localTime = utcToLocalTime timezone now
-  let killFn = if isDebug config then fakeKill else kill  -- if we are in debug mode then some stub is used
+  let killFn = if isDebug config then fakeKill else kill -- if we are in debug mode then some stub is used
   sequence (map (checkUser localTime state killFn) (users config))
   threadDelay (1 * 1000 * 1000)

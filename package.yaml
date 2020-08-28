@@ -29,6 +29,7 @@ library:
     - text
     - time
     - yaml
+    - containers
 
 executables:
   parental-control:
@@ -53,4 +54,5 @@ tests:
     - parental-control
     - hspec
     - time
+    - containers
 #    - math

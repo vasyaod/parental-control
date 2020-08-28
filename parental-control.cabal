@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 022bea34e671d0940f394ed368924a85362254751e8601b2e0dd53ca8eb48f80
+-- hash: f118014b4849aed5049993aa8328f1ccebfd4d1230fcee4c79953223f07c598b
 
 name:           parental-control
 version:        0.1.0.0
@@ -27,6 +27,7 @@ source-repository head
 
 library
   exposed-modules:
+      AppState
       Config
       Lib
   other-modules:
@@ -35,6 +36,7 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , containers
     , process
     , text
     , time
@@ -57,12 +59,14 @@ test-suite parental-control-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      AppStateSpec
       Paths_parental_control
   hs-source-dirs:
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , containers
     , hspec
     , parental-control
     , time

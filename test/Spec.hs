@@ -1,3 +1,4 @@
+import qualified AppStateSpec
 import Config
 import Data.Time
 import Lib
@@ -43,20 +44,20 @@ main = hspec $ do
               }
        in checkTimes time [range] `shouldBe` False
 
---  describe "checkSchedule" $ do
---    it "should return True if time fits for schedule" $
---      do
---        config <- readConfig
---        let time = parseTimeOrError True defaultTimeLocale "%H:%M" "10:30" -- Test time
---        return $ checkSchedule config time
---        `shouldReturn` True
---
---    it "should return False if time fits for schedule" $
---      do
---        config <- readConfig
---        let time = parseTimeOrError True defaultTimeLocale "%H:%M" "18:30" -- Test time
---        return $ checkSchedule config time
---        `shouldReturn` False
+  --  describe "checkSchedule" $ do
+  --    it "should return True if time fits for schedule" $
+  --      do
+  --        config <- readConfig
+  --        let time = parseTimeOrError True defaultTimeLocale "%H:%M" "10:30" -- Test time
+  --        return $ checkSchedule config time
+  --        `shouldReturn` True
+  --
+  --    it "should return False if time fits for schedule" $
+  --      do
+  --        config <- readConfig
+  --        let time = parseTimeOrError True defaultTimeLocale "%H:%M" "18:30" -- Test time
+  --        return $ checkSchedule config time
+  --        `shouldReturn` False
 
   --    it "returns a positive number when given a negative input" $
   --      -1 `shouldBe` -1
@@ -68,6 +69,8 @@ main = hspec $ do
         -- let (Just val) = config;
         return (isDebug config)
         `shouldReturn` True
+
+  describe "AppState" AppStateSpec.spec
 
 --      do x <- readConfig `shouldReturn` ()
 
