@@ -1,0 +1,86 @@
+module Lib (someFunc, checkTime, checkTimes, checkSchedule) where
+
+--(forever)
+--(threadDelay)
+
+import Config
+import Control.Concurrent
+import Control.Monad
+import Data.Maybe (fromJust)
+import Data.Time
+import Data.Time.Calendar
+import Data.Time.Clock
+import Data.Time.LocalTime
+import System.Environment
+import System.IO
+import System.Process
+import Text.Printf
+
+data AppState = AppState
+  { usedMinutes :: Int
+  }
+  deriving (Eq, Show)
+
+someFunc :: IO ()
+someFunc = do
+  config <- readConfig
+  state <- newMVar AppState {usedMinutes = 0}
+  putStrLn $ show config
+  --  let (Just val) = config
+  loop config state
+
+getTimesForDayOfWeek :: DayOfWeek -> Schedule -> [Range]
+getTimesForDayOfWeek Monday = mon
+getTimesForDayOfWeek Tuesday = tue
+getTimesForDayOfWeek Wednesday = wed
+getTimesForDayOfWeek Thursday = thu
+getTimesForDayOfWeek Friday = fri
+getTimesForDayOfWeek Saturday = sat
+getTimesForDayOfWeek Sunday = sun
+
+checkTime :: LocalTime -> Range -> Bool
+checkTime currentTime range = (localTimeOfDay currentTime) > (start range) && (localTimeOfDay currentTime) < (end range)
+
+checkTimes :: LocalTime -> [Range] -> Bool
+checkTimes currentTime ranges = foldl (||) False (map (checkTime currentTime) ranges)
+
+checkSchedule :: Schedule -> LocalTime -> Bool
+checkSchedule schedule localTime =
+  let dayOfW = dayOfWeek $ localDay localTime
+      ranges = (getTimesForDayOfWeek dayOfW) $ schedule
+   in checkTimes localTime ranges
+
+kill :: String -> IO ()
+kill userName = do
+  createProcess (shell ("skill -KILL -u " ++ userName)) {std_out = CreatePipe}
+  return ()
+
+fakeKill :: String -> IO ()
+fakeKill userName =
+  putStrLn (printf "User %s has been killed" userName)
+
+check :: String -> MVar AppState -> (String -> IO ()) -> IO ()
+check userName state killFn = do
+  (_, Just hout, _, _) <- createProcess (shell ("who | grep " ++ userName)) {std_out = CreatePipe}
+  isEOF <- hIsEOF (hout)
+  if isEOF then return () else killFn userName -- kill user if it is in the system
+
+-- skill -KILL -u $USER
+-- (_, Just hout, _, _) <- createProcess (shell ("skill -KILL -u " ++ userName)) { std_out = CreatePipe }
+--  putStrLn (printf "User %s has been killed" userName)
+
+checkUser :: LocalTime -> MVar AppState -> (String -> IO ()) -> User -> IO ()
+checkUser localTime state killFn userConfig = do
+  let isAllowed = checkSchedule (schedule userConfig) localTime
+  if (isAllowed == False) then check (login userConfig) state killFn else return ()
+
+--    return ()
+
+loop :: MyConfig -> MVar AppState -> IO ()
+loop config state = forever $ do
+  now <- getCurrentTime
+  timezone <- getCurrentTimeZone
+  let localTime = utcToLocalTime timezone now
+  let killFn = if isDebug config then fakeKill else kill  -- if we are in debug mode then some stub is used
+  sequence (map (checkUser localTime state killFn) (users config))
+  threadDelay (1 * 1000 * 1000)
