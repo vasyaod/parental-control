@@ -37,4 +37,4 @@ addMinutes state userName localTime delta =
     newUserState =
       if localDay (lastChanges userState) == localDay localTime
         then UserState {minuteCount = (minuteCount userState) + delta, lastChanges = localTime}
-        else defaultUserState
+        else UserState {minuteCount = delta, lastChanges = localTime}

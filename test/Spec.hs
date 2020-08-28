@@ -70,7 +70,7 @@ main = hspec $ do
         return (isDebug config)
         `shouldReturn` True
 
-  describe "AppState" AppStateSpec.spec
+  AppStateSpec.spec
 
 --      do x <- readConfig `shouldReturn` ()
 
