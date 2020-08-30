@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f118014b4849aed5049993aa8328f1ccebfd4d1230fcee4c79953223f07c598b
+-- hash: e04e357fc78d8d23a2345563e302b137d24a556f8543d035a3be471975f3cb06
 
 name:           parental-control
 version:        0.1.0.0
@@ -35,7 +35,7 @@ library
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5
+      base
     , containers
     , process
     , text
@@ -60,6 +60,8 @@ test-suite parental-control-test
   main-is: Spec.hs
   other-modules:
       AppStateSpec
+      ConfigSpec
+      LogicSpec
       Paths_parental_control
   hs-source-dirs:
       test

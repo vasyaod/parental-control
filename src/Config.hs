@@ -21,6 +21,7 @@ instance FromJSON MyConfig where
 
 data User = User
   { login :: String,
+    timeLimit :: Int,
     schedule :: Schedule
   }
   deriving (Eq, Show)
@@ -29,6 +30,7 @@ instance FromJSON User where
   parseJSON (Y.Object m) =
     User
       <$> m .: pack ("login")
+      <*> m .: pack ("timeLimit")
       <*> m .: pack ("schedule")
   parseJSON x = fail ("not an object: " ++ show x)
 
@@ -68,5 +70,5 @@ instance FromJSON Range where
       <*> m .: pack ("end")
   parseJSON x = fail ("not an object: " ++ show x)
 
-readConfig :: IO (MyConfig)
-readConfig = decodeFileThrow "./config.yml"
+readConfig :: String -> IO (MyConfig)
+readConfig configFileName = decodeFileThrow configFileName

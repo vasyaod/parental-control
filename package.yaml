@@ -30,6 +30,7 @@ library:
     - time
     - yaml
     - containers
+    - base
 
 executables:
   parental-control:

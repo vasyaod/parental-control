@@ -1,6 +1,7 @@
 isDebug: true
 users:
   - login: vasyaod
+    timeLimit: 120           # Minutes
     schedule:
       mon:
         - start: 10:20
