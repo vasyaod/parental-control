@@ -31,6 +31,7 @@ library:
     - yaml
     - containers
     - base
+    - aeson
 
 executables:
   parental-control:

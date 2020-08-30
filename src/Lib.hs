@@ -3,6 +3,8 @@ module Lib where
 import AppState
 import Checking
 import Config
+import StateLogger
+
 import Control.Concurrent
 import Control.Monad
 import qualified Data.Map as Map
@@ -13,21 +15,21 @@ import System.IO
 import System.Process
 
 data Options = Options
-  { optConfigFile :: String,
-    optStateFile :: String
+  { optConfigFilePath :: String,
+    optStateFilePath :: String
   }
   deriving (Show)
 
 defaultOptions =
   Options
-    { optConfigFile = "./config.yml",
-      optStateFile = "./state.yml"
+    { optConfigFilePath = "./config.yml",
+      optStateFilePath = "./state.yml"
     }
 
 options :: [OptDescr (Options -> Options)]
 options =
-  [ Option ['c'] ["config"] (ReqArg (\f opts -> opts {optConfigFile = f}) "config") "config file",
-    Option ['s'] ["state"] (ReqArg (\f opts -> opts {optStateFile = f}) "state") "state file"
+  [ Option ['c'] ["config"] (ReqArg (\f opts -> opts {optConfigFilePath = f}) "config") "config file",
+    Option ['s'] ["state"] (ReqArg (\f opts -> opts {optStateFilePath = f}) "state") "state file"
   ]
 
 compilerOpts :: [String] -> IO (Options, [String])
@@ -42,8 +44,9 @@ someFunc :: IO ()
 someFunc = do
   args <- getArgs
   (opts, _) <- compilerOpts (args)
-  config <- readConfig $ optConfigFile opts
+  config <- readConfig $ optConfigFilePath opts
   state <- newMVar AppState {userStates = Map.empty}
   -- putStrLn $ optStateFile opts
   -- let (Just val) = config
+  forkIO $ stateLoggerLoop (optStateFilePath opts) state
   checkingLoop config state

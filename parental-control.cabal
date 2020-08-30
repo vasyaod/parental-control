@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d932d957c22c4b09a7b18a3b5c2c0152d2e9b26ae6490b45142d345b6c6aeb14
+-- hash: 90b6a058d19a33723c80c1961f01eca75f68176211cef3a9b75739a0fe1c4e95
 
 name:           parental-control
 version:        0.1.0.0
@@ -31,12 +31,14 @@ library
       Checking
       Config
       Lib
+      StateLogger
   other-modules:
       Paths_parental_control
   hs-source-dirs:
       src
   build-depends:
-      base
+      aeson
+    , base
     , containers
     , process
     , text

@@ -61,14 +61,15 @@ checkUser localTime state checkFn killFn userConfig = do
   let isScheduled = checkSchedule (schedule userConfig) localTime
       userName = login userConfig
   inTheSystem <- checkFn userName
-  st <- takeMVar state
+  st <- readMVar state
   let isAllMinutesUsed = (usedMinutes st userName localTime) > (timeLimit userConfig)
   case (inTheSystem, isScheduled, isAllMinutesUsed) of
     (True, False, _) -> killFn userName
     (True, True, True) -> killFn userName
     _ -> return ()
   let newState = if inTheSystem == True && isScheduled == True && isAllMinutesUsed == False then addMinutes st userName localTime 1 else st
-  putMVar state newState
+  swapMVar state newState
+  return ()
 
 checkingLoop :: MyConfig -> MVar AppState -> IO ()
 checkingLoop config state = forever $ do
