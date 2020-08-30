@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e04e357fc78d8d23a2345563e302b137d24a556f8543d035a3be471975f3cb06
+-- hash: d932d957c22c4b09a7b18a3b5c2c0152d2e9b26ae6490b45142d345b6c6aeb14
 
 name:           parental-control
 version:        0.1.0.0
@@ -28,6 +28,7 @@ source-repository head
 library
   exposed-modules:
       AppState
+      Checking
       Config
       Lib
   other-modules:
