@@ -1,4 +1,4 @@
-# parental-control
+# Parental control
 
 This app is advantaged version of this script
 
@@ -18,7 +18,12 @@ then
 fi
 ```
 
-but with more flexible schedule and free time counter
+but with more features
+
+  * flexible schedule 
+  * supporting multiple users 
+  * time counter
+  * daily limits
 
 ## Config 
 
