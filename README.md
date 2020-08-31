@@ -72,7 +72,7 @@ start-stop-daemon -S -b -u root --exec /root/parental-control -- -c /etc/parenta
 
 MIT License
 
-Copyright (c) 2019 Vasilii Vazhesov
+Copyright (c) 2020 Vasilii Vazhesov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
