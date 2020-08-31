@@ -43,11 +43,12 @@ checkSchedule schedule localTime =
 kill :: String -> IO ()
 kill userName = do
   createProcess (shell ("skill -KILL -u " ++ userName)) {std_out = CreatePipe}
+  putStrLn (printf "User %s has been killed" userName)
   return ()
 
 fakeKill :: String -> IO ()
 fakeKill userName =
-  putStrLn (printf "User %s has been killed" userName)
+  putStrLn (printf "User %s has been killed (fake)" userName)
 
 -- | Return true if user in a system
 check :: String -> IO Bool
@@ -63,6 +64,7 @@ checkUser localTime state checkFn killFn userConfig = do
   inTheSystem <- checkFn userName
   st <- readMVar state
   let isAllMinutesUsed = (usedMinutes st userName localTime) > (timeLimit userConfig)
+  putStrLn ("User " ++ userName ++ " " ++ (show inTheSystem) ++ " " ++ (show isScheduled) ++ " " ++ (show isAllMinutesUsed))
   case (inTheSystem, isScheduled, isAllMinutesUsed) of
     (True, False, _) -> killFn userName
     (True, True, True) -> killFn userName
@@ -79,4 +81,4 @@ checkingLoop config state = forever $ do
       killFn = if isDebug config then fakeKill else kill -- if we are in debug mode then some stub is used
       checkFn = check
   sequence (map (checkUser localTime state checkFn killFn) (users config))
-  threadDelay (1 * 1000 * 1000)
+  threadDelay (60 * 1000 * 1000)

@@ -8,7 +8,7 @@ spec :: SpecWith ()
 spec = describe "Config" $ do
     it "should be read from file" $
       do
-        config <- readConfig
+        config <- readConfig "./config.yml"
         -- let (Just val) = config;
         return (isDebug config)
         `shouldReturn` True

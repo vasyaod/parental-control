@@ -2,10 +2,10 @@ module LogicSpec where
 
 import AppState
 import Config
+import Checking
 import Control.Concurrent
 import qualified Data.Map as Map
 import Data.Time
-import Lib
 import Test.Hspec
 
 spec :: SpecWith ()
@@ -94,7 +94,7 @@ spec = describe "Primary logic" $ do
         --    appSt = AppState {userStates = Map.empty}
         state <- newMVar AppState {userStates = Map.empty}
         checkUser localTime state checkFn killFn userConf
-        newState <- takeMVar state
+        newState <- readMVar state
         return newState
         `shouldReturn` AppState {userStates = Map.fromList [("vasyaod",UserState {minuteCount = 1, lastChanges = parseTimeOrError True defaultTimeLocale "%H:%M" "11:15"})]}
 
@@ -126,7 +126,7 @@ spec = describe "Primary logic" $ do
         --    appSt = AppState {userStates = Map.empty}
         state <- newMVar AppState {userStates = Map.empty}
         checkUser localTime state checkFn killFn userConf
-        newState <- takeMVar state
+        newState <- readMVar state
         return newState
         `shouldReturn` AppState {userStates = Map.empty}
 
@@ -158,6 +158,6 @@ spec = describe "Primary logic" $ do
         --    appSt = AppState {userStates = Map.empty}
         state <- newMVar AppState {userStates = Map.empty}
         checkUser localTime state checkFn killFn userConf
-        newState <- takeMVar state
+        newState <- readMVar state
         return newState
         `shouldReturn` AppState {userStates = Map.empty}
