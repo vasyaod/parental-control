@@ -1,6 +1,6 @@
 # Parental control
 
-This app is advantaged version of this script
+Allows to control user login time and spent time time in Linux OS. Basically his app is advantaged version of this script
 
 ```
 #!/bin/bash
