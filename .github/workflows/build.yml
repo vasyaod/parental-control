@@ -14,3 +14,7 @@ jobs:
           stack-version: 'latest'
       - run: stack build --test --copy-bins
       - run: ./build-deb                       # build debian package
+      - uses: actions/upload-artifact@v2
+        with:
+          name: parental-control
+          path: dist/*.deb
