@@ -13,8 +13,9 @@ jobs:
           enable-stack: true
           stack-version: 'latest'
       - run: stack build --test --copy-bins
+      - run: apt -y install alien
       - run: ./build-deb                       # build debian package
       - uses: actions/upload-artifact@v2
         with:
-          name: parental-control
+#          name: parental-control
           path: dist/*.deb
