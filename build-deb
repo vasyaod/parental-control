@@ -27,3 +27,4 @@ cp ../scripts/parental-control $DIR/etc/init.d/parental-control
 chmod -R g-w $DIR
 
 dpkg-deb --root-owner-group --build $DIR
+alien --to-rpm --scripts --keep-version $DIR.deb
