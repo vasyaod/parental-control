@@ -1,26 +1,26 @@
-isDebug: true
+isDebug: true                # If the flag is true the program will not kill a user just print stdout message
 users:
-  - login: vasyaod
-    timeLimit: 180           # Minutes
+  - login: user              # System login / user name
+    timeLimit: 180           # Daily time limit (minutes)
     schedule:
       mon:
-        - start: 10:20
-          end: 11:20
+        - start: 00:00
+          end: 23:59
       tue:
-        - start: 10:20
-          end: 11:20
+        - start: 00:00
+          end: 23:59
       wed:
-        - start: 10:20
-          end: 11:20
+        - start: 00:00
+          end: 23:59
       thu:
-        - start: 10:20
-          end: 11:20
+        - start: 00:00
+          end: 23:59
       fri:
-        - start: 10:20
-          end: 11:20
+        - start: 00:00
+          end: 23:59
       sat:
-        - start: 10:20
-          end: 11:20
+        - start: 00:00
+          end: 23:59
       sun:
-        - start: 10:20
-          end: 11:20
+        - start: 00:00
+          end: 23:59

@@ -13,3 +13,4 @@ jobs:
           enable-stack: true
           stack-version: 'latest'
       - run: stack build --test --copy-bins
+      - run: ./build-deb                       # build debian package
