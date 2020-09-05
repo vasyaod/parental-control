@@ -17,5 +17,5 @@ jobs:
       - run: ./build-deb                       # build debian package
       - uses: actions/upload-artifact@v2
         with:
-#          name: parental-control
-          path: dist/*.deb
+          name: parental-control
+          path: dist/*.*
