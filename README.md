@@ -27,30 +27,40 @@ but with more features
   
 ## Installation 
 
-### Debian
+### Debian/Ubuntu
     
-  * Copy [zip file](https://github.com/vasyaod/parental-control/suites/1150813464/artifacts/16586770)
+  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1150858774/artifacts/16587532)
   * Extract the *.dep package
-  * Install the packge by `dpkg -i parental-controll-1.0.0.deb` 
+  * Install the package by `dpkg -i parental-controll-1.0.0.deb` 
+
+### CentOS/Redhat/Fedora
+  
+_The OS was not tested_
+    
+  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1150858774/artifacts/16587532)
+  * Extract the *.rpm package
+  * Install the package by `rpm –i parental-controll-1.0.0.rpm` 
 
 ## Config
 
   * After installation the config file can be found `/etc/parental-control-config.yml` 
   * Example of the config file with parameter description is awailable in the repo [config.yml](./config.yml)
 
-## Build
+## Maintenance 
+
+### Build
 
 ```
 stack build --test --copy-bins
 ```
 
-## Run as daemon
+### Run as daemon
 
 ```
 start-stop-daemon -S -b -u root --exec /root/parental-control -- -c /etc/parental-control-config.yml -s /var/log/parental-control-state
 ```
 
-## Stop
+### Stop daemon
 
 ```
 start-stop-daemon -K --exec /root/parental-control
