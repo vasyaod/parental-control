@@ -24,37 +24,19 @@ but with more features
   * supporting multiple users 
   * time counter
   * daily limits
+  
+## Installation 
 
-## Config 
+### Debian
+    
+  * Copy [zip file](https://github.com/vasyaod/parental-control/suites/1150813464/artifacts/16586770)
+  * Extract the *.dep package
+  * Install the packge by `dpkg -i parental-controll-1.0.0.deb` 
 
-```
-isDebug: true
-users:
-  - login: vasyaod
-    timeLimit: 180           # Limit time (minutes) per day 
-    schedule:
-      mon:
-        - start: 10:20
-          end: 11:20
-      tue:
-        - start: 10:20
-          end: 11:20
-      wed:
-        - start: 10:20
-          end: 11:20
-      thu:
-        - start: 10:20
-          end: 11:20
-      fri:
-        - start: 10:20
-          end: 11:20
-      sat:
-        - start: 10:20
-          end: 11:20
-      sun:
-        - start: 10:20
-          end: 11:20
-```
+## Config
+
+  * After installation the config file can be found `/etc/parental-control-config.yml` 
+  * Example of the config file with parameter description is awailable in the repo [config.yml](./config.yml)
 
 ## Build
 

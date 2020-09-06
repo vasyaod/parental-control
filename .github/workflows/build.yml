@@ -18,4 +18,6 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: parental-control
-          path: dist/*.*
+          path: |
+            dist/*.rpm
+            dist/*.deb
