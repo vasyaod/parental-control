@@ -4,7 +4,7 @@ VERSION=$(cat version)
 
 echo "Build dep file for parental-control of $VERSION"
 
-DIR="parental-controll-$VERSION"
+DIR="parental-control-$VERSION"
 
 mkdir dist
 cd dist

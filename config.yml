@@ -4,7 +4,9 @@ commands:
   # return any another code.
   check: "who | grep %s | [ $(wc -c) -ne 0 ]"
 
-  # Doesn't work yet
+  # Can be used following command
+  # notify-send 'Hello world!' 'This is an example notification.' --icon=dialog-information
+  # Taken from here https://wiki.archlinux.org/index.php/Desktop_notifications
   message: "echo 'This is stub which is not sent a message anywhere'"
 
   # Command which should kill/logout a user

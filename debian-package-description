@@ -2,7 +2,7 @@ Package: parental-control
 Version: 1.0
 Section: custom
 Priority: optional
-Architecture: x64
+Architecture: amd64
 Essential: no
 Installed-Size: 1024
 Maintainer: Vasilii Vazhesov <vasilii.vazhesov@gmail.com>
