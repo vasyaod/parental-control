@@ -1,7 +1,18 @@
-isDebug: true                # If the flag is true the program will not kill a user just print stdout message
+commands:
+  # Command checks user in a system.
+  # The requirement is that the command should return 0 exit code if a user is in a system otherwise
+  # return any another code.
+  check: "who | grep %s | [ $(wc -c) -ne 0 ]"
+
+  # Doesn't work yet
+  message: "echo 'This is stub which is not sent a message anywhere'"
+
+  # Command which should kill/logout a user
+  kill: "skill -KILL -u %s"
+
 users:
-  - login: user              # System login / user name
-    timeLimit: 180           # Daily time limit (minutes)
+  - login: dummy-user             # System login / user name
+    timeLimit: 180                # Daily time limit (minutes)
     schedule:
       mon:
         - start: 00:00

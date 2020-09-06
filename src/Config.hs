@@ -7,7 +7,7 @@ import Data.Yaml
 import qualified Data.Yaml as Y
 
 data MyConfig = MyConfig
-  { isDebug :: Bool,
+  { commands :: Commands,
     users :: [User]
   }
   deriving (Eq, Show)
@@ -15,8 +15,23 @@ data MyConfig = MyConfig
 instance FromJSON MyConfig where
   parseJSON (Y.Object m) =
     MyConfig
-      <$> m .: pack ("isDebug")
+      <$> m .: pack ("commands")
       <*> m .: pack ("users")
+  parseJSON x = fail ("not an object: " ++ show x)
+
+data Commands = Commands
+  { check :: String,
+    message :: String,
+    kill :: String
+  }
+  deriving (Eq, Show)
+
+instance FromJSON Commands where
+  parseJSON (Y.Object m) =
+    Commands
+      <$> m .: pack ("check")
+      <*> m .: pack ("message")
+      <*> m .: pack ("kill")
   parseJSON x = fail ("not an object: " ++ show x)
 
 data User = User

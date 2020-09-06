@@ -14,6 +14,7 @@ import Data.Time.Calendar
 import Data.Time.Clock
 import Data.Time.LocalTime
 import System.Console.GetOpt
+import System.Exit
 import System.Environment
 import System.IO
 import System.Process
@@ -40,22 +41,22 @@ checkSchedule schedule localTime =
       ranges = (getTimesForDayOfWeek dayOfW) $ schedule
    in checkTimes localTime ranges
 
-kill :: String -> IO ()
-kill userName = do
-  createProcess (shell ("skill -KILL -u " ++ userName)) {std_out = CreatePipe}
+runKill :: Commands -> String -> IO ()
+runKill commands userName = do
+  let command = printf (kill commands) userName
+  createProcess (shell command) {std_out = CreatePipe}
   putStrLn (printf "User %s has been killed" userName)
   return ()
 
-fakeKill :: String -> IO ()
-fakeKill userName =
-  putStrLn (printf "User %s has been killed (fake)" userName)
-
 -- | Return true if user in a system
-check :: String -> IO Bool
-check userName = do
-  (_, Just hout, _, _) <- createProcess (shell ("who | grep " ++ userName)) {std_out = CreatePipe}
-  isEOF <- hIsEOF (hout)
-  return $ not isEOF
+runCheck :: Commands -> String -> IO Bool
+runCheck commands userName = do
+  let command = printf (check commands) userName
+  (_, Just hout, _, processHandle) <- createProcess (shell command) {std_out = CreatePipe}
+  exitCode <- waitForProcess processHandle
+  case exitCode of
+    ExitSuccess -> return True
+    ExitFailure _ -> return False
 
 checkUser :: LocalTime -> MVar AppState -> (String -> IO Bool) -> (String -> IO ()) -> User -> IO ()
 checkUser localTime state checkFn killFn userConfig = do
@@ -78,7 +79,7 @@ checkingLoop config state = forever $ do
   now <- getCurrentTime
   timezone <- getCurrentTimeZone
   let localTime = utcToLocalTime timezone now
-      killFn = if isDebug config then fakeKill else kill -- if we are in debug mode then some stub is used
-      checkFn = check
+      killFn = runKill (commands config)
+      checkFn = runCheck (commands config)
   sequence (map (checkUser localTime state checkFn killFn) (users config))
   threadDelay (60 * 1000 * 1000)

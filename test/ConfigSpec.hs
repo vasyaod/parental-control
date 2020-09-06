@@ -9,6 +9,7 @@ spec = describe "Config" $ do
     it "should be read from file" $
       do
         config <- readConfig "./config.yml"
-        -- let (Just val) = config;
-        return (isDebug config)
-        `shouldReturn` True
+--        let (Just val) = config;
+        let userConf = head (users config)
+        return (login userConf)
+        `shouldReturn` "dummy-user"
