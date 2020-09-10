@@ -1,8 +1,8 @@
 module LogicSpec where
 
 import AppState
-import Config
 import Checking
+import Config
 import Control.Concurrent
 import qualified Data.Map as Map
 import Data.Time
@@ -91,12 +91,24 @@ spec = describe "Primary logic" $ do
             localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:15"
             checkFn = \x -> return True
             killFn = \x -> return ()
+            messageFn = \x -> return ()
         --    appSt = AppState {userStates = Map.empty}
         state <- newMVar AppState {userStates = Map.empty}
-        checkUser localTime state checkFn killFn userConf
+        checkUser localTime state checkFn killFn messageFn userConf
         newState <- readMVar state
         return newState
-        `shouldReturn` AppState {userStates = Map.fromList [("vasyaod",UserState {minuteCount = 1, lastChanges = parseTimeOrError True defaultTimeLocale "%H:%M" "11:15"})]}
+        `shouldReturn` AppState
+          { userStates =
+              Map.fromList
+                [ ( "vasyaod",
+                    UserState
+                      { minuteCount = 1,
+                        lastChanges = parseTimeOrError True defaultTimeLocale "%H:%M" "11:15",
+                        messageSent = False
+                      }
+                  )
+                ]
+          }
 
     it "should not increase state if it  doesn't happen in schedule" $
       do
@@ -120,12 +132,13 @@ spec = describe "Primary logic" $ do
                     [Range {start = start, end = end}]
                 }
             userConf = User {login = "vasyaod", timeLimit = 10, schedule = schedule}
-            localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "10:15"      -- The time is no it the range
+            localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "10:15" -- The time is no it the range
             checkFn = \x -> return True
             killFn = \x -> return ()
+            messageFn = \x -> return ()
         --    appSt = AppState {userStates = Map.empty}
         state <- newMVar AppState {userStates = Map.empty}
-        checkUser localTime state checkFn killFn userConf
+        checkUser localTime state checkFn killFn messageFn userConf
         newState <- readMVar state
         return newState
         `shouldReturn` AppState {userStates = Map.empty}
@@ -152,12 +165,13 @@ spec = describe "Primary logic" $ do
                     [Range {start = start, end = end}]
                 }
             userConf = User {login = "vasyaod", timeLimit = 10, schedule = schedule}
-            localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:15"      -- The time is no it the range
-            checkFn = \x -> return False                                             -- User not in a system
+            localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:15" -- The time is no it the range
+            checkFn = \x -> return False -- User not in a system
             killFn = \x -> return ()
+            messageFn = \x -> return ()
         --    appSt = AppState {userStates = Map.empty}
         state <- newMVar AppState {userStates = Map.empty}
-        checkUser localTime state checkFn killFn userConf
+        checkUser localTime state checkFn killFn messageFn userConf
         newState <- readMVar state
         return newState
         `shouldReturn` AppState {userStates = Map.empty}

@@ -14,8 +14,8 @@ import Data.Time.Calendar
 import Data.Time.Clock
 import Data.Time.LocalTime
 import System.Console.GetOpt
-import System.Exit
 import System.Environment
+import System.Exit
 import System.IO
 import System.Process
 import Text.Printf
@@ -41,16 +41,23 @@ checkSchedule schedule localTime =
       ranges = (getTimesForDayOfWeek dayOfW) $ schedule
    in checkTimes localTime ranges
 
-runKill :: Commands -> String -> IO ()
-runKill commands userName = do
+runKillCommand :: Commands -> String -> IO ()
+runKillCommand commands userName = do
   let command = printf (kill commands) userName
   createProcess (shell command) {std_out = CreatePipe}
   putStrLn (printf "User %s has been killed" userName)
   return ()
 
+runMessageCommand :: Commands -> String -> IO ()
+runMessageCommand commands userName = do
+  let command = printf (message commands) userName
+  createProcess (shell command) {std_out = CreatePipe}
+  putStrLn (printf "Message to user %s has been send" userName)
+  return ()
+
 -- | Return true if user in a system
-runCheck :: Commands -> String -> IO Bool
-runCheck commands userName = do
+runCheckCommand :: Commands -> String -> IO Bool
+runCheckCommand commands userName = do
   let command = printf (check commands) userName
   (_, Just hout, _, processHandle) <- createProcess (shell command) {std_out = CreatePipe}
   exitCode <- waitForProcess processHandle
@@ -58,19 +65,34 @@ runCheck commands userName = do
     ExitSuccess -> return True
     ExitFailure _ -> return False
 
-checkUser :: LocalTime -> MVar AppState -> (String -> IO Bool) -> (String -> IO ()) -> User -> IO ()
-checkUser localTime state checkFn killFn userConfig = do
+checkUser :: LocalTime -> MVar AppState -> (String -> IO Bool) -> (String -> IO ()) -> (String -> IO ()) -> User -> IO ()
+checkUser localTime state checkFn killFn messageFn userConfig = do
   let isScheduled = checkSchedule (schedule userConfig) localTime
       userName = login userConfig
+      shiftedLocalTime = addLocalTime (secondsToNominalDiffTime 300) localTime
+      isScheduledForShifted = checkSchedule (schedule userConfig) shiftedLocalTime
+
   inTheSystem <- checkFn userName
   st <- readMVar state
   let isAllMinutesUsed = (usedMinutes st userName localTime) > (timeLimit userConfig)
-  putStrLn ("User " ++ userName ++ " " ++ (show inTheSystem) ++ " " ++ (show isScheduled) ++ " " ++ (show isAllMinutesUsed))
+  putStrLn ("User " ++ show (userName, inTheSystem, isScheduled, isAllMinutesUsed, isScheduledForShifted))
+
+  -- Kill logic implementation
   case (inTheSystem, isScheduled, isAllMinutesUsed) of
     (True, False, _) -> killFn userName
     (True, True, True) -> killFn userName
     _ -> return ()
-  let newState = if inTheSystem == True && isScheduled == True && isAllMinutesUsed == False then addMinutes st userName localTime 1 else st
+
+  -- Sending message/user notification implementation
+  case (inTheSystem, isScheduled, isAllMinutesUsed, isScheduledForShifted) of
+    (True, True, False, False) -> messageFn userName
+    _ -> return ()
+
+  -- Time increasing
+  let newState =
+        case (inTheSystem, isScheduled, isAllMinutesUsed) of
+          (True, True, False) -> addMinutes st userName localTime 1
+          _ -> st
   swapMVar state newState
   return ()
 
@@ -79,7 +101,8 @@ checkingLoop config state = forever $ do
   now <- getCurrentTime
   timezone <- getCurrentTimeZone
   let localTime = utcToLocalTime timezone now
-      killFn = runKill (commands config)
-      checkFn = runCheck (commands config)
-  sequence (map (checkUser localTime state checkFn killFn) (users config))
+      killFn = runKillCommand (commands config)
+      checkFn = runCheckCommand (commands config)
+      messageFn = runMessageCommand (commands config)
+  sequence (map (checkUser localTime state checkFn killFn messageFn) (users config))
   threadDelay (60 * 1000 * 1000)

@@ -20,7 +20,7 @@ spec = describe "AppState" $ do
       let localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "10:30"
           appSt =
             AppState
-              { userStates = (Map.fromList [("vasyaod", UserState {minuteCount = 10, lastChanges = localTime})])
+              { userStates = (Map.fromList [("vasyaod", UserState {minuteCount = 10, lastChanges = localTime, messageSent = False})])
               }
        in usedMinutes appSt "vasyaod" localTime `shouldBe` 10
 
@@ -30,7 +30,7 @@ spec = describe "AppState" $ do
           localTimeNextDay = LocalTime (addDays 1 localDay) localTimeOfDay -- Get local time for "the next day"
           appSt =
             AppState
-              { userStates = (Map.fromList [("vasyaod", UserState {minuteCount = 10, lastChanges = localTime})])
+              { userStates = (Map.fromList [("vasyaod", UserState {minuteCount = 10, lastChanges = localTime, messageSent = False})])
               }
        in usedMinutes appSt "vasyaod" localTimeNextDay `shouldBe` 0
 
@@ -43,18 +43,18 @@ spec = describe "AppState" $ do
               }
        in addMinutes appSt "vasyaod" localTime 1
             `shouldBe` AppState
-              { userStates = (Map.fromList [("vasyaod", UserState {minuteCount = 1, lastChanges = localTime})])
+              { userStates = (Map.fromList [("vasyaod", UserState {minuteCount = 1, lastChanges = localTime, messageSent = False})])
               }
 
     it "should return increase minutes for already existed user" $
       let localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "10:30"
           appSt =
             AppState
-              { userStates = (Map.fromList [("vasyaod", UserState {minuteCount = 10, lastChanges = localTime})])
+              { userStates = (Map.fromList [("vasyaod", UserState {minuteCount = 10, lastChanges = localTime, messageSent = False})])
               }
        in addMinutes appSt "vasyaod" localTime 1
             `shouldBe` AppState
-              { userStates = (Map.fromList [("vasyaod", UserState {minuteCount = 11, lastChanges = localTime})])
+              { userStates = (Map.fromList [("vasyaod", UserState {minuteCount = 11, lastChanges = localTime, messageSent = False})])
               }
 
     it "should return reset minutes in the next day" $
@@ -63,9 +63,9 @@ spec = describe "AppState" $ do
           localTimeNextDay = LocalTime (addDays 1 localDay) localTimeOfDay -- Get local time for "the next day"
           appSt =
             AppState
-              { userStates = (Map.fromList [("vasyaod", UserState {minuteCount = 10, lastChanges = localTime})])
+              { userStates = (Map.fromList [("vasyaod", UserState {minuteCount = 10, lastChanges = localTime, messageSent = False})])
               }
        in addMinutes appSt "vasyaod" localTimeNextDay 1
             `shouldBe` AppState
-              { userStates = (Map.fromList [("vasyaod", UserState {minuteCount = 1, lastChanges = localTimeNextDay})])
+              { userStates = (Map.fromList [("vasyaod", UserState {minuteCount = 1, lastChanges = localTimeNextDay, messageSent = False})])
               }

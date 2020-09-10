@@ -31,7 +31,7 @@ but with more features
     
   * Download [zip file](https://github.com/vasyaod/parental-control/suites/1150858774/artifacts/16587532)
   * Extract the *.dep package
-  * Install the package by `dpkg -i parental-controll-1.0.0.deb` 
+  * Install the package by `dpkg -i parental-control-1.0.0.deb` 
 
 ### CentOS/Redhat/Fedora
   
@@ -39,12 +39,81 @@ _The OS was not tested_
     
   * Download [zip file](https://github.com/vasyaod/parental-control/suites/1150858774/artifacts/16587532)
   * Extract the *.rpm package
-  * Install the package by `rpm –i parental-controll-1.0.0.rpm` 
+  * Install the package by `rpm –i parental-control-1.0.0.rpm` 
 
 ## Config
 
   * After installation the config file can be found `/etc/parental-control-config.yml` 
   * Example of the config file with parameter description is awailable in the repo [config.yml](./config.yml)
+
+Weakly schedule for multiple users looks like:
+
+```yaml
+users:
+  - login: yasha
+    timeLimit: 150           # Minutes
+    schedule:
+      mon:
+        - start: 07:00
+          end: 08:00
+        - start: 14:00
+          end: 20:00
+      tue:
+        - start: 07:00
+          end: 08:00
+        - start: 14:00
+          end: 21:00
+      wed:
+        - start: 07:00
+          end: 08:00
+        - start: 14:00
+          end: 21:00
+      thu:
+        - start: 07:00
+          end: 08:00
+        - start: 14:00
+          end: 21:00
+      fri:
+        - start: 07:00
+          end: 08:00
+        - start: 14:00
+          end: 21:00
+      sat:
+        - start: 07:00
+          end: 08:00
+        - start: 12:00
+          end: 21:00
+      sun:
+        - start: 07:00
+          end: 08:00
+        - start: 12:00
+          end: 21:00
+
+  - login: sunny
+    timeLimit: 18000           # Minutes
+    schedule:
+      mon:
+        - start: 05:00
+          end: 22:00
+      tue:
+        - start: 05:00
+          end: 22:00
+      wed:
+        - start: 05:00
+          end: 22:00
+      thu:
+        - start: 05:00
+          end: 22:00
+      fri:
+        - start: 05:00
+          end: 22:00
+      sat:
+        - start: 05:00
+          end: 22:00
+      sun:
+        - start: 05:00
+          end: 22:00
+```
 
 ## Maintenance 
 

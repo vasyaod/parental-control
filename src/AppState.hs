@@ -6,7 +6,8 @@ import Data.Time.LocalTime
 
 data UserState = UserState
   { minuteCount :: Int,
-    lastChanges :: LocalTime
+    lastChanges :: LocalTime,
+    messageSent :: Bool
   }
   deriving (Eq, Show)
 
@@ -15,26 +16,25 @@ data AppState = AppState
   }
   deriving (Eq, Show)
 
+defaultUserState :: LocalTime -> UserState
+defaultUserState localTime = UserState {minuteCount = 0, lastChanges = localTime, messageSent = False}
+
 -- Retuns used minutes for a user depend on localtime
 usedMinutes :: AppState -> String -> LocalTime -> Int
 usedMinutes state userName localTime =
-  minuteCount
-    ( if localDay (lastChanges userState) == localDay localTime
-        then userState
-        else defaultUserState
-    )
+  if localDay (lastChanges userState) == localDay localTime
+    then minuteCount userState
+    else 0
   where
-    defaultUserState = UserState {minuteCount = 0, lastChanges = localTime}
-    userState = Map.findWithDefault defaultUserState userName (userStates state)
+    defaultUserStateWithTime = defaultUserState localTime
+    userState = Map.findWithDefault defaultUserStateWithTime userName (userStates state)
 
 -- Increase minute time for user state
 addMinutes :: AppState -> String -> LocalTime -> Int -> AppState
 addMinutes state userName localTime delta =
   state {userStates = Map.insert userName newUserState (userStates state)}
   where
-    defaultUserState = UserState {minuteCount = 0, lastChanges = localTime}
-    userState = Map.findWithDefault defaultUserState userName (userStates state)
-    newUserState =
-      if localDay (lastChanges userState) == localDay localTime
-        then UserState {minuteCount = (minuteCount userState) + delta, lastChanges = localTime}
-        else UserState {minuteCount = delta, lastChanges = localTime}
+    defaultUserStateWithTime = defaultUserState localTime
+    userState = Map.findWithDefault defaultUserStateWithTime userName (userStates state)
+    um = usedMinutes state userName localTime
+    newUserState = userState {minuteCount = um + delta, lastChanges = localTime, messageSent = False}
