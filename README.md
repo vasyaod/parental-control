@@ -51,7 +51,8 @@ Weakly schedule for multiple users looks like:
 ```yaml
 users:
   - login: yasha
-    timeLimit: 150           # Minutes
+    timeLimit: 150             # Daily time limit (minutes)
+    noticePeriod: 5            # Notice period is the time period between the sending message and the killing of a user (minutes)
     schedule:
       mon:
         - start: 07:00
@@ -80,17 +81,14 @@ users:
           end: 21:00
       sat:
         - start: 07:00
-          end: 08:00
-        - start: 12:00
           end: 21:00
       sun:
         - start: 07:00
-          end: 08:00
-        - start: 12:00
           end: 21:00
 
   - login: sunny
     timeLimit: 18000           # Minutes
+    noticePeriod: 5            # Notice period is the time period between the sending message and the killing of a user (minutes)
     schedule:
       mon:
         - start: 05:00

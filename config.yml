@@ -7,6 +7,8 @@ commands:
   # Can be used following command
   # notify-send 'Hello world!' 'This is an example notification.' --icon=dialog-information
   # Taken from here https://wiki.archlinux.org/index.php/Desktop_notifications
+  # Example
+  # message: "notify-send 'Your time is mostly up' 'You have only 5 minutes before logout.' --icon=dialog-information"
   message: "echo 'This is stub which is not sent a message anywhere'"
 
   # Command which should kill/logout a user
