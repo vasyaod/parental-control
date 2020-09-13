@@ -69,15 +69,16 @@ runCheckCommand commands userName = do
 checkUser :: LocalTime -> (String -> IO Bool) -> (String -> IO ()) -> (String -> IO ()) -> User -> StateT UserState IO ()
 checkUser localTime checkFn killFn messageFn userConfig = do
   let isScheduled = checkSchedule (schedule userConfig) localTime
+      noticePeriodVal = noticePeriod userConfig
       userName = login userConfig
-      shiftedLocalTime = addLocalTime (secondsToNominalDiffTime (5 * 60)) localTime
+      shiftedLocalTime = addLocalTime (secondsToNominalDiffTime (fromInteger (toInteger noticePeriodVal) * 60)) localTime
       isScheduledForShifted = checkSchedule (schedule userConfig) shiftedLocalTime
 
   inTheSystem <- liftIO $ checkFn userName
   st <- get
 
   let isAllMinutesUsed = (usedMinutes st localTime) > (timeLimit userConfig) -- true if user time is up
-      isAlmostAllMinutesUsed = ((usedMinutes st localTime) /= 0)  && ((usedMinutes st localTime) + 5 > (timeLimit userConfig))  -- The flag is true if user time is mostly up
+      isAlmostAllMinutesUsed = ((usedMinutes st localTime) /= 0)  && ((usedMinutes st localTime) + noticePeriodVal > (timeLimit userConfig))  -- The flag is true if user time is mostly up
 
   liftIO $ putStrLn ("User " ++ show (userName, inTheSystem, isScheduled, isAllMinutesUsed, isAlmostAllMinutesUsed, isScheduledForShifted))
 

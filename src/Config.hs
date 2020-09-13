@@ -37,6 +37,7 @@ instance FromJSON Commands where
 data User = User
   { login :: String,
     timeLimit :: Int,
+    noticePeriod :: Int,
     schedule :: Schedule
   }
   deriving (Eq, Show)
@@ -46,6 +47,7 @@ instance FromJSON User where
     User
       <$> m .: pack ("login")
       <*> m .: pack ("timeLimit")
+      <*> m .: pack ("noticePeriod")
       <*> m .: pack ("schedule")
   parseJSON x = fail ("not an object: " ++ show x)
 

@@ -30,6 +30,14 @@ commonSchedule =
     start = parseTimeOrError True defaultTimeLocale "%H:%M" "11:00"
     end = parseTimeOrError True defaultTimeLocale "%H:%M" "11:30"
 
+userConf =
+  User
+    { login = "vasyaod",
+      timeLimit = 10,
+      noticePeriod = 5,
+      schedule = commonSchedule
+    }
+
 spec :: SpecWith ()
 spec = describe "Primary logic" $ do
   describe "checkTime" $ do
@@ -73,8 +81,7 @@ spec = describe "Primary logic" $ do
   describe "checkUser" $ do
     it "should increase state if it happens in schedule" $
       do
-        let userConf = User {login = "vasyaod", timeLimit = 10, schedule = commonSchedule}
-            localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:15"
+        let localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:15"
             checkFn = \x -> return True
             killFn = \x -> return ()
             messageFn = \x -> return ()
@@ -90,8 +97,7 @@ spec = describe "Primary logic" $ do
 
     it "should not increase state if it  doesn't happen in schedule" $
       do
-        let userConf = User {login = "vasyaod", timeLimit = 10, schedule = commonSchedule}
-            localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "10:15" -- The time is no it the range
+        let localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "10:15" -- The time is no it the range
             checkFn = \x -> return True
             killFn = \x -> return ()
             messageFn = \x -> return ()
@@ -107,8 +113,7 @@ spec = describe "Primary logic" $ do
 
     it "should not increase state if user is not in a system" $
       do
-        let userConf = User {login = "vasyaod", timeLimit = 10, schedule = commonSchedule}
-            localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:15" -- The time is no it the range
+        let localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:15" -- The time is no it the range
             checkFn = \x -> return False -- User not in a system
             killFn = \x -> return ()
             messageFn = \x -> return ()
@@ -124,8 +129,7 @@ spec = describe "Primary logic" $ do
 
     it "should send message before 5 minutes of the schedule end" $
       do
-        let userConf = User {login = "vasyaod", timeLimit = 10, schedule = commonSchedule}
-            localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:26" -- Time which is closed to the end of schedule
+        let localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:26" -- Time which is closed to the end of schedule
             checkFn = \x -> return True
             killFn = \x -> return ()
             messageFn = \x -> return ()
@@ -141,8 +145,7 @@ spec = describe "Primary logic" $ do
 
     it "should send message before 5 minutes of the end of time limit" $
       do
-        let userConf = User {login = "vasyaod", timeLimit = 10, schedule = commonSchedule}
-            localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:10"
+        let localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:10"
             checkFn = \x -> return True
             killFn = \x -> return ()
             messageFn = \x -> return ()
