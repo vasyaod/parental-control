@@ -33,7 +33,8 @@ library:
     - base
     - aeson
     - mtl
-
+    - directory
+    - filepath
 executables:
   parental-control:
     main:                Main.hs

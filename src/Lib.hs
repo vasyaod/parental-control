@@ -12,6 +12,8 @@ import System.Console.GetOpt
 import System.Environment
 import System.IO
 import System.Process
+import System.Directory
+import System.FilePath
 
 data Options = Options
   { optConfigFilePath :: String
@@ -44,5 +46,6 @@ someFunc = do
   state <- newMVar AppState {userStates = Map.empty}
   -- putStrLn $ optStateFile opts
   -- let (Just val) = config
+  createDirectoryIfMissing True (takeDirectory (stateFilePath config))
   forkIO $ stateLoggerLoop (stateFilePath config) state
   checkingLoop config state

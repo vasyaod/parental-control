@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ab2f16483e83bff146acfb5b6bf7435a6b6aa981e4c908a2b607be1eca4f0e29
+-- hash: c8f4f401fa522dc823c3cc8e2b7a49ef5581a125f4bc8393711ee0111e07d6ba
 
 name:           parental-control
 version:        0.1.0.0
@@ -40,6 +40,8 @@ library
       aeson
     , base
     , containers
+    , directory
+    , filepath
     , mtl
     , process
     , text
