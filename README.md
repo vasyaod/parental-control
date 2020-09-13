@@ -49,6 +49,26 @@ _The OS was not tested_
 Weakly schedule for multiple users looks like:
 
 ```yaml
+commands:
+  # Command checks user in a system.
+  # The requirement is that the command should return 0 exit code if a user is in a system otherwise
+  # return any another code.
+  check: "who | grep %s | [ $(wc -c) -ne 0 ]"
+
+  # Can be used following command
+  # notify-send 'Hello world!' 'This is an example notification.' --icon=dialog-information
+  # Taken from here https://wiki.archlinux.org/index.php/Desktop_notifications
+  # Example
+  # message: "notify-send 'Your time is mostly up' 'You have only 5 minutes before logout.' --icon=dialog-information"
+  message: "echo 'This is stub which is not sent a message anywhere'"
+
+  # Command which should kill/logout a user
+  kill: "skill -KILL -u %s"
+
+# This app keep all state in memory but periodically can unload some information to file.
+# Basically it is one of ways to et information about users
+stateFilePath: /var/run/parental-control/state
+
 users:
   - login: yasha
     timeLimit: 150             # Daily time limit (minutes)

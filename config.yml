@@ -14,6 +14,10 @@ commands:
   # Command which should kill/logout a user
   kill: "skill -KILL -u %s"
 
+# This app keep all state in memory but periodically can unload some information to file.
+# Basically it is one of ways to et information about users
+stateFilePath: /var/run/parental-control/state
+
 users:
   - login: dummy-user             # System login / user name
     timeLimit: 180                # Daily time limit (minutes)

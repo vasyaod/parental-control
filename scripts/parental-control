@@ -17,7 +17,7 @@ NAME=parental-control
 PIDFILE=/var/run/$NAME.pid
 #This is the command to be run, give the full pathname
 DAEMON=/usr/bin/parental-control
-DAEMON_OPTS="-c /etc/parental-control-config.yml -s /var/log/parental-control-state"
+DAEMON_OPTS="-c /etc/parental-control-config.yml"
 
 export PATH="${PATH:+$PATH:}/usr/sbin:/sbin"
 
