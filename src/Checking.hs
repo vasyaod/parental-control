@@ -70,13 +70,16 @@ checkUser :: LocalTime -> (String -> IO Bool) -> (String -> IO ()) -> (String ->
 checkUser localTime checkFn killFn messageFn userConfig = do
   let isScheduled = checkSchedule (schedule userConfig) localTime
       userName = login userConfig
-      shiftedLocalTime = addLocalTime (secondsToNominalDiffTime 300) localTime
+      shiftedLocalTime = addLocalTime (secondsToNominalDiffTime (5 * 60)) localTime
       isScheduledForShifted = checkSchedule (schedule userConfig) shiftedLocalTime
 
   inTheSystem <- liftIO $ checkFn userName
   st <- get
-  let isAllMinutesUsed = (usedMinutes st localTime) > (timeLimit userConfig)
-  liftIO $ putStrLn ("User " ++ show (userName, inTheSystem, isScheduled, isAllMinutesUsed, isScheduledForShifted))
+
+  let isAllMinutesUsed = (usedMinutes st localTime) > (timeLimit userConfig) -- true if user time is up
+      isAlmostAllMinutesUsed = ((usedMinutes st localTime) /= 0)  && ((usedMinutes st localTime) + 5 > (timeLimit userConfig))  -- The flag is true if user time is mostly up
+
+  liftIO $ putStrLn ("User " ++ show (userName, inTheSystem, isScheduled, isAllMinutesUsed, isAlmostAllMinutesUsed, isScheduledForShifted))
 
   -- Kill logic implementation
   case (inTheSystem, isScheduled, isAllMinutesUsed) of
@@ -85,11 +88,14 @@ checkUser localTime checkFn killFn messageFn userConfig = do
     _ -> return ()
 
   -- Sending message/user notification implementation
-  case (inTheSystem, isScheduled, isAllMinutesUsed, isScheduledForShifted, messageSent st) of
-    (True, True, False, False, False) -> do
+  case (inTheSystem, isScheduled, isAllMinutesUsed, isAlmostAllMinutesUsed, isScheduledForShifted, messageSent st) of
+    (True, True, False, _, False, False) -> do
       liftIO $ messageFn userName
       modify $ \st -> st {messageSent = True}
-    (False, _, _, _, True) -> do
+    (True, True, False, True, _, False) -> do
+      liftIO $ messageFn userName
+      modify $ \st -> st {messageSent = True}
+    (False, _, _, _, _, True) -> do
       modify $ \st -> st {messageSent = False}
     _ -> return ()
 

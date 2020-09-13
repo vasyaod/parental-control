@@ -122,10 +122,10 @@ spec = describe "Primary logic" $ do
             messageSent = False
           }
 
-    it "should send message before 5 minutes of the end" $
+    it "should send message before 5 minutes of the schedule end" $
       do
         let userConf = User {login = "vasyaod", timeLimit = 10, schedule = commonSchedule}
-            localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:26" -- The time is no it the range
+            localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:26" -- Time which is closed to the end of schedule
             checkFn = \x -> return True
             killFn = \x -> return ()
             messageFn = \x -> return ()
@@ -136,5 +136,22 @@ spec = describe "Primary logic" $ do
         `shouldReturn` UserState
           { minuteCount = 1,
             lastChanges = parseTimeOrError True defaultTimeLocale "%H:%M" "11:26",
+            messageSent = True
+          }
+
+    it "should send message before 5 minutes of the end of time limit" $
+      do
+        let userConf = User {login = "vasyaod", timeLimit = 10, schedule = commonSchedule}
+            localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:10"
+            checkFn = \x -> return True
+            killFn = \x -> return ()
+            messageFn = \x -> return ()
+        --    appSt = AppState {userStates = Map.empty}
+        let defUserState = (defaultUserState localTime) {minuteCount = 6}
+        newState <- execStateT (checkUser localTime checkFn killFn messageFn userConf) defUserState
+        return newState
+        `shouldReturn` UserState
+          { minuteCount = 7,
+            lastChanges = parseTimeOrError True defaultTimeLocale "%H:%M" "11:10",
             messageSent = True
           }
