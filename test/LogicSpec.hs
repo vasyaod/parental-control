@@ -4,9 +4,31 @@ import AppState
 import Checking
 import Config
 import Control.Concurrent
+import Control.Monad.State
 import qualified Data.Map as Map
 import Data.Time
 import Test.Hspec
+
+commonSchedule =
+  Schedule
+    { mon =
+        [Range {start = start, end = end}],
+      tue =
+        [Range {start = start, end = end}],
+      wed =
+        [Range {start = start, end = end}],
+      thu =
+        [Range {start = start, end = end}],
+      fri =
+        [Range {start = start, end = end}],
+      sat =
+        [Range {start = start, end = end}],
+      sun =
+        [Range {start = start, end = end}]
+    }
+  where
+    start = parseTimeOrError True defaultTimeLocale "%H:%M" "11:00"
+    end = parseTimeOrError True defaultTimeLocale "%H:%M" "11:30"
 
 spec :: SpecWith ()
 spec = describe "Primary logic" $ do
@@ -48,130 +70,71 @@ spec = describe "Primary logic" $ do
               }
        in checkTimes time [range] `shouldBe` False
 
-  --  describe "checkSchedule" $ do
-  --    it "should return True if time fits for schedule" $
-  --      do
-  --        config <- readConfig
-  --        let time = parseTimeOrError True defaultTimeLocale "%H:%M" "10:30" -- Test time
-  --        return $ checkSchedule config time
-  --        `shouldReturn` True
-  --
-  --    it "should return False if time fits for schedule" $
-  --      do
-  --        config <- readConfig
-  --        let time = parseTimeOrError True defaultTimeLocale "%H:%M" "18:30" -- Test time
-  --        return $ checkSchedule config time
-  --        `shouldReturn` False
-
-  --    it "returns a positive number when given a negative input" $
-  --      -1 `shouldBe` -1
   describe "checkUser" $ do
     it "should increase state if it happens in schedule" $
       do
-        let start = parseTimeOrError True defaultTimeLocale "%H:%M" "11:00"
-            end = parseTimeOrError True defaultTimeLocale "%H:%M" "11:30"
-            schedule =
-              Schedule
-                { mon =
-                    [Range {start = start, end = end}],
-                  tue =
-                    [Range {start = start, end = end}],
-                  wed =
-                    [Range {start = start, end = end}],
-                  thu =
-                    [Range {start = start, end = end}],
-                  fri =
-                    [Range {start = start, end = end}],
-                  sat =
-                    [Range {start = start, end = end}],
-                  sun =
-                    [Range {start = start, end = end}]
-                }
-            userConf = User {login = "vasyaod", timeLimit = 10, schedule = schedule}
+        let userConf = User {login = "vasyaod", timeLimit = 10, schedule = commonSchedule}
             localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:15"
             checkFn = \x -> return True
             killFn = \x -> return ()
             messageFn = \x -> return ()
         --    appSt = AppState {userStates = Map.empty}
-        state <- newMVar AppState {userStates = Map.empty}
-        checkUser localTime state checkFn killFn messageFn userConf
-        newState <- readMVar state
+        let defUserState = defaultUserState localTime
+        newState <- execStateT (checkUser localTime checkFn killFn messageFn userConf) defUserState
         return newState
-        `shouldReturn` AppState
-          { userStates =
-              Map.fromList
-                [ ( "vasyaod",
-                    UserState
-                      { minuteCount = 1,
-                        lastChanges = parseTimeOrError True defaultTimeLocale "%H:%M" "11:15",
-                        messageSent = False
-                      }
-                  )
-                ]
+        `shouldReturn` UserState
+          { minuteCount = 1,
+            lastChanges = parseTimeOrError True defaultTimeLocale "%H:%M" "11:15",
+            messageSent = False
           }
 
     it "should not increase state if it  doesn't happen in schedule" $
       do
-        let start = parseTimeOrError True defaultTimeLocale "%H:%M" "11:00"
-            end = parseTimeOrError True defaultTimeLocale "%H:%M" "11:30"
-            schedule =
-              Schedule
-                { mon =
-                    [Range {start = start, end = end}],
-                  tue =
-                    [Range {start = start, end = end}],
-                  wed =
-                    [Range {start = start, end = end}],
-                  thu =
-                    [Range {start = start, end = end}],
-                  fri =
-                    [Range {start = start, end = end}],
-                  sat =
-                    [Range {start = start, end = end}],
-                  sun =
-                    [Range {start = start, end = end}]
-                }
-            userConf = User {login = "vasyaod", timeLimit = 10, schedule = schedule}
+        let userConf = User {login = "vasyaod", timeLimit = 10, schedule = commonSchedule}
             localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "10:15" -- The time is no it the range
             checkFn = \x -> return True
             killFn = \x -> return ()
             messageFn = \x -> return ()
         --    appSt = AppState {userStates = Map.empty}
-        state <- newMVar AppState {userStates = Map.empty}
-        checkUser localTime state checkFn killFn messageFn userConf
-        newState <- readMVar state
+        let defUserState = defaultUserState localTime
+        newState <- execStateT (checkUser localTime checkFn killFn messageFn userConf) defUserState
         return newState
-        `shouldReturn` AppState {userStates = Map.empty}
+        `shouldReturn` UserState
+          { minuteCount = 0,
+            lastChanges = parseTimeOrError True defaultTimeLocale "%H:%M" "10:15",
+            messageSent = False
+          }
 
     it "should not increase state if user is not in a system" $
       do
-        let start = parseTimeOrError True defaultTimeLocale "%H:%M" "11:00"
-            end = parseTimeOrError True defaultTimeLocale "%H:%M" "11:30"
-            schedule =
-              Schedule
-                { mon =
-                    [Range {start = start, end = end}],
-                  tue =
-                    [Range {start = start, end = end}],
-                  wed =
-                    [Range {start = start, end = end}],
-                  thu =
-                    [Range {start = start, end = end}],
-                  fri =
-                    [Range {start = start, end = end}],
-                  sat =
-                    [Range {start = start, end = end}],
-                  sun =
-                    [Range {start = start, end = end}]
-                }
-            userConf = User {login = "vasyaod", timeLimit = 10, schedule = schedule}
+        let userConf = User {login = "vasyaod", timeLimit = 10, schedule = commonSchedule}
             localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:15" -- The time is no it the range
             checkFn = \x -> return False -- User not in a system
             killFn = \x -> return ()
             messageFn = \x -> return ()
         --    appSt = AppState {userStates = Map.empty}
-        state <- newMVar AppState {userStates = Map.empty}
-        checkUser localTime state checkFn killFn messageFn userConf
-        newState <- readMVar state
+        let defUserState = defaultUserState localTime
+        newState <- execStateT (checkUser localTime checkFn killFn messageFn userConf) defUserState
         return newState
-        `shouldReturn` AppState {userStates = Map.empty}
+        `shouldReturn` UserState
+          { minuteCount = 0,
+            lastChanges = parseTimeOrError True defaultTimeLocale "%H:%M" "11:15",
+            messageSent = False
+          }
+
+    it "should send message before 5 minutes of the end" $
+      do
+        let userConf = User {login = "vasyaod", timeLimit = 10, schedule = commonSchedule}
+            localTime = parseTimeOrError True defaultTimeLocale "%H:%M" "11:26" -- The time is no it the range
+            checkFn = \x -> return True
+            killFn = \x -> return ()
+            messageFn = \x -> return ()
+        --    appSt = AppState {userStates = Map.empty}
+        let defUserState = defaultUserState localTime
+        newState <- execStateT (checkUser localTime checkFn killFn messageFn userConf) defUserState
+        return newState
+        `shouldReturn` UserState
+          { minuteCount = 1,
+            lastChanges = parseTimeOrError True defaultTimeLocale "%H:%M" "11:26",
+            messageSent = True
+          }

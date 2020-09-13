@@ -20,21 +20,25 @@ defaultUserState :: LocalTime -> UserState
 defaultUserState localTime = UserState {minuteCount = 0, lastChanges = localTime, messageSent = False}
 
 -- Retuns used minutes for a user depend on localtime
-usedMinutes :: AppState -> String -> LocalTime -> Int
-usedMinutes state userName localTime =
+userStateOrDefault :: AppState -> String -> LocalTime-> UserState
+userStateOrDefault state userName localTime =
   if localDay (lastChanges userState) == localDay localTime
-    then minuteCount userState
-    else 0
+    then userState
+    else defaultUserStateWithTime
   where
     defaultUserStateWithTime = defaultUserState localTime
     userState = Map.findWithDefault defaultUserStateWithTime userName (userStates state)
 
+-- Retuns used minutes for a user depend on localtime
+usedMinutes :: UserState -> LocalTime -> Int
+usedMinutes userState localTime =
+  if localDay (lastChanges userState) == localDay localTime
+    then minuteCount userState
+    else 0
+
 -- Increase minute time for user state
-addMinutes :: AppState -> String -> LocalTime -> Int -> AppState
-addMinutes state userName localTime delta =
-  state {userStates = Map.insert userName newUserState (userStates state)}
+addMinutes :: LocalTime -> Int -> UserState -> UserState
+addMinutes localTime delta userState =
+  userState {minuteCount = um + delta, lastChanges = localTime}
   where
-    defaultUserStateWithTime = defaultUserState localTime
-    userState = Map.findWithDefault defaultUserStateWithTime userName (userStates state)
-    um = usedMinutes state userName localTime
-    newUserState = userState {minuteCount = um + delta, lastChanges = localTime, messageSent = False}
+    um = usedMinutes userState localTime

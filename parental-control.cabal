@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 90b6a058d19a33723c80c1961f01eca75f68176211cef3a9b75739a0fe1c4e95
+-- hash: ab2f16483e83bff146acfb5b6bf7435a6b6aa981e4c908a2b607be1eca4f0e29
 
 name:           parental-control
 version:        0.1.0.0
@@ -40,6 +40,7 @@ library
       aeson
     , base
     , containers
+    , mtl
     , process
     , text
     , time
@@ -73,6 +74,7 @@ test-suite parental-control-test
       base >=4.7 && <5
     , containers
     , hspec
+    , mtl
     , parental-control
     , time
   default-language: Haskell2010
