@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: c8f4f401fa522dc823c3cc8e2b7a49ef5581a125f4bc8393711ee0111e07d6ba
+-- hash: 12dacfdd76d874771b24c90d6201c2844ad5cd320fb262150a6cdab19964d250
 
 name:           parental-control
 version:        0.1.0.0
@@ -38,7 +38,9 @@ library
       src
   build-depends:
       aeson
+    , aeson-pretty
     , base
+    , bytestring
     , containers
     , directory
     , filepath

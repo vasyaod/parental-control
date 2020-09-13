@@ -32,9 +32,12 @@ library:
     - containers
     - base
     - aeson
+    - aeson-pretty
     - mtl
     - directory
     - filepath
+    - bytestring
+
 executables:
   parental-control:
     main:                Main.hs

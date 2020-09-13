@@ -1,20 +1,33 @@
+{-# LANGUAGE DeriveGeneric #-}
 module AppState where
 
 import Control.Applicative
 import qualified Data.Map as Map
 import Data.Time.LocalTime
+import GHC.Generics
+import Data.Aeson
 
 data UserState = UserState
   { minuteCount :: Int,
     lastChanges :: LocalTime,
     messageSent :: Bool
   }
-  deriving (Eq, Show)
+  deriving (Generic, Eq, Show)
+
+instance ToJSON UserState where
+    toEncoding = genericToEncoding defaultOptions
+
+instance FromJSON UserState
 
 data AppState = AppState
   { userStates :: Map.Map String UserState
   }
-  deriving (Eq, Show)
+  deriving (Generic, Eq, Show)
+
+instance ToJSON AppState where
+    toEncoding = genericToEncoding defaultOptions
+
+instance FromJSON AppState
 
 defaultUserState :: LocalTime -> UserState
 defaultUserState localTime = UserState {minuteCount = 0, lastChanges = localTime, messageSent = False}
