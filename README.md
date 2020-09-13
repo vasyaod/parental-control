@@ -29,7 +29,7 @@ but with more features
 
 ### Debian/Ubuntu
     
-  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1150858774/artifacts/16587532)
+  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1184600776/artifacts/17364801)
   * Extract the *.dep package
   * Install the package by `dpkg -i parental-control-1.0.0.deb` 
 
@@ -37,7 +37,7 @@ but with more features
   
 _The OS was not tested_
     
-  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1150858774/artifacts/16587532)
+  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1184600776/artifacts/17364801)
   * Extract the *.rpm package
   * Install the package by `rpm –i parental-control-1.0.0.rpm` 
 
