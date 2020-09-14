@@ -9,6 +9,7 @@ import qualified Data.Yaml as Y
 data MyConfig = MyConfig
   { commands :: Commands,
     stateFilePath :: String,
+    httpPort :: Int,
     users :: [User]
   }
   deriving (Eq, Show)
@@ -18,6 +19,7 @@ instance FromJSON MyConfig where
     MyConfig
       <$> m .: pack ("commands")
       <*> m .: pack ("stateFilePath")
+      <*> m .: pack ("httpPort")
       <*> m .: pack ("users")
   parseJSON x = fail ("not an object: " ++ show x)
 

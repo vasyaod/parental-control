@@ -13,13 +13,13 @@ eval "cat ../debian-package-description" > $DIR/DEBIAN/control
 cp ../scripts/postinst $DIR/DEBIAN/
 cp ../scripts/prerm $DIR/DEBIAN/
 touch $DIR/DEBIAN/changelog
-echo "/etc/parental-control-config.yml" > $DIR/DEBIAN/conffiles
+echo "/etc/parental-control.yml" > $DIR/DEBIAN/conffiles
 
 mkdir -p $DIR/usr/bin/
 cp $HOME/.local/bin/parental-control $DIR/usr/bin/
 
 mkdir -p $DIR/etc
-cp ../config.yml $DIR/etc/parental-control-config.yml
+cp ../config.yml $DIR/etc/parental-control.yml
 
 mkdir -p $DIR/etc/init.d
 cp ../scripts/parental-control $DIR/etc/init.d/parental-control

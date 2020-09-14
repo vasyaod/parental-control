@@ -53,7 +53,7 @@ commands:
   # Command checks user in a system.
   # The requirement is that the command should return 0 exit code if a user is in a system otherwise
   # return any another code.
-  check: "who | grep %s | [ $(wc -c) -ne 0 ]"
+  check: "who | grep {0} | [ $(wc -c) -ne 0 ]"
 
   # Can be used following command
   # notify-send 'Hello world!' 'This is an example notification.' --icon=dialog-information
@@ -63,11 +63,14 @@ commands:
   message: "echo 'This is stub which is not sent a message anywhere'"
 
   # Command which should kill/logout a user
-  kill: "skill -KILL -u %s"
+  kill: "skill -KILL -u {0}"
 
 # This app keep all state in memory but periodically can unload some information to file.
 # Basically it is one of ways to et information about users
 stateFilePath: /var/run/parental-control/state
+
+# The param works if parental-control-web is set up 
+httpPort: 8080
 
 users:
   - login: yasha

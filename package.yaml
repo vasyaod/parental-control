@@ -37,6 +37,7 @@ library:
     - directory
     - filepath
     - bytestring
+    - text-format-simple
 
 executables:
   parental-control:

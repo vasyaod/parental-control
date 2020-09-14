@@ -10,52 +10,36 @@
 
 module Main where
 
-import Prelude
---import Prelude.Compat
-
+import AppState
+import CliOpts
+import Config
 import Control.Monad.Except
 import Control.Monad.Reader
 import Data.Aeson
+import qualified Data.Aeson.Parser
 import Data.Aeson.Types
---import Data.Attoparsec.ByteString
 import Data.ByteString (ByteString)
 import Data.List
+import qualified Data.Map as Map
 import Data.Maybe
---import Data.String.Conversions
 import Data.Time.Calendar
 import GHC.Generics
---import Lucid
---import Network.HTTP.Media ((//), (/:))
 import Network.Wai
 import Network.Wai.Handler.Warp
 import Servant
-import System.Directory
---import Text.Blaze
---import Text.Blaze.Html.Renderer.Utf8
 import Servant.Types.SourceT (source)
-import qualified Data.Aeson.Parser
----import qualified Text.Blaze.Html
-import Lib
+import System.Directory
+import System.Environment
+import Prelude
 
-type UserAPI1 = "state" :> Get '[JSON] [User]
+type UserAPI1 = "state" :> Get '[JSON] AppState
 
-data User = User
-  { name :: String
-  , age :: Int
-  , email :: String
-  , registration_date :: Day
-  } deriving (Eq, Show, Generic)
-
-instance ToJSON User
-
-users1 :: [User]
-users1 =
-  [ User "Isaac Newton"    372 "isaac@newton.co.uk" (fromGregorian 1683  3 1)
-  , User "Albert Einstein" 136 "ae@mc2.org"         (fromGregorian 1905 12 1)
-  ]
-
-server1 :: Server UserAPI1
-server1 = return users1
+server1 :: String -> Server UserAPI1
+server1 statePath = do
+  contentMaybe <- liftIO $ decodeFileStrict statePath
+  case contentMaybe of
+    Nothing -> return AppState {userStates = Map.empty}
+    Just x -> return x
 
 userAPI :: Proxy UserAPI1
 userAPI = Proxy
@@ -63,8 +47,12 @@ userAPI = Proxy
 -- 'serve' comes from servant and hands you a WAI Application,
 -- which you can think of as an "abstract" web application,
 -- not yet a webserver.
-app1 :: Application
-app1 = serve userAPI server1
+app1 :: String -> Application
+app1 statePath = serve userAPI (server1 statePath)
 
 main :: IO ()
-main = run 8081 app1
+main = do
+  args <- getArgs
+  (opts, _) <- compilerOpts (args)
+  config <- readConfig $ optConfigFilePath opts
+  run (httpPort config) (app1 (stateFilePath config))

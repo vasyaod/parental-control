@@ -20,6 +20,7 @@ import System.Exit
 import System.IO
 import System.Process
 import Text.Printf
+import Text.Format
 
 getTimesForDayOfWeek :: DayOfWeek -> Schedule -> [Range]
 getTimesForDayOfWeek Monday = mon
@@ -44,14 +45,14 @@ checkSchedule schedule localTime =
 
 runKillCommand :: Commands -> String -> IO ()
 runKillCommand commands userName = do
-  let command = printf (kill commands) userName
+  let command = format (kill commands) [userName]
   createProcess (shell command) {std_out = CreatePipe}
   putStrLn (printf "User %s has been killed" userName)
   return ()
 
 runMessageCommand :: Commands -> String -> IO ()
 runMessageCommand commands userName = do
-  let command = printf (message commands) userName
+  let command = format (message commands) [userName]
   createProcess (shell command) {std_out = CreatePipe}
   putStrLn (printf "Message to user %s has been send" userName)
   return ()
@@ -59,7 +60,7 @@ runMessageCommand commands userName = do
 -- | Return true if user in a system
 runCheckCommand :: Commands -> String -> IO Bool
 runCheckCommand commands userName = do
-  let command = printf (check commands) userName
+  let command = format (check commands) [userName]
   (_, Just hout, _, processHandle) <- createProcess (shell command) {std_out = CreatePipe}
   exitCode <- waitForProcess processHandle
   case exitCode of

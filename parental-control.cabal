@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 38aa049053324cc5b34a2342ecf07c70977e796fd787ca88ba38fc9cd7bc2593
+-- hash: d73bd8ee40d9a965d3b2fd206bff2de3cf03a4087172e9e9b175dabc42afafcc
 
 name:           parental-control
 version:        0.1.0.0
@@ -29,6 +29,7 @@ library
   exposed-modules:
       AppState
       Checking
+      CliOpts
       Config
       Lib
       StateLogger
@@ -47,6 +48,7 @@ library
     , mtl
     , process
     , text
+    , text-format-simple
     , time
     , yaml
   default-language: Haskell2010
