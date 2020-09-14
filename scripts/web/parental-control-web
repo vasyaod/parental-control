@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ### BEGIN INIT INFO
-# Provides:          parental-control-web-web
+# Provides:          parental-control-web
 # Required-Start:    $all
 # Required-Stop:
 # Default-Start:     2 3 4 5
@@ -17,7 +17,7 @@ NAME=parental-control-web
 PIDFILE=/var/run/$NAME.pid
 #This is the command to be run, give the full pathname
 DAEMON=/usr/bin/$NAME
-DAEMON_OPTS="-c /etc/parental-control-web.yml"
+DAEMON_OPTS="-c /etc/parental-control.yml"
 
 export PATH="${PATH:+$PATH:}/usr/sbin:/sbin"
 

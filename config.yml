@@ -2,6 +2,9 @@ commands:
   # Command checks user in a system.
   # The requirement is that the command should return 0 exit code if a user is in a system otherwise
   # return any another code.
+  #
+  # Template params
+  #   {0} is user name/login
   check: "who | grep {0} | [ $(wc -c) -ne 0 ]"
 
   # Can be used following command
@@ -9,9 +12,15 @@ commands:
   # Taken from here https://wiki.archlinux.org/index.php/Desktop_notifications
   # Example
   # message: "notify-send 'Your time is mostly up' 'You have only 5 minutes before logout.' --icon=dialog-information"
+  #
+  # Template params
+  #   {0} is user name/login
   message: "echo 'This is stub which is not sent a message anywhere'"
 
   # Command which should kill/logout a user
+  #
+  # Template params
+  #   {0} is user name/login
   kill: "skill -KILL -u {0}"
 
 # This app keep all state in memory but periodically can unload some information to file.
