@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+# Post instalation script
+systemctl enable parental-control-web
+systemctl start parental-control-web

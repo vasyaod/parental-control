@@ -1,0 +1,26 @@
+#!/bin/bash
+
+VERSION=$(cat version)
+
+echo "Build dep file for parental-control of $VERSION"
+
+DIR="parental-control-web-$VERSION"
+
+mkdir dist
+cd dist
+mkdir -p $DIR/DEBIAN
+eval "cat ../debian-package-description-web" > $DIR/DEBIAN/control
+cp ../scripts/web/postinst $DIR/DEBIAN/
+cp ../scripts/web/prerm $DIR/DEBIAN/
+touch $DIR/DEBIAN/changelog
+
+mkdir -p $DIR/usr/bin/
+cp $HOME/.local/bin/parental-control-web $DIR/usr/bin/
+
+mkdir -p $DIR/etc/init.d
+cp ../scripts/web/parental-control-web $DIR/etc/init.d/
+
+chmod -R g-w $DIR
+
+dpkg-deb --root-owner-group --build $DIR
+alien --to-rpm --scripts --keep-version $DIR.deb

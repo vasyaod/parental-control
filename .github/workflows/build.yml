@@ -14,7 +14,8 @@ jobs:
           stack-version: 'latest'
       - run: stack build --test --copy-bins
       - run: sudo apt-get update && sudo apt-get -y install alien
-      - run: ./build-deb                       # build debian package
+      - run: ./build-deb                       # build package for deamon
+      - run: ./build-deb-web                   # build package for web interface
       - uses: actions/upload-artifact@v2
         with:
           name: parental-control
