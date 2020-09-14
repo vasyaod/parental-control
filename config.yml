@@ -28,7 +28,7 @@ commands:
 stateFilePath: /var/run/parental-control/state
 
 # The param works if parental-control-web is set up
-httpPort: 8080
+httpPort: 8090
 
 users:
   - login: dummy-user             # System login / user name

@@ -72,7 +72,7 @@ commands:
 stateFilePath: /var/run/parental-control/state
 
 # The param works if parental-control-web is set up 
-httpPort: 8080
+httpPort: 8090
 
 users:
   - login: yasha
@@ -140,7 +140,7 @@ users:
 
 ## HTTP API
 
-  * http://localhost:8080/state return state of the app as JSON in the next format
+  * http://localhost:8090/state returns state of the app as JSON in the next format
     
     ```yaml
     {

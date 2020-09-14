@@ -24,7 +24,7 @@ export PATH="${PATH:+$PATH:}/usr/sbin:/sbin"
 case "$1" in
   start)
     echo -n "Starting daemon: "$NAME
-    start-stop-daemon --start --background --make-pidfile --remove-pidfile --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS
+    start-stop-daemon --start --user nobody --background --make-pidfile --remove-pidfile --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS
     echo "."
     ;;
   stop)
