@@ -10,8 +10,8 @@ mkdir dist
 cd dist
 mkdir -p $DIR/DEBIAN
 eval "cat ../debian-package-description" > $DIR/DEBIAN/control
-cp ../scripts/deamon/postinst $DIR/DEBIAN/
-cp ../scripts/deamon/prerm $DIR/DEBIAN/
+cp ../scripts/daemon/postinst $DIR/DEBIAN/
+cp ../scripts/daemon/prerm $DIR/DEBIAN/
 touch $DIR/DEBIAN/changelog
 echo "/etc/parental-control.yml" > $DIR/DEBIAN/conffiles
 
@@ -22,7 +22,7 @@ mkdir -p $DIR/etc
 cp ../config.yml $DIR/etc/parental-control.yml
 
 mkdir -p $DIR/etc/init.d
-cp ../scripts/deamon/parental-control $DIR/etc/init.d/parental-control
+cp ../scripts/daemon/parental-control $DIR/etc/init.d/
 
 chmod -R g-w $DIR
 

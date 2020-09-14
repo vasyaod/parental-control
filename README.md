@@ -1,6 +1,6 @@
 # Parental control
 
-Allows to control user login time and spent time time in Linux OS. Basically his app is advantaged version of this script
+Allows to control user login time and spent time time in Linux OS. Basically this app is advantaged version of this script
 
 ```
 #!/bin/bash
@@ -32,6 +32,7 @@ but with more features
   * Download [zip file](https://github.com/vasyaod/parental-control/suites/1184600776/artifacts/17364801)
   * Extract the *.dep package
   * Install the package by `dpkg -i parental-control-1.0.0.deb` 
+  * And install the package by `dpkg -i parental-control-web-1.0.0.deb` if you need web interface  
 
 ### CentOS/Redhat/Fedora
   
@@ -39,7 +40,8 @@ _The OS was not tested_
     
   * Download [zip file](https://github.com/vasyaod/parental-control/suites/1184600776/artifacts/17364801)
   * Extract the *.rpm package
-  * Install the package by `rpm –i parental-control-1.0.0.rpm` 
+  * Install the package by `rpm –i parental-control-web-1.0.0.x86_64.rpm` 
+  * And install the package by `rpm –i parental-control-web-1.0.0.x86_64.rpm` if you need web interface  
 
 ## Config
 
