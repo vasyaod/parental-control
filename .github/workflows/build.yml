@@ -12,6 +12,13 @@ jobs:
           # cabal-version: 'latest'. Omitted, but defalts to 'latest'
           enable-stack: true
           stack-version: 'latest'
+
+      - name: Cache of Stack
+        uses: actions/cache@v2
+        with:
+          path: ~/.stack
+          key: ${{ runner.os }}
+
       - run: stack build --test --copy-bins
       - run: sudo apt-get update && sudo apt-get -y install alien
       - run: ./build-deb                       # build package for deamon
