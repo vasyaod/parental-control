@@ -40,12 +40,12 @@ _The OS was not tested_
     
   * Download [zip file](https://github.com/vasyaod/parental-control/suites/1188659828/artifacts/17468024)
   * Extract the *.rpm package
-  * Install the package by `rpm –i parental-control-web-1.0.0.x86_64.rpm` 
+  * Install the package by `rpm –i parental-control-1.0.0.x86_64.rpm` 
   * And install the package by `rpm –i parental-control-web-1.0.0.x86_64.rpm` if you need web interface  
 
 ## Config
 
-  * After installation the config file can be found `/etc/parental-control-config.yml` 
+  * After installation the config file can be found `/etc/parental-control.yml` 
   * Example of the config file with parameter description is awailable in the repo [config.yml](./config.yml)
 
 Weakly schedule for multiple users looks like:
@@ -137,6 +137,27 @@ users:
         - start: 05:00
           end: 22:00
 ```
+
+## HTTP API
+
+  * http://localhost:8080/state return state of the app as JSON in the next format
+    
+    ```yaml
+    {
+        "userStates": {
+            "sunny": {
+                "messageSent": false,
+                "minuteCount": 0,
+                "lastChanges": "2020-09-14T04:32:47.391878169"
+            },
+            "yasha": {
+                "messageSent": false,
+                "minuteCount": 0,
+                "lastChanges": "2020-09-14T04:32:47.391878169"
+            }
+        }
+    }
+    ``` 
 
 ## Maintenance 
 
