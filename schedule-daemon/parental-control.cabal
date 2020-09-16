@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d73bd8ee40d9a965d3b2fd206bff2de3cf03a4087172e9e9b175dabc42afafcc
+-- hash: eb010eb03fddf16793487de281ae9835f71cd63458ab0ecc6bcf611a72e8f394
 
 name:           parental-control
 version:        0.1.0.0
@@ -15,7 +15,6 @@ author:         Author name here
 maintainer:     example@example.com
 copyright:      2020 Author name here
 license:        BSD3
-license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md

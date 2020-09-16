@@ -1,6 +1,4 @@
-.stack-work/
+.stack-work
 .idea
-out
 *~
-state.yml
 dist/
