@@ -46,7 +46,7 @@ _The OS was not tested_
 ## Config
 
   * After installation the config file can be found `/etc/parental-control.yml` 
-  * Example of the config file with parameter description is awailable in the repo [config.yml](./config.yml)
+  * Example of the config file with parameter description is awailable in the repo [config.yml](./schedule-daemon/config.yml)
 
 Weakly schedule for multiple users looks like:
 
