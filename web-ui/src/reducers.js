@@ -5,14 +5,19 @@ import { List } from 'immutable'
 
 
 const initialState = {
-  appState: [],
+  appState: {
+    userStates: {
+
+    }
+  },
 }
 
 export function todoApp(state = initialState, action) {
   switch (action.type) {
-    case 'OBJECTS_CHANGED':
+    case 'STATE_LOADED':
+      console.log("!!!!")
       return {...state,
-        objects: action.values
+        appState: action.values
       }
 
     default:

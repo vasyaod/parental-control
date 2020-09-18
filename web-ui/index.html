@@ -32,38 +32,7 @@
         height: 1px;
         min-height: 100%;
       }
-
-      .button {
-        display: inline-block;
-        position: relative;
-        width: 34px;
-        height: 34px;
-        border-radius: 16px;
-        color: white;
-        /* Hide the text 'play', which is present in the HTML document for accessibility */
-        font-size: 0;
-      }
-
-      /* Properties for the pseudo-element that almost every button will need.
-        You can just merge it into the style below if you are only going to have
-        the play button. */
-      .button::before {
-        content: "";
-        display: block;
-        position: absolute;
-      }
-
-      /* Play button properties using CSS shape */
-      .play2.button::before {
-        width: 0; 
-        height: 0; 
-        border-bottom: 9px solid transparent;
-        border-top: 9px solid transparent;
-        border-left: 12px solid rgba(255, 255, 255, 0.699);
-        top: 8px;
-        left: 12px;
-      }
-      
+     
   </style>
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js"></script>
     <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css" rel="stylesheet" />
