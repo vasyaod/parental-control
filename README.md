@@ -141,6 +141,14 @@ users:
           end: 22:00
 ```
 
+## HTTP interface
+
+By default HTTP interface is available on http://localhost:8090 where following things can be find
+  
+  * consumed time per each user
+
+![Screenshot](/docs/screenshot-1.png)
+
 ## HTTP API
 
   * http://localhost:8090/state returns state of the app as JSON in the next format
