@@ -8,7 +8,7 @@ echo "Build dep file for parental-control of $VERSION"
 
 DIR="parental-control-web-$VERSION"
 
-mkdir dist
+mkdir -p dist
 cd dist
 mkdir -p $DIR/DEBIAN
 eval "cat ../debian-package-description-web" > $DIR/DEBIAN/control
