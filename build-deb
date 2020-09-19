@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e 
+
 VERSION=$(cat version)
 
 echo "Build dep file for parental-control of $VERSION"

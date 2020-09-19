@@ -20,7 +20,7 @@ jobs:
           key: ${{ runner.os }}
 
       - run: cd schedule-daemon && stack build --test --copy-bins
-      - run: cd web-ui && npm install && npm build
+      - run: cd web-ui && npm install && npm run build
       - run: sudo apt-get update && sudo apt-get -y install alien
       - run: ./build-deb                       # build package for deamon
       - run: ./build-deb-web                   # build package for web interface

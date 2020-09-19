@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e 
+
 VERSION=$(cat version)
 
 echo "Build dep file for parental-control of $VERSION"
@@ -21,8 +23,8 @@ mkdir -p $DIR/etc/init.d
 cp ../scripts/web/parental-control-web $DIR/etc/init.d/
 
 mkdir -p $DIR/usr/share/parental-control
-cp ../scripts/web-ui/bundle.js $DIR/usr/share/parental-control
-cp ../scripts/web-ui/index.html $DIR/usr/share/parental-control
+cp ../web-ui/bundle.js $DIR/usr/share/parental-control
+cp ../web-ui/index.html $DIR/usr/share/parental-control
 
 chmod -R g-w $DIR
 
