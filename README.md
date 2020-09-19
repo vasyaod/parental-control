@@ -1,6 +1,6 @@
 # Parental control
 
-Allows to control user login time and spent time time in Linux OS. Basically this app is advantaged version of this script
+Allows to control user login time and calculate consumed time in *nux OS. Basically this app is advantaged version of this script
 
 ```
 #!/bin/bash
@@ -172,14 +172,14 @@ By default HTTP interface is available on http://localhost:8090 where following 
 
 ## Maintenance 
 
-### Build of schedule daemons
+### Build of schedule and web daemons
 
 ```
 cd schedule-daemon
 stack build --test --copy-bins
 ```
 
-### Build of schedule daemons
+### Build of web UI
 
 ```
 cd web-ui
