@@ -29,7 +29,7 @@ but with more features
 
 ### Debian/Ubuntu
     
-  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1188659828/artifacts/17468024)
+  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1216010762/artifacts/18148487)
   * Extract the *.dep package
   * Install the package by `dpkg -i parental-control-1.0.0.deb` 
   * And install the package by `dpkg -i parental-control-web-1.0.0.deb` if you need web interface  
@@ -38,7 +38,7 @@ but with more features
   
 _The OS was not tested_
     
-  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1188659828/artifacts/17468024)
+  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1216010762/artifacts/18148487)
   * Extract the *.rpm package
   * Install the package by `rpm –i parental-control-1.0.0.x86_64.rpm` 
   * And install the package by `rpm –i parental-control-web-1.0.0.x86_64.rpm` if you need web interface  
