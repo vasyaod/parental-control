@@ -10,6 +10,7 @@ data MyConfig = MyConfig
   { commands :: Commands,
     stateFilePath :: String,
     httpPort :: Int,
+    httpStaticPath :: String,
     users :: [User]
   }
   deriving (Eq, Show)
@@ -20,6 +21,7 @@ instance FromJSON MyConfig where
       <$> m .: pack ("commands")
       <*> m .: pack ("stateFilePath")
       <*> m .: pack ("httpPort")
+      <*> m .: pack ("httpStaticPath")
       <*> m .: pack ("users")
   parseJSON x = fail ("not an object: " ++ show x)
 

@@ -30,6 +30,9 @@ stateFilePath: /var/run/parental-control/state
 # The param works if parental-control-web is set up
 httpPort: 8090
 
+# PAth to http static content, like html pages and JS scripts
+httpStaticPath: /usr/share/parental-control
+
 users:
   - login: dummy-user             # System login / user name
     timeLimit: 180                # Daily time limit (minutes)

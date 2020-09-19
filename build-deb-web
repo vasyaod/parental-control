@@ -20,6 +20,10 @@ cp $HOME/.local/bin/parental-control-web $DIR/usr/bin/
 mkdir -p $DIR/etc/init.d
 cp ../scripts/web/parental-control-web $DIR/etc/init.d/
 
+mkdir -p $DIR/usr/share/parental-control
+cp ../scripts/web-ui/bundle.js $DIR/usr/share/parental-control
+cp ../scripts/web-ui/index.html $DIR/usr/share/parental-control
+
 chmod -R g-w $DIR
 
 dpkg-deb --root-owner-group --build $DIR

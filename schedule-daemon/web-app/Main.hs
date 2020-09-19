@@ -32,14 +32,19 @@ import System.Directory
 import System.Environment
 import Prelude
 
-type UserAPI1 = "state" :> Get '[JSON] AppState
+type UserAPI1 =
+  "state" :> Get '[JSON] AppState
+    :<|> "" :> Raw
 
-server1 :: String -> Server UserAPI1
-server1 statePath = do
-  contentMaybe <- liftIO $ decodeFileStrict statePath
-  case contentMaybe of
-    Nothing -> return AppState {userStates = Map.empty}
-    Just x -> return x
+server1 :: MyConfig -> Server UserAPI1
+server1 config = state :<|> static
+  where
+    state = do
+      contentMaybe <- liftIO $ decodeFileStrict (stateFilePath config)
+      case contentMaybe of
+        Nothing -> return AppState {userStates = Map.empty}
+        Just x -> return x
+    static = serveDirectoryWebApp (httpStaticPath config)
 
 userAPI :: Proxy UserAPI1
 userAPI = Proxy
@@ -47,12 +52,12 @@ userAPI = Proxy
 -- 'serve' comes from servant and hands you a WAI Application,
 -- which you can think of as an "abstract" web application,
 -- not yet a webserver.
-app1 :: String -> Application
-app1 statePath = serve userAPI (server1 statePath)
+app1 :: MyConfig -> Application
+app1 config = serve userAPI (server1 config)
 
 main :: IO ()
 main = do
   args <- getArgs
   (opts, _) <- compilerOpts (args)
   config <- readConfig $ optConfigFilePath opts
-  run (httpPort config) (app1 (stateFilePath config))
+  run (httpPort config) (app1 config)
