@@ -21,7 +21,7 @@ class Index extends Component {
   render() {
     return (
       <Container>
-        <Header as='h1' content='Consumed time' style={style.h1} textAlign='center' />
+        <Header as='h1' content='Consumed time for today' style={style.h1} textAlign='center' />
         { <Card.Group doubling itemsPerRow={1} stackable>
           { this.props.userStates &&
             Object.entries(this.props.userStates).map( ([key, value]) =>
