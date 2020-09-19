@@ -74,6 +74,9 @@ stateFilePath: /var/run/parental-control/state
 # The param works if parental-control-web is set up 
 httpPort: 8090
 
+# PAth to http static content, like html pages and JS scripts
+httpStaticPath: /usr/share/parental-control
+
 users:
   - login: yasha
     timeLimit: 150             # Daily time limit (minutes)
@@ -161,10 +164,19 @@ users:
 
 ## Maintenance 
 
-### Build
+### Build of schedule daemons
 
 ```
+cd schedule-daemon
 stack build --test --copy-bins
+```
+
+### Build of schedule daemons
+
+```
+cd web-ui
+npm install
+npm rub build
 ```
 
 ### Run as daemon

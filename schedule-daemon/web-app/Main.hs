@@ -34,7 +34,7 @@ import Prelude
 
 type UserAPI1 =
   "state" :> Get '[JSON] AppState
-    :<|> "" :> Raw
+    :<|> Raw
 
 server1 :: MyConfig -> Server UserAPI1
 server1 config = state :<|> static
@@ -44,7 +44,7 @@ server1 config = state :<|> static
       case contentMaybe of
         Nothing -> return AppState {userStates = Map.empty}
         Just x -> return x
-    static = serveDirectoryWebApp (httpStaticPath config)
+    static = serveDirectoryFileServer (httpStaticPath config)
 
 userAPI :: Proxy UserAPI1
 userAPI = Proxy
@@ -52,12 +52,13 @@ userAPI = Proxy
 -- 'serve' comes from servant and hands you a WAI Application,
 -- which you can think of as an "abstract" web application,
 -- not yet a webserver.
-app1 :: MyConfig -> Application
-app1 config = serve userAPI (server1 config)
+app :: MyConfig -> Application
+app config = serve userAPI (server1 config)
 
 main :: IO ()
 main = do
   args <- getArgs
   (opts, _) <- compilerOpts (args)
   config <- readConfig $ optConfigFilePath opts
-  run (httpPort config) (app1 config)
+  let settings = setPort (httpPort config) $ setHost "127.0.0.1" defaultSettings
+  runSettings settings (app config)
