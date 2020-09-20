@@ -24,7 +24,7 @@ someFunc = do
   state <- newMVar AppState {userStates = Map.empty}
   -- putStrLn $ optStateFile opts
   -- let (Just val) = config
-  createDirectoryIfMissing True (takeDirectory (statePath config))
+  createDirectoryIfMissing True (statePath config))
   conn <- open ((statePath config) ++ "/log.db")               -- Open data base file
   execute_ conn "CREATE TABLE IF NOT EXISTS log (tm TIMESTAMP, user TEXT)"
   forkIO $ stateLoggerLoop (statePath config) state
