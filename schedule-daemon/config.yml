@@ -25,7 +25,7 @@ commands:
 
 # This app keep all state in memory but periodically can unload some information to file.
 # Basically it is one of ways to et information about users
-stateFilePath: /var/run/parental-control/state
+statePath: /var/lib/parental-control
 
 # The param works if parental-control-web is set up
 httpPort: 8090

@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Checking where
 
 --(forever)
@@ -21,6 +23,7 @@ import System.IO
 import System.Process
 import Text.Printf
 import Text.Format
+import Database.SQLite.Simple
 
 getTimesForDayOfWeek :: DayOfWeek -> Schedule -> [Range]
 getTimesForDayOfWeek Monday = mon
@@ -57,7 +60,7 @@ runMessageCommand commands userName = do
   putStrLn (printf "Message to user %s has been send" userName)
   return ()
 
--- | Return true if user in a system
+-- | Returns true if user in a system
 runCheckCommand :: Commands -> String -> IO Bool
 runCheckCommand commands userName = do
   let command = format (check commands) [userName]
@@ -67,8 +70,14 @@ runCheckCommand commands userName = do
     ExitSuccess -> return True
     ExitFailure _ -> return False
 
-checkUser :: LocalTime -> (String -> IO Bool) -> (String -> IO ()) -> (String -> IO ()) -> User -> StateT UserState IO ()
-checkUser localTime checkFn killFn messageFn userConfig = do
+-- | writes a row in DB log
+logToDb :: Connection -> TimeZone -> LocalTime -> String-> IO ()
+logToDb conn timeZone localTime userName = do
+  let tm = localTimeToUTC timeZone localTime
+  execute conn "INSERT INTO log (tm, user) VALUES (?, ?)" (tm, userName)
+
+checkUser :: LocalTime -> (String -> IO Bool) -> (String -> IO ()) -> (String -> IO ()) -> (String -> IO ()) -> User -> StateT UserState IO ()
+checkUser localTime checkFn killFn messageFn logFn userConfig = do
   let isScheduled = checkSchedule (schedule userConfig) localTime
       noticePeriodVal = noticePeriod userConfig
       userName = login userConfig
@@ -103,25 +112,28 @@ checkUser localTime checkFn killFn messageFn userConfig = do
 
   case (inTheSystem, isScheduled, isAllMinutesUsed) of
     (True, True, False) -> do
+      liftIO $ logFn userName
       modify $ addMinutes localTime 1
     _ -> return ()
 
   return ()
 
-checkingLoop :: MyConfig -> MVar AppState -> IO ()
-checkingLoop config state = forever $ do
+checkingLoop :: MyConfig -> Connection-> MVar AppState -> IO ()
+checkingLoop config conn state = forever $ do
   now <- getCurrentTime
   timezone <- getCurrentTimeZone
   let localTime = utcToLocalTime timezone now
       killFn = runKillCommand (commands config)
       checkFn = runCheckCommand (commands config)
       messageFn = runMessageCommand (commands config)
+      logFn = logToDb conn timezone localTime
+
   appState <- readMVar state
   userStates <-
     sequence
       ( map
           ( \userConfig -> do
-              userState <- execStateT (checkUser localTime checkFn killFn messageFn userConfig) (userStateOrDefault appState (login userConfig) localTime)
+              userState <- execStateT (checkUser localTime checkFn killFn messageFn logFn userConfig) (userStateOrDefault appState (login userConfig) localTime)
               return ((login userConfig), userState)
           )
           (users config)

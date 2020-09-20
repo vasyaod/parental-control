@@ -29,7 +29,7 @@ resolver: lts-16.3
 #   - auto-update
 #   - wai
 packages:
-- .
+  - .
 # Dependency packages to be pulled from upstream that are not in the resolver.
 # These entries can reference officially published versions as well as
 # forks / in-progress versions pinned to a git hash. For example:
@@ -41,7 +41,9 @@ packages:
 #
 # extra-deps: []
 extra-deps:
-- text-format-simple-1.1.0
+  - text-format-simple-1.1.0
+  - direct-sqlite-2.3.26
+  - sqlite-simple-0.4.18.0
 
 # Override default flag values for local packages and extra-deps
 # flags: {}

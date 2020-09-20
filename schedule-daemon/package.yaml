@@ -38,6 +38,7 @@ library:
     - filepath
     - bytestring
     - text-format-simple
+    - sqlite-simple
 
 executables:
   parental-control:

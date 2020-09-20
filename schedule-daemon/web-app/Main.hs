@@ -40,7 +40,7 @@ server1 :: MyConfig -> Server UserAPI1
 server1 config = state :<|> static
   where
     state = do
-      contentMaybe <- liftIO $ decodeFileStrict (stateFilePath config)
+      contentMaybe <- liftIO $ decodeFileStrict (statePath config)
       case contentMaybe of
         Nothing -> return AppState {userStates = Map.empty}
         Just x -> return x

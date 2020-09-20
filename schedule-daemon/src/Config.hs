@@ -8,7 +8,7 @@ import qualified Data.Yaml as Y
 
 data MyConfig = MyConfig
   { commands :: Commands,
-    stateFilePath :: String,
+    statePath :: String,
     httpPort :: Int,
     httpStaticPath :: String,
     users :: [User]
@@ -19,7 +19,7 @@ instance FromJSON MyConfig where
   parseJSON (Y.Object m) =
     MyConfig
       <$> m .: pack ("commands")
-      <*> m .: pack ("stateFilePath")
+      <*> m .: pack ("statePath")
       <*> m .: pack ("httpPort")
       <*> m .: pack ("httpStaticPath")
       <*> m .: pack ("users")

@@ -85,9 +85,9 @@ spec = describe "Primary logic" $ do
             checkFn = \x -> return True
             killFn = \x -> return ()
             messageFn = \x -> return ()
-        --    appSt = AppState {userStates = Map.empty}
-        let defUserState = defaultUserState localTime
-        newState <- execStateT (checkUser localTime checkFn killFn messageFn userConf) defUserState
+            logFn = \x -> return ()
+            defUserState = defaultUserState localTime
+        newState <- execStateT (checkUser localTime checkFn killFn messageFn logFn userConf) defUserState
         return newState
         `shouldReturn` UserState
           { minuteCount = 1,
@@ -101,9 +101,9 @@ spec = describe "Primary logic" $ do
             checkFn = \x -> return True
             killFn = \x -> return ()
             messageFn = \x -> return ()
-        --    appSt = AppState {userStates = Map.empty}
-        let defUserState = defaultUserState localTime
-        newState <- execStateT (checkUser localTime checkFn killFn messageFn userConf) defUserState
+            logFn = \x -> return ()
+            defUserState = defaultUserState localTime
+        newState <- execStateT (checkUser localTime checkFn killFn messageFn logFn userConf) defUserState
         return newState
         `shouldReturn` UserState
           { minuteCount = 0,
@@ -117,9 +117,9 @@ spec = describe "Primary logic" $ do
             checkFn = \x -> return False -- User not in a system
             killFn = \x -> return ()
             messageFn = \x -> return ()
-        --    appSt = AppState {userStates = Map.empty}
-        let defUserState = defaultUserState localTime
-        newState <- execStateT (checkUser localTime checkFn killFn messageFn userConf) defUserState
+            logFn = \x -> return ()
+            defUserState = defaultUserState localTime
+        newState <- execStateT (checkUser localTime checkFn killFn messageFn logFn userConf) defUserState
         return newState
         `shouldReturn` UserState
           { minuteCount = 0,
@@ -133,9 +133,9 @@ spec = describe "Primary logic" $ do
             checkFn = \x -> return True
             killFn = \x -> return ()
             messageFn = \x -> return ()
-        --    appSt = AppState {userStates = Map.empty}
-        let defUserState = defaultUserState localTime
-        newState <- execStateT (checkUser localTime checkFn killFn messageFn userConf) defUserState
+            logFn = \x -> return ()
+            defUserState = defaultUserState localTime
+        newState <- execStateT (checkUser localTime checkFn killFn messageFn logFn userConf) defUserState
         return newState
         `shouldReturn` UserState
           { minuteCount = 1,
@@ -149,9 +149,9 @@ spec = describe "Primary logic" $ do
             checkFn = \x -> return True
             killFn = \x -> return ()
             messageFn = \x -> return ()
-        --    appSt = AppState {userStates = Map.empty}
-        let defUserState = (defaultUserState localTime) {minuteCount = 6}
-        newState <- execStateT (checkUser localTime checkFn killFn messageFn userConf) defUserState
+            logFn = \x -> return ()
+            defUserState = (defaultUserState localTime) {minuteCount = 6}
+        newState <- execStateT (checkUser localTime checkFn killFn messageFn logFn userConf) defUserState
         return newState
         `shouldReturn` UserState
           { minuteCount = 7,

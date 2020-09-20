@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: eb010eb03fddf16793487de281ae9835f71cd63458ab0ecc6bcf611a72e8f394
+-- hash: 231c10868c70a3221c62bab545e8a6df267cc79778dc7dbdc7e324c4b388ac44
 
 name:           parental-control
 version:        0.1.0.0
@@ -46,6 +46,7 @@ library
     , filepath
     , mtl
     , process
+    , sqlite-simple
     , text
     , text-format-simple
     , time

@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Lib where
 
 import AppState
@@ -13,6 +14,7 @@ import System.Environment
 import System.FilePath
 import System.IO
 import System.Process
+import Database.SQLite.Simple
 
 someFunc :: IO ()
 someFunc = do
@@ -22,6 +24,8 @@ someFunc = do
   state <- newMVar AppState {userStates = Map.empty}
   -- putStrLn $ optStateFile opts
   -- let (Just val) = config
-  createDirectoryIfMissing True (takeDirectory (stateFilePath config))
-  forkIO $ stateLoggerLoop (stateFilePath config) state
-  checkingLoop config state
+  createDirectoryIfMissing True (takeDirectory (statePath config))
+  conn <- open ((statePath config) ++ "/log.db")               -- Open data base file
+  execute_ conn "CREATE TABLE IF NOT EXISTS log (tm TIMESTAMP, user TEXT)"
+  forkIO $ stateLoggerLoop (statePath config) state
+  checkingLoop config conn state
