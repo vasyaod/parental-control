@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 231c10868c70a3221c62bab545e8a6df267cc79778dc7dbdc7e324c4b388ac44
+-- hash: 99cbc85ee1263c4fcb2a5f9efe98170a9b44707a806ca70c1c5d05ae9ef640c1
 
 name:           parental-control
 version:        0.1.0.0
@@ -31,6 +31,7 @@ library
       CliOpts
       Config
       Lib
+      LogQueries
       StateLogger
   other-modules:
       Paths_parental_control
