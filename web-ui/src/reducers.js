@@ -22,7 +22,7 @@ export function todoApp(state = initialState, action) {
         .mapEntries(([key, values]) => {
           return [key, {
             user: key,
-            actions: values.groupBy(x => x.date).map(x => x.first().minutes / 60).toObject()
+            actions: values.map(x => {return { 'date': x.date, 'count': (x.minutes / 60)}}).toArray()
           }]
         })
         .toList()
