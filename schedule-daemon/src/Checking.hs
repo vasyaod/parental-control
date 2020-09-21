@@ -7,6 +7,7 @@ module Checking where
 
 import AppState
 import Config
+import DbLog
 import Control.Concurrent
 import Control.Monad
 import Control.Monad.State
@@ -70,11 +71,6 @@ runCheckCommand commands userName = do
     ExitSuccess -> return True
     ExitFailure _ -> return False
 
--- | writes a row in DB log
-logToDb :: Connection -> TimeZone -> LocalTime -> String-> IO ()
-logToDb conn timeZone localTime userName = do
-  let tm = localTimeToUTC timeZone localTime
-  execute conn "INSERT INTO log (tm, user) VALUES (?, ?)" (tm, userName)
 
 checkUser :: LocalTime -> (String -> IO Bool) -> (String -> IO ()) -> (String -> IO ()) -> (String -> IO ()) -> User -> StateT UserState IO ()
 checkUser localTime checkFn killFn messageFn logFn userConfig = do
@@ -126,7 +122,7 @@ checkingLoop config conn state = forever $ do
       killFn = runKillCommand (commands config)
       checkFn = runCheckCommand (commands config)
       messageFn = runMessageCommand (commands config)
-      logFn = logToDb conn timezone localTime
+      logFn = logToDb conn localTime
 
   appState <- readMVar state
   userStates <-

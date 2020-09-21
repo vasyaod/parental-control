@@ -72,6 +72,7 @@ executables:
       - wai
       - warp
       - time
+      - sqlite-simple
 
 tests:
   parental-control-test:
@@ -87,4 +88,5 @@ tests:
     - time
     - containers
     - mtl
+    - sqlite-simple
 #    - math
