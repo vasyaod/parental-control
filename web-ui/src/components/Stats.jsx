@@ -1,9 +1,8 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import { Segment, Card, Image, Container, Header, Button} from 'semantic-ui-react'
+import Calendar from 'react-github-contribution-calendar';
 import { connect } from 'react-redux'
-
-import { loadState } from '../actions.js'
 
 const style = {
   h1: {
@@ -12,26 +11,31 @@ const style = {
   },
 }
 
-class Index extends Component {
+var values = {
+  '2016-06-23': 1,
+  '2016-06-26': 2,
+  '2016-06-27': 3,
+  '2016-06-28': 4,
+  '2016-06-29': 4
+}
+var until = '2016-06-30';
 
-  componentDidMount() {
-    this.props.loadState()
-  }
+class Stats extends Component {
 
   render() {
     return (
       <Container>
-        <Header as='h1' content='Consumed time for today' style={style.h1} textAlign='center' />
+        <Header as='h1' content='Statistics' style={style.h1} textAlign='center' />
         { <Card.Group doubling itemsPerRow={1} stackable>
-          { this.props.userStates &&
-            Object.entries(this.props.userStates).map( ([key, value]) =>
+          { this.props.stats &&
+            this.props.stats.map( value =>
               <Card 
-                key={key}
+                key={value.user}
               >
                 <Card.Content>
-                  <Card.Header>{key}</Card.Header>
+                  <Card.Header>{value.user}</Card.Header>
                   <Card.Description>
-                    <Header as='h1'  style={style.h1}>Used {value.minuteCount} minutes</Header>
+                    <Calendar values={value.actions} />
                   </Card.Description>
                 </Card.Content>
               </Card>
@@ -45,8 +49,8 @@ class Index extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    userStates: state.appState.userStates
+    stats: state.stats
   };
 };
 
-export default connect(mapStateToProps, { loadState })(Index)
+export default connect(mapStateToProps)(Stats)

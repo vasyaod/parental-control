@@ -10,14 +10,29 @@ const initialState = {
 
     }
   },
+  stats: [],
 }
 
 export function todoApp(state = initialState, action) {
   switch (action.type) {
-    case 'STATE_LOADED':
-      console.log("!!!!")
+    case 'DATA_LOADED':
+      console.log(action.stats)
+      let s = List(action.stats)
+        .groupBy(item =>item.user)
+        .mapEntries(([key, values]) => {
+          return [key, {
+            user: key,
+            actions: values.groupBy(x => x.date).map(x => x.first().minutes / 60).toObject()
+          }]
+        })
+        .toList()
+        .toArray()
+
+      console.log(s)
+
       return {...state,
-        appState: action.values
+        appState: action.state,
+        stats: s 
       }
 
     default:
