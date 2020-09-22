@@ -71,6 +71,6 @@ main = do
   (opts, _) <- compilerOpts (args)
   config <- readConfig $ optConfigFilePath opts
   dbConn <- open ((statePath config) ++ "/log.db")
-  execute_ dbConn "CREATE TABLE IF NOT EXISTS log (tm TIMESTAMP, user TEXT)"
+--  execute_ dbConn "CREATE TABLE IF NOT EXISTS log (tm TIMESTAMP, user TEXT)"     we can not create a table here because user is NOBODY and the user doesn't have access to db file
   let settings = setPort (httpPort config) $ setHost "127.0.0.1" defaultSettings
   runSettings settings (app dbConn config)

@@ -44,7 +44,7 @@ statForYearForAllUsers conn localTime = do
   let LocalTime localDay localTimeOfDay = localTime
       localTimeNextDay = LocalTime (addDays (0 - 365) localDay) localTimeOfDay -- Get local time for "the next day"
       tm = localTimeToUTC utc localTimeNextDay
-  res <- query conn "SELECT date(tm) AS d, user, COUNT(*) as minutes FROM log WHERE tm > ? GROUP BY d" (Only tm) :: IO [(String, String, Int)]
+  res <- query conn "SELECT date(tm) AS d, user, COUNT(*) as minutes FROM log WHERE tm > ? GROUP BY d, user ORDER BY user" (Only tm) :: IO [(String, String, Int)]
   let x = map (\(d, u, c) -> LogRaw d u c) res
   return x
 
