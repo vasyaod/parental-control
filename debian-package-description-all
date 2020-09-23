@@ -1,4 +1,4 @@
-Package: parental-control
+Package: parental-control-web
 Version: 1.0
 Section: custom
 Priority: optional
@@ -6,4 +6,4 @@ Architecture: amd64
 Essential: no
 Installed-Size: 1024
 Maintainer: Vasilii Vazhesov <vasilii.vazhesov@gmail.com>
-Description: Allows to control weekly schelule of users and spent time in the system
+Description: Allows to control user login time and calculate consumed time in *nux OS. Schedule daemon and web interface bundle.

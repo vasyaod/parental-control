@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -e 
+
+VERSION=$(cat version)
+
+echo "Build dep file for parental-control of $VERSION"
+
+DIR="parental-control-$VERSION"
+
+mkdir dist
+cd dist
+mkdir -p $DIR/DEBIAN
+eval "cat ../debian-package-description-schedule" > $DIR/DEBIAN/control
+cp ../scripts/daemon/postinst $DIR/DEBIAN/
+cp ../scripts/daemon/prerm $DIR/DEBIAN/
+touch $DIR/DEBIAN/changelog
+echo "/etc/parental-control.yml" > $DIR/DEBIAN/conffiles
+
+mkdir -p $DIR/usr/bin/
+cp $HOME/.local/bin/parental-control $DIR/usr/bin/
+
+mkdir -p $DIR/etc
+cp ../schedule-daemon/config.yml $DIR/etc/parental-control.yml
+
+mkdir -p $DIR/etc/init.d
+cp ../scripts/daemon/parental-control $DIR/etc/init.d/
+
+chmod -R g-w $DIR
+
+dpkg-deb --root-owner-group --build $DIR
+alien --to-rpm --scripts --keep-version $DIR.deb
