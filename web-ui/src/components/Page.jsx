@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Segment, Sidebar, Menu, Container, Grid, Icon } from 'semantic-ui-react'
-import { HashRouter as Router, Route, Link } from "react-router-dom";
 
 import { loadData, shareFacebook, shareTwitter } from '../actions.js'
 

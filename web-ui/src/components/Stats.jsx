@@ -15,6 +15,12 @@ const style = {
   },
 }
 
+function formatTime(hours) {
+  let h = Math.floor(hours)
+  let m = Math.floor((hours - h)*60)
+  return `${h}h ${m}m`
+}
+
 class Stats extends Component {
 
   render() {
@@ -35,7 +41,7 @@ class Stats extends Component {
                       values={value.actions}
                       tooltipDataAttrs={value => {
                         return {
-                          'data-tip': `has count: ${value.count}`,
+                          'data-tip': `Consumed time ${formatTime(value.count)}`,
                         };
                       }}
                     />

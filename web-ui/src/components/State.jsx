@@ -10,6 +10,12 @@ const style = {
   },
 }
 
+function formatTime(hours) {
+  let h = Math.floor(hours)
+  let m = Math.floor((hours - h)*60)
+  return `${h}h ${m}m`
+}
+
 class State extends Component {
 
   render() {
@@ -25,7 +31,7 @@ class State extends Component {
                 <Card.Content>
                   <Card.Header>{key}</Card.Header>
                   <Card.Description>
-                    <Header as='h1'  style={style.h1}>Used {value.minuteCount} minutes</Header>
+                    <Header as='h1'  style={style.h1}>Used {formatTime(value.minuteCount)}</Header>
                   </Card.Description>
                 </Card.Content>
               </Card>
