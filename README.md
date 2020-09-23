@@ -147,7 +147,9 @@ By default HTTP interface is available on http://localhost:8090 where following 
   
   * consumed time per each user
 
-![Screenshot](/docs/screenshot-1.png)
+![Screenshot](/docs/screenshot-2.png)
+
+![Screenshot](/docs/screenshot-3.png)
 
 ## HTTP API
 
