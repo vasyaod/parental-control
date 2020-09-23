@@ -24,6 +24,9 @@ but with more features
   * supporting multiple users 
   * time counter
   * daily limits
+  * web UI
+    * state of consumed time for current date
+    * statistics of consumed time
   
 ## Installation 
 
