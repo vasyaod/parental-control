@@ -39,10 +39,15 @@ class Stats extends Component {
                   <Card.Description>
                     <CalendarHeatmap  
                       values={value.actions}
-                      tooltipDataAttrs={value => {
-                        return {
-                          'data-tip': `Consumed time ${formatTime(value.count)}`,
-                        };
+                      tooltipDataAttrs={value => { 
+                        if (value.date)
+                          return {
+                            'data-tip': `${value.date}, consumed time ${formatTime(value.count)}`,
+                          }
+                        else
+                          return {
+                            'data-tip': `No data`,
+                          }
                       }}
                     />
                   </Card.Description>
