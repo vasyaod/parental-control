@@ -22,8 +22,9 @@ jobs:
       - run: cd schedule-daemon && stack build --test --copy-bins
       - run: cd web-ui && npm install && npm run build
       - run: sudo apt-get update && sudo apt-get -y install alien
-      - run: ./build-deb                       # build package for deamon
+      - run: ./build-deb-schedule              # build package for schedule daemon
       - run: ./build-deb-web                   # build package for web interface
+      - run: ./build-deb-all                   # build bundle with schedule daemon web interface
       - uses: actions/upload-artifact@v2
         with:
           name: parental-control
