@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 2f09fe7765d8a8559f87a73768c00163c346acc8977f8d09e4e94a7dc136e155
+-- hash: 93dfff8f8137b4425f65ef566cfce2ff8bf69e6757d731f968afb7a49bb357c5
 
 name:           parental-control
 version:        0.1.0.0
@@ -51,6 +51,7 @@ library
     , text
     , text-format-simple
     , time
+    , unordered-containers
     , yaml
   default-language: Haskell2010
 

@@ -39,6 +39,7 @@ library:
     - bytestring
     - text-format-simple
     - sqlite-simple
+    - unordered-containers
 
 executables:
   parental-control:

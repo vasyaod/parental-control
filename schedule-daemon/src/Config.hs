@@ -1,6 +1,8 @@
 module Config where
 
 import Control.Applicative
+import qualified Data.HashMap.Strict as HM
+import Data.Maybe (fromMaybe, fromJust)
 import Data.Text
 import Data.Time
 import Data.Yaml
@@ -18,10 +20,10 @@ data MyConfig = MyConfig
 instance FromJSON MyConfig where
   parseJSON (Y.Object m) =
     MyConfig
-      <$> m .: pack ("commands")
-      <*> m .: pack ("statePath")
-      <*> m .: pack ("httpPort")
-      <*> m .: pack ("httpStaticPath")
+      <$> m .:? pack ("commands") .!= fromJust (parseMaybe (\m -> parseJSON ((Object HM.empty) :: Value)) ())
+      <*> m .:? pack ("statePath") .!= "/var/lib/parental-control"
+      <*> m .:? pack ("httpPort") .!= 8090
+      <*> m .:? pack ("httpStaticPath") .!= "/usr/share/parental-control"
       <*> m .: pack ("users")
   parseJSON x = fail ("not an object: " ++ show x)
 
@@ -35,9 +37,9 @@ data Commands = Commands
 instance FromJSON Commands where
   parseJSON (Y.Object m) =
     Commands
-      <$> m .: pack ("check")
-      <*> m .: pack ("message")
-      <*> m .: pack ("kill")
+      <$> m .:? pack ("check") .!= "who | grep {0} | [ $(wc -c) -ne 0 ]"
+      <*> m .:? pack ("message") .!= "echo 'This is stub which is not sent a message anywhere'"
+      <*> m .:? pack ("kill")  .!= "skill -KILL -u {0}"
   parseJSON x = fail ("not an object: " ++ show x)
 
 data User = User
