@@ -74,7 +74,7 @@ commands:
   # Template params
   #   {0} is user name/login
   #
-  message: "echo 'This is stub which is not sent a message anywhere'"
+  message: "notify-send 'Your time is mostly up' 'You have only 3 minutes before logout.' --icon=dialog-information || mpg321 /usr/share/parental-control/alien-siren.mp3"
 
   # Command which should kill/logout a user
   kill: "skill -KILL -u {0}"
@@ -92,7 +92,7 @@ httpStaticPath: /usr/share/parental-control
 users:
   - login: yasha
     timeLimit: 150             # Daily time limit (minutes)
-    noticePeriod: 5            # Notice period is the time period between the sending message and the killing of a user (minutes)
+    noticePeriod: 3            # Notice period is the time period between the sending message and the killing of a user (minutes)
     schedule:
       mon:
         - start: 07:00
@@ -128,7 +128,7 @@ users:
 
   - login: sunny
     timeLimit: 18000           # Minutes
-    noticePeriod: 5            # Notice period is the time period between the sending message and the killing of a user (minutes)
+    noticePeriod: 3            # Notice period is the time period between the sending message and the killing of a user (minutes)
     schedule:
       mon:
         - start: 05:00
@@ -167,7 +167,7 @@ By default HTTP interface is available on http://localhost:8090 where following 
 
   * http://localhost:8090/state returns state of the app as JSON in the next format
     
-    ```yaml
+    ```json
     {
         "userStates": {
             "sunny": {
@@ -183,6 +183,16 @@ By default HTTP interface is available on http://localhost:8090 where following 
         }
     }
     ``` 
+  * http://localhost:8090/stats returns aggregated logs for one year and all users
+    
+    ```json
+    [
+        { "user": "yasha", "date": "2020-09-14", "minutes": 60 },
+        { "user": "sunny", "date": "2020-09-14", "minutes": 87 },
+        { "user": "yasha", "date": "2020-09-15", "minutes": 10 }
+        ...
+    ]
+    ```
 
 ## Maintenance 
 

@@ -11,8 +11,8 @@ const style = {
 }
 
 function formatTime(hours) {
-  let h = Math.floor(hours)
-  let m = Math.floor((hours - h)*60)
+  let h = Math.floor(hours / 60)
+  let m = Math.floor((hours - h*60))
   return `${h}h ${m}m`
 }
 
