@@ -54,8 +54,8 @@ instance FromJSON User where
   parseJSON (Y.Object m) =
     User
       <$> m .: pack ("login")
-      <*> m .: pack ("timeLimit")
-      <*> m .: pack ("noticePeriod")
+      <*> m .:? pack ("timeLimit") .!= 1500
+      <*> m .:? pack ("noticePeriod") .!= 5
       <*> m .: pack ("schedule")
   parseJSON x = fail ("not an object: " ++ show x)
 
