@@ -31,6 +31,7 @@ cp ../schedule-daemon/config.yml $DIR/etc/parental-control.yml
 mkdir -p $DIR/usr/share/parental-control
 cp ../web-ui/bundle.js $DIR/usr/share/parental-control
 cp ../web-ui/index.html $DIR/usr/share/parental-control
+cp ../sounds/* $DIR/usr/share/parental-control
 
 chmod -R g-w $DIR
 

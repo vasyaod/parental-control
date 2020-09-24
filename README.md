@@ -24,7 +24,7 @@ but with more features
   * supporting multiple users 
   * time counter
   * daily limits
-  * web UI
+  * web UI which allows to see
     * state of consumed time for current date
     * statistics of consumed time
   
@@ -63,8 +63,17 @@ commands:
   # Can be used following command
   # notify-send 'Hello world!' 'This is an example notification.' --icon=dialog-information
   # Taken from here https://wiki.archlinux.org/index.php/Desktop_notifications
+  #
   # Example
-  # message: "notify-send 'Your time is mostly up' 'You have only 5 minutes before logout.' --icon=dialog-information"
+  #   message: "notify-send 'Your time is mostly up' 'You have only 5 minutes before logout.' --icon=dialog-information"
+  # or if to install "mpg321" command by "sudo apt install mpg321" any sound can be played
+  #   message: "mpg321 /usr/share/parental-control/alien-siren.mp3"
+  # or if to install "play" command by "sudo apt install sox" any sound can be played
+  #   message: "play /usr/share/parental-control/alien-siren.mp3"
+  #
+  # Template params
+  #   {0} is user name/login
+  #
   message: "echo 'This is stub which is not sent a message anywhere'"
 
   # Command which should kill/logout a user

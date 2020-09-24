@@ -26,6 +26,9 @@ cp ../schedule-daemon/config.yml $DIR/etc/parental-control.yml
 mkdir -p $DIR/etc/init.d
 cp ../scripts/daemon/parental-control $DIR/etc/init.d/
 
+mkdir -p $DIR/usr/share/parental-control
+cp ../sounds/* $DIR/usr/share/parental-control
+
 chmod -R g-w $DIR
 
 dpkg-deb --root-owner-group --build $DIR
