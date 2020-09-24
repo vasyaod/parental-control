@@ -6,7 +6,7 @@ set -e
 systemctl enable parental-control
 systemctl start parental-control
 
-pause 1
+sleep 2
 
 # Post instalation script
 systemctl enable parental-control-web
