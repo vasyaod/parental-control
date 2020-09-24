@@ -32,7 +32,7 @@ but with more features
 
 ### Debian/Ubuntu
     
-  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1233358420/artifacts/18590304)
+  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1237782841/artifacts/18703677)
   * Extract the *.dep package
   * Install the package by `dpkg -i parental-control-all-1.0.0.deb` 
   * Also there is a way set up only the schedule daemon without web interface by `dpkg -i parental-control-1.0.0.deb`
@@ -41,7 +41,7 @@ but with more features
   
 _The OS was not tested_
     
-  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1233358420/artifacts/18590304)
+  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1237782841/artifacts/18703677)
   * Extract the *.rpm package
   * Install the package by `rpm –i parental-control-all-1.0.0.x86_64.rpm` 
   * Also there is a way set up only the schedule daemon without web interface by `rpm –i parental-control-1.0.0.x86_64.rpm`
@@ -93,6 +93,10 @@ users:
   - login: yasha
     timeLimit: 150             # Daily time limit (minutes)
     noticePeriod: 3            # Notice period is the time period between the sending message and the killing of a user (minutes)
+    # Format of time should be HH:mm (2 digits per hour and minute fields), like
+    #  07:01
+    #  13:06
+    #  17:38
     schedule:
       mon:
         - start: 07:00
