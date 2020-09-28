@@ -24,7 +24,7 @@ but with more features
   * supporting multiple users 
   * time counter
   * daily limits
-  * web UI which allows to see
+  * web UI (installation of the UI is not obligatory) which allows to see
     * state of consumed time for current date
     * statistics of consumed time
   
@@ -74,7 +74,7 @@ commands:
   # Template params
   #   {0} is user name/login
   #
-  message: "notify-send 'Your time is mostly up' 'You have only 3 minutes before logout.' --icon=dialog-information || mpg321 /usr/share/parental-control/alien-siren.mp3"
+  message: "notify-send 'Your time is mostly up' 'You have only 3 minutes before logout.' --icon=dialog-information"
 
   # Command which should kill/logout a user
   kill: "skill -KILL -u {0}"
@@ -82,6 +82,16 @@ commands:
 # This app keep all state in memory but periodically can unload some information to file.
 # Basically it is one of ways to et information about users
 statePath: /var/lib/parental-control
+
+# The param could also has the next values
+#  * means HostAny
+#  *4 means HostIPv4
+#  !4 means HostIPv4Only
+#  *6 means HostIPv6
+#  !6 means HostIPv6Only
+#
+# The param works if parental-control-web is set up
+httpInterface: 127.0.0.1
 
 # The param works if parental-control-web is set up 
 httpPort: 8090

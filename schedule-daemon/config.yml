@@ -36,6 +36,9 @@ statePath: /var/lib/parental-control
 # The param works if parental-control-web is set up
 httpPort: 8090
 
+# The param works if parental-control-web is set up
+httpInterface: 127.0.0.1
+
 # PAth to http static content, like html pages and JS scripts
 httpStaticPath: /usr/share/parental-control
 

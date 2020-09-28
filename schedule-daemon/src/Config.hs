@@ -12,6 +12,7 @@ data MyConfig = MyConfig
   { commands :: Commands,
     statePath :: String,
     httpPort :: Int,
+    httpInterface :: String,
     httpStaticPath :: String,
     users :: [User]
   }
@@ -23,6 +24,7 @@ instance FromJSON MyConfig where
       <$> m .:? pack ("commands") .!= fromJust (parseMaybe (\m -> parseJSON ((Object HM.empty) :: Value)) ())
       <*> m .:? pack ("statePath") .!= "/var/lib/parental-control"
       <*> m .:? pack ("httpPort") .!= 8090
+      <*> m .:? pack ("httpInterface") .!= "127.0.0.1"
       <*> m .:? pack ("httpStaticPath") .!= "/usr/share/parental-control"
       <*> m .: pack ("users")
   parseJSON x = fail ("not an object: " ++ show x)

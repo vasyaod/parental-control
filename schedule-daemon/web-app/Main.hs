@@ -7,6 +7,7 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Main where
 
@@ -33,6 +34,7 @@ import Servant
 import Servant.Types.SourceT (source)
 import System.Directory
 import System.Environment
+import Data.String
 
 type UserAPI1 =
   "state" :> Get '[JSON] AppState
@@ -72,5 +74,5 @@ main = do
   config <- readConfig $ optConfigFilePath opts
   dbConn <- open ((statePath config) ++ "/log.db")
 --  execute_ dbConn "CREATE TABLE IF NOT EXISTS log (tm TIMESTAMP, user TEXT)"     we can not create a table here because user is NOBODY and the user doesn't have access to db file
-  let settings = setPort (httpPort config) $ setHost "127.0.0.1" defaultSettings
+  let settings = setPort (httpPort config) $ setHost (fromString (httpInterface config)) defaultSettings
   runSettings settings (app dbConn config)
