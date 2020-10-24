@@ -228,7 +228,7 @@ npm rub build
 ### Run as daemon
 
 ```
-start-stop-daemon -S -b -u root --exec /root/parental-control -- -c /etc/parental-control-config.yml -s /var/log/parental-control-state
+start-stop-daemon -S -b -u root --exec /root/parental-control -- -c /etc/parental-control.yml
 ```
 
 ### Stop daemon
