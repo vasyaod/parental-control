@@ -1,13 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Lib where
 
-import AppState
 import Checking
 import CliOpts
 import Config
 import Control.Concurrent
 import Control.Monad
-import qualified Data.Map as Map
 import StateLogger
 import System.Directory
 import System.Environment
@@ -21,11 +19,13 @@ someFunc = do
   args <- getArgs
   (opts, _) <- compilerOpts (args)
   config <- readConfig $ optConfigFilePath opts
-  state <- newMVar AppState {userStates = Map.empty}
+  let stateFile = (statePath config) ++ "/state"
+  s <- loadState stateFile
+  state <- newMVar s
   -- putStrLn $ optStateFile opts
   -- let (Just val) = config
   createDirectoryIfMissing True (statePath config)
   conn <- open ((statePath config) ++ "/log.db")               -- Open data base file
   execute_ conn "CREATE TABLE IF NOT EXISTS log (tm TIMESTAMP, user TEXT)"
-  forkIO $ stateLoggerLoop (statePath config) state
+  forkIO $ stateLoggerLoop stateFile state
   checkingLoop config conn state
