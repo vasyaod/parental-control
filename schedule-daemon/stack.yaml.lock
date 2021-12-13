@@ -25,9 +25,16 @@ packages:
       sha256: e58b9955e483d51ee0966f8ba4384305d871480e2a38b32ee0fcd4573d74cf95
   original:
     hackage: sqlite-simple-0.4.18.0
+- completed:
+    hackage: MissingH-1.4.3.0@sha256:efbbe7065e17bc01ed925593a0c5b5793ab857585a8e9d5015d0025e526ab55c,4702
+    pantry-tree:
+      size: 5271
+      sha256: d3c9916fafe0b11b72c56862a5c578f35c3fdbe6ee203e4adeca9b0706ee1fe3
+  original:
+    hackage: MissingH-1.4.3.0
 snapshots:
 - completed:
-    size: 531696
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/16/3.yaml
-    sha256: 65e3a94c65ad07fa1913649e3f1e36c4af51bf528a5d9fd217bdc1b46d0477cc
-  original: lts-16.3
+    size: 586296
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/18.yaml
+    sha256: 63539429076b7ebbab6daa7656cfb079393bf644971156dc349d7c0453694ac2
+  original: lts-18.18
