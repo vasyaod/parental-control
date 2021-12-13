@@ -46,7 +46,10 @@ extra-deps:
   - sqlite-simple-0.4.18.0
   - MissingH-1.4.3.0
 # Override default flag values for local packages and extra-deps
-# flags: {}
+flags:
+  mintty:
+    Win32-2-13-1: false
+
 
 # Extra package databases containing global packages
 # extra-package-dbs: []
