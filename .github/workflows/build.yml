@@ -1,8 +1,8 @@
 on: [push]
 name: build
 jobs:
-  runhaskell:
-    name: Hello World
+  build-linux-verson:
+    name: Linux build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -31,3 +31,10 @@ jobs:
           path: |
             dist/*.rpm
             dist/*.deb
+  build-windows-verson:
+    name: Windows build
+    runs-on: windows-2019
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+      - run: dir
