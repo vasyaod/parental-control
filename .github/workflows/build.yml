@@ -32,14 +32,14 @@ jobs:
           path: |
             dist/*.rpm
             dist/*.deb
-            
-#  build-windows-verson:
-#    name: Windows build
-#    runs-on: windows-2022
-#    steps:
-#      - name: Check out repo
-#        uses: actions/checkout@v2
-#      - run: cd schedule-daemon && set __COMPAT_LAYER= && stack build --copy-bins
+
+  build-windows-verson:
+    name: Windows build
+    runs-on: windows-2019
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+      - run: cd schedule-daemon && set __COMPAT_LAYER= && stack build --copy-bins
 
 #      - run: wget https://get.haskellstack.org/stable/windows-x86_64-installer.exe
 #      -
