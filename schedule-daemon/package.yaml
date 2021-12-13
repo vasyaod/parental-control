@@ -52,28 +52,28 @@ executables:
     dependencies:
      - parental-control
 
-  parental-control-web:
-    main:                Main.hs
-    source-dirs:         web-app
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-    dependencies:
-      - parental-control
-      - servant
-      - servant-server
-      - text
-      - containers
-      - base
-      - aeson
-      - mtl
-      - directory
-      - bytestring
-      - wai
-      - warp
-      - time
-      - sqlite-simple
+#  parental-control-web:
+#    main:                Main.hs
+#    source-dirs:         web-app
+#    ghc-options:
+#      - -threaded
+#      - -rtsopts
+#      - -with-rtsopts=-N
+#    dependencies:
+#      - parental-control
+#      - servant
+#      - servant-server
+#      - text
+#      - containers
+#      - base
+#      - aeson
+#      - mtl
+#      - directory
+#      - bytestring
+#      - wai
+#      - warp
+#      - time
+#      - sqlite-simple
 
 tests:
   parental-control-test:
