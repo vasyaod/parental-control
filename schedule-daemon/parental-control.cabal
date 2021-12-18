@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: dfd13204ffb63a4e18143e91264b46addaa2200284172c48f197ff33260e8203
+-- hash: f9565a96fc574a96c66dabb99e970d5e0c28069e6c1e5d34eb023b5ea02ecd10
 
 name:           parental-control
 version:        0.1.0.0
@@ -32,7 +32,9 @@ library
       Config
       DbLog
       Lib
+      LinuxCommand
       StateLogger
+      WindowsCommand
   other-modules:
       Paths_parental_control
   hs-source-dirs:
