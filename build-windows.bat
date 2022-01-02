@@ -1,7 +1,4 @@
-mkdir dist
-cd dist
-
-echo %homepath%
+echo %homedrive%%homepath%
 
 copy "..\config-windows.yml" config.yml
 copy %homedrive%%homepath%\AppData\Roaming\local\bin\parental-control.exe parental-control.exe

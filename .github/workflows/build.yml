@@ -42,7 +42,6 @@ jobs:
       - run: cd schedule-daemon && stack build --copy-bins
       - run: build-windows.bat
       - name: Create installer
-        working-directory: dist
         uses: joncloud/makensis-action@v3.6
         with:
           script-file: "parental-control.nsi"
