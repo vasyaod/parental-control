@@ -1,6 +1,6 @@
 # This app keep all state in memory but periodically can unload some information to file.
 # Basically it is one of ways to et information about users
-statePath: /var/lib/parental-control
+statePath: ./
 
 # The param works if parental-control-web is set up
 httpPort: 8090
@@ -9,7 +9,7 @@ httpPort: 8090
 httpInterface: 127.0.0.1
 
 # PAth to http static content, like html pages and JS scripts
-httpStaticPath: /usr/share/parental-control
+httpStaticPath: ./
 
 users:
   - login: dummy-user             # System login / user name

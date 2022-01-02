@@ -9,8 +9,7 @@ import Data.Yaml
 import qualified Data.Yaml as Y
 
 data MyConfig = MyConfig
-  { commands :: Commands,
-    statePath :: String,
+  { statePath :: String,
     httpPort :: Int,
     httpInterface :: String,
     httpStaticPath :: String,
@@ -21,27 +20,11 @@ data MyConfig = MyConfig
 instance FromJSON MyConfig where
   parseJSON (Y.Object m) =
     MyConfig
-      <$> m .:? pack ("commands") .!= fromJust (parseMaybe (\m -> parseJSON ((Object HM.empty) :: Value)) ())
-      <*> m .:? pack ("statePath") .!= "/var/lib/parental-control"
+      <$> m .:? pack ("statePath") .!= "/var/lib/parental-control"
       <*> m .:? pack ("httpPort") .!= 8090
       <*> m .:? pack ("httpInterface") .!= "127.0.0.1"
       <*> m .:? pack ("httpStaticPath") .!= "/usr/share/parental-control"
       <*> m .: pack ("users")
-  parseJSON x = fail ("not an object: " ++ show x)
-
-data Commands = Commands
-  { check :: String,
-    message :: String,
-    kill :: String
-  }
-  deriving (Eq, Show)
-
-instance FromJSON Commands where
-  parseJSON (Y.Object m) =
-    Commands
-      <$> m .:? pack ("check") .!= "who | grep {0} | [ $(wc -c) -ne 0 ]"
-      <*> m .:? pack ("message") .!= "echo 'This is stub which is not sent a message anywhere'"
-      <*> m .:? pack ("kill")  .!= "skill -KILL -u {0}"
   parseJSON x = fail ("not an object: " ++ show x)
 
 data User = User

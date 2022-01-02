@@ -192,6 +192,15 @@ cd schedule-daemon
 stack build --test --copy-bins
 ```
 
+Output files:
+  * windows: 
+    * $HOME\AppData\Roaming\local\bin\parental-control.exe
+    * $HOME\AppData\Roaming\local\bin\parental-control-web.exe
+  * linux: 
+    * $HOME/.local/bin/parental-control
+    * $HOME/.local/bin/parental-control-web
+
+
 ### Build of web UI
 
 ```

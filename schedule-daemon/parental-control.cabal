@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f9565a96fc574a96c66dabb99e970d5e0c28069e6c1e5d34eb023b5ea02ecd10
+-- hash: 121c7444f0169ecde174e0b544e86aae87ebc01d14aade792e662bb5c7dd6c62
 
 name:           parental-control
 version:        0.1.0.0
@@ -102,6 +102,7 @@ test-suite parental-control-test
       DbLogSpec
       LogicSpec
       StateLoggerSpec
+      WindowsCommandSpec
       Paths_parental_control
   hs-source-dirs:
       test
