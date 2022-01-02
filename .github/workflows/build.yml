@@ -45,9 +45,11 @@ jobs:
         with:
           path: ~/.stack
           key: ${{ runner.os }}
-                  
+
       - run: cd schedule-daemon && stack build --copy-bins
-      - run: build-windows.bat
+      - name: Prepare files for contribution
+        shell: cmd
+        run: .\build-windows.bat
       - name: Create installer
         uses: joncloud/makensis-action@v3.6
         with:
