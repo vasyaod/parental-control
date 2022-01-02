@@ -209,6 +209,8 @@ npm install
 npm rub build
 ```
 
+## Linux 
+
 ### Run as daemon
 
 ```
@@ -220,6 +222,10 @@ start-stop-daemon -S -b -u root --exec /root/parental-control -- -c /etc/parenta
 ```
 start-stop-daemon -K --exec /root/parental-control
 ```
+
+# Windows
+
+Windows Service Wrapper https://github.com/winsw/winsw
 
 ## License
 

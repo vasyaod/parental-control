@@ -43,7 +43,7 @@ jobs:
       - name: Cache of Stack
         uses: actions/cache@v2
         with:
-          path: ~/.stack
+          path: ~\AppData\Local\Programs\stack
           key: ${{ runner.os }}
 
       - run: cd schedule-daemon && stack build --copy-bins
@@ -53,6 +53,7 @@ jobs:
       - name: Create installer
         uses: joncloud/makensis-action@v3.6
         with:
+          arguments: "/V3"
           script-file: "parental-control.nsi"
 
 #      - run: wget https://get.haskellstack.org/stable/windows-x86_64-installer.exe

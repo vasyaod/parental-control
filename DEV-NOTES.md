@@ -23,6 +23,13 @@ query user yasha
 # Log out command.
 logoff $SESSION_ID
 ``` 
+
+# Service
+
+```
+sc.exe create parental-control type=own start=delayed-auto binpath="C:\Program Files\parental-control\parental-control.exe -c C:\Program Files\parental-control\config.yml"
+sc.exe delete parental-control
+```
  
  
  

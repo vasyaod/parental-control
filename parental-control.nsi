@@ -23,6 +23,8 @@ SetOutPath $INSTDIR
 ; Put file there
 File parental-control.exe
 File parental-control-web.exe
+File parental-control-starter.exe
+File parental-control-starter.xml
 File config.yml
 
 WriteUninstaller $INSTDIR\Uninstall.exe
@@ -32,9 +34,7 @@ SectionEnd ; end the section
 ; The uninstall section
 Section "Uninstall"
 
-Delete $INSTDIR\Uninstall.exe
-Delete $INSTDIR\parental-control.exe
-Delete $INSTDIR\parental-control-web.exe
+RMDir /r "$INSTDIR\*.*"
 RMDir $INSTDIR
 
 SectionEnd 

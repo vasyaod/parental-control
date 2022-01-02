@@ -4,21 +4,20 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 121c7444f0169ecde174e0b544e86aae87ebc01d14aade792e662bb5c7dd6c62
+-- hash: 00ebb8691f0981b52a962b8935701f5265dbb8f3bf6b637c79e0582c6b5a76f0
 
 name:           parental-control
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/parental-control#readme>
 homepage:       https://github.com/githubuser/parental-control#readme
 bug-reports:    https://github.com/githubuser/parental-control/issues
-author:         Author name here
+author:         Vasilii Vazhesov
 maintainer:     example@example.com
-copyright:      2020 Author name here
-license:        BSD3
+copyright:      Vasilii Vazhesov
+license:        MIT
 build-type:     Simple
 extra-source-files:
     README.md
-    ChangeLog.md
 
 source-repository head
   type: git
