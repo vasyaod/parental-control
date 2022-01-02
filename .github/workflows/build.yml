@@ -39,6 +39,13 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v2
+
+      - name: Cache of Stack
+        uses: actions/cache@v2
+        with:
+          path: ~/.stack
+          key: ${{ runner.os }}
+                  
       - run: cd schedule-daemon && stack build --copy-bins
       - run: build-windows.bat
       - name: Create installer
