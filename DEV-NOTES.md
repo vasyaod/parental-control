@@ -2,6 +2,9 @@
 
  * [Add binary file as service on Windows](https://docs.microsoft.com/en-US/windows-server/administration/windows-commands/sc-create)
  * [nsis documetation (windows installer)](https://nsis.sourceforge.io/Docs/Chapter2.html#tutintro)
+   * https://github.com/joncloud/makensis-action
+   * https://github.com/marketplace/actions/makensis
+ * https://github.com/marketplace/actions/setup-msbuild
 
 ## Mono
  

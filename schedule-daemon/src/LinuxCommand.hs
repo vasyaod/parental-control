@@ -33,8 +33,7 @@ import Text.Printf
 -- kill: "skill -KILL -u {0}"
 runKillCommand :: String -> IO ()
 runKillCommand userName = do
-  let command = format "skill -KILL -u {0}" [userName]
-  createProcess (shell command) {std_out = CreatePipe}
+  (errCode, stdout', stderr') <- readProcessWithExitCode "skill" ["-KILL", (format "-u {0}" [userName])] ""
   putStrLn (printf "User %s has been killed" userName)
   return ()
 

@@ -1,6 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-}
-
-module LinuxCommand where
+module WindowsCommand where
 
 import System.Process
 import System.Exit
@@ -31,26 +29,35 @@ import Text.Printf
 
 -- # Command which should kill/logout a user
 -- kill: "skill -KILL -u {0}"
-runKillCommand :: String -> IO ()
-runKillCommand userName = do
-  let command = format "skill -KILL -u {0}" [userName]
-  createProcess (shell command) {std_out = CreatePipe}
-  putStrLn (printf "User %s has been killed" userName)
-  return ()
 
-runMessageCommand :: String -> IO ()  
+class Monad m => Exec m where
+  exec :: FilePath -> [String] -> m (ExitCode, String, String)
+  loggg :: String -> m ()
+
+runKillCommand :: Exec m => String -> m ()
+runKillCommand userName = do
+  (errCode1, stdout1, stderr1) <- exec "query" ["user", userName]
+  let _lines = map (\s -> words s) (lines stdout1)
+  let filteredLines = filter (\line -> head line == userName) _lines
+  loggg(show (length filteredLines))
+  if (length filteredLines) > 0
+      then (do 
+          (errCode1, stdout1, stderr1) <- exec "logoff" [(head filteredLines) !! 2]
+          return ()
+          )
+      else return ()
+
+ -- return ()
+
+runMessageCommand :: Exec m => String -> m ()  
 runMessageCommand userName = do
-  let command = format "echo {0}" [userName]
-  createProcess (shell command) {std_out = CreatePipe}
-  putStrLn (printf "Message to user %s has been send" userName)
+  loggg (printf "Message to user %s has been send" userName)
   return ()
 
 -- | Returns true if user in a system
-runCheckCommand :: String -> IO Bool
+runCheckCommand :: Exec m => String -> m Bool
 runCheckCommand userName = do
-  let command = format "who | grep {0} | [ $(wc -c) -ne 0 ]" [userName]
-  (_, Just hout, _, processHandle) <- createProcess (shell command) {std_out = CreatePipe}
-  exitCode <- waitForProcess processHandle
-  case exitCode of
-    ExitSuccess -> return True
-    ExitFailure _ -> return False
+  (errCode1, stdout1, stderr1) <- exec "query" ["user", userName]
+  let _lines = map (\s -> words s) (lines stdout1)
+  let filteredLines = filter (\line -> head line == userName) _lines
+  return $ (length filteredLines) > 0
