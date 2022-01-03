@@ -1,24 +1,23 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: dfd13204ffb63a4e18143e91264b46addaa2200284172c48f197ff33260e8203
+-- hash: 00ebb8691f0981b52a962b8935701f5265dbb8f3bf6b637c79e0582c6b5a76f0
 
 name:           parental-control
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/parental-control#readme>
 homepage:       https://github.com/githubuser/parental-control#readme
 bug-reports:    https://github.com/githubuser/parental-control/issues
-author:         Author name here
+author:         Vasilii Vazhesov
 maintainer:     example@example.com
-copyright:      2020 Author name here
-license:        BSD3
+copyright:      Vasilii Vazhesov
+license:        MIT
 build-type:     Simple
 extra-source-files:
     README.md
-    ChangeLog.md
 
 source-repository head
   type: git
@@ -32,7 +31,9 @@ library
       Config
       DbLog
       Lib
+      LinuxCommand
       StateLogger
+      WindowsCommand
   other-modules:
       Paths_parental_control
   hs-source-dirs:
@@ -100,6 +101,7 @@ test-suite parental-control-test
       DbLogSpec
       LogicSpec
       StateLoggerSpec
+      WindowsCommandSpec
       Paths_parental_control
   hs-source-dirs:
       test

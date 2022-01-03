@@ -8,6 +8,8 @@ module Checking where
 import AppState
 import Config
 import DbLog
+import LinuxCommand
+import WindowsCommand
 import Control.Concurrent
 import Control.Monad
 import Control.Monad.State
@@ -18,13 +20,13 @@ import Data.Time.Calendar
 import Data.Time.Clock
 import Data.Time.LocalTime
 import System.Console.GetOpt
-import System.Environment
-import System.Exit
-import System.IO
-import System.Process
-import Text.Printf
-import Text.Format
+import System.Info (os)
 import Database.SQLite.Simple
+import System.Process
+
+instance Exec IO where
+  exec command args = readProcessWithExitCode command args ""
+  loggg = Prelude.putStrLn
 
 getTimesForDayOfWeek :: DayOfWeek -> Schedule -> [Range]
 getTimesForDayOfWeek Monday = mon
@@ -46,31 +48,6 @@ checkSchedule schedule localTime =
   let dayOfW = dayOfWeek $ localDay localTime
       ranges = (getTimesForDayOfWeek dayOfW) $ schedule
    in checkTimes localTime ranges
-
-runKillCommand :: Commands -> String -> IO ()
-runKillCommand commands userName = do
-  let command = format (kill commands) [userName]
-  createProcess (shell command) {std_out = CreatePipe}
-  putStrLn (printf "User %s has been killed" userName)
-  return ()
-
-runMessageCommand :: Commands -> String -> IO ()
-runMessageCommand commands userName = do
-  let command = format (message commands) [userName]
-  createProcess (shell command) {std_out = CreatePipe}
-  putStrLn (printf "Message to user %s has been send" userName)
-  return ()
-
--- | Returns true if user in a system
-runCheckCommand :: Commands -> String -> IO Bool
-runCheckCommand commands userName = do
-  let command = format (check commands) [userName]
-  (_, Just hout, _, processHandle) <- createProcess (shell command) {std_out = CreatePipe}
-  exitCode <- waitForProcess processHandle
-  case exitCode of
-    ExitSuccess -> return True
-    ExitFailure _ -> return False
-
 
 checkUser :: LocalTime -> (String -> IO Bool) -> (String -> IO ()) -> (String -> IO ()) -> (String -> IO ()) -> User -> StateT UserState IO ()
 checkUser localTime checkFn killFn messageFn logFn userConfig = do
@@ -119,11 +96,20 @@ checkingLoop config conn state = forever $ do
   now <- getCurrentTime
   timezone <- getCurrentTimeZone
   let localTime = utcToLocalTime timezone now
-      killFn = runKillCommand (commands config)
-      checkFn = runCheckCommand (commands config)
-      messageFn = runMessageCommand (commands config)
       logFn = logToDb conn localTime
-
+      killFn = case os of 
+        "linux" -> LinuxCommand.runKillCommand
+        "mingw32" -> WindowsCommand.runKillCommand
+        _ -> WindowsCommand.runKillCommand
+      messageFn = case os of 
+        "linux" -> LinuxCommand.runMessageCommand
+        "mingw32" -> WindowsCommand.runMessageCommand
+        _ -> WindowsCommand.runKillCommand
+      checkFn = case os of 
+        "linux" -> LinuxCommand.runCheckCommand
+        "mingw32" -> WindowsCommand.runCheckCommand
+        _ -> WindowsCommand.runCheckCommand
+  
   appState <- readMVar state
   userStates <-
     sequence

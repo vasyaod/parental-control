@@ -1,14 +1,13 @@
 name:                parental-control
 version:             0.1.0.0
 github:              "githubuser/parental-control"
-license:             BSD3
-author:              "Author name here"
+license:             MIT
+author:              "Vasilii Vazhesov"
 maintainer:          "example@example.com"
-copyright:           "2020 Author name here"
+copyright:           "Vasilii Vazhesov"
 
 extra-source-files:
 - README.md
-- ChangeLog.md
 
 # Metadata used when publishing your package
 # synopsis:            Short description of your package
