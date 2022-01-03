@@ -26,10 +26,10 @@ spec :: SpecWith ()
 spec = describe "WindowsCommand" $ do
     it "should kill user by name" $
       (execState (WindowsCommand.runKillCommand("yasha")) ([(ExitSuccess, x, ""), (ExitSuccess, "", "")], [""], [""])) 
-        `shouldBe` ([],["", "query user yasha", "logoff 5"],["", "1"])
+        `shouldBe` ([],["", "query user yasha", "logoff 5"],["", "User found in system with session ID 5"])
     it "should not do any thing if user is not found" $
       (execState (WindowsCommand.runKillCommand("yasha1")) ([(ExitSuccess, x, "")], [""], [""])) 
-        `shouldBe` ([],["", "query user yasha1"],["", "0"])
+        `shouldBe` ([],["", "query user yasha1"],[""])
     it "should check existing of user by name" $
       (runState (WindowsCommand.runCheckCommand("yasha")) ([(ExitSuccess, x, "")], [""], [""])) 
         `shouldBe` (True, ([],["", "query user yasha"],[""]))

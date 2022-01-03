@@ -41,7 +41,7 @@ runKillCommand userName = do
   let filteredLines = filter (\line -> head line == userName) _lines
   if (length filteredLines) > 0
       then (do
-          let sessionId = (show ((head filteredLines) !! 2))
+          let sessionId = (head filteredLines) !! 2
           loggg("User found in system with session ID " ++ sessionId)
           (errCode1, stdout1, stderr1) <- exec "logoff" [sessionId]
           return ()
