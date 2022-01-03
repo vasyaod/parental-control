@@ -30,9 +30,14 @@ but with more features
   
 ## Installation 
 
+### Windows
+
+  * Download [zip file](https://github.com/vasyaod/parental-control/suites/4814603333/artifacts/135580331)
+  * Run parental-control-setup.exe
+
 ### Debian/Ubuntu
     
-  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1237782841/artifacts/18703677)
+  * Download [zip file](https://github.com/vasyaod/parental-control/suites/4814603333/artifacts/135580330)
   * Extract the *.dep package
   * Install the package by `dpkg -i parental-control-all-1.0.0.deb` 
   * Also there is a way set up only the schedule daemon without web interface by `dpkg -i parental-control-1.0.0.deb`
@@ -41,14 +46,14 @@ but with more features
   
 _The OS was not tested_
     
-  * Download [zip file](https://github.com/vasyaod/parental-control/suites/1237782841/artifacts/18703677)
+  * Download [zip file](https://github.com/vasyaod/parental-control/suites/4814603333/artifacts/135580330)
   * Extract the *.rpm package
   * Install the package by `rpm –i parental-control-all-1.0.0.x86_64.rpm` 
   * Also there is a way set up only the schedule daemon without web interface by `rpm –i parental-control-1.0.0.x86_64.rpm`
 
 ## Config
 
-  * After installation the config file can be found `/etc/parental-control.yml` 
+  * After installation the config file can be found `/etc/parental-control.yml` (or `C:\Program Files\parental-control` for Windows)
   * Example of the config file with parameter description is awailable in the repo [config.yml](./schedule-daemon/config.yml)
 
 Weakly schedule for multiple users looks like:
