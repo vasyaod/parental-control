@@ -34,9 +34,9 @@ jobs:
       - name: Cache of Stack
         uses: actions/cache@v2
         with:
-          path: ~\AppData\Local\Programs\stack
+          path: ~\AppData\Roaming\stack
           key: ${{ runner.os }}
-      - run: cd schedule-daemon && stack build --copy-bins
+      - run: cd schedule-daemon && stack build --test --copy-bins
       - name: Prepare files for contribution
         shell: cmd
         run: .\build-windows.bat

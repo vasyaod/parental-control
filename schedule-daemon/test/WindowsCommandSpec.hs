@@ -20,6 +20,7 @@ instance Exec (State ([(ExitCode, String, String)], [String], [String])) where
   loggg str = state $ \s -> ((), ((get1sd s), (get2sd s), (get3rd s) ++ [str]))
 
 x = " USERNAME              SESSIONNAME        ID  STATE   IDLE TIME  LOGON TIME \n\
+    \ dummy-user                                4  Active       7:29  12/31/2021 9:29 PM  \n\
     \ yasha                 console             5  Active       7:29  12/31/2021 9:29 PM  "
 
 spec :: SpecWith ()
@@ -27,6 +28,9 @@ spec = describe "WindowsCommand" $ do
     it "should kill user by name" $
       (execState (WindowsCommand.runKillCommand("yasha")) ([(ExitSuccess, x, ""), (ExitSuccess, "", "")], [""], [""])) 
         `shouldBe` ([],["", "query user yasha", "logoff 5"],["", "User found in system with session ID 5"])
+    it "should kill user by name, part2" $
+      (execState (WindowsCommand.runKillCommand("dummy-user")) ([(ExitSuccess, x, ""), (ExitSuccess, "", "")], [""], [""])) 
+        `shouldBe` ([],["", "query user dummy-user", "logoff 4"],["", "User found in system with session ID 4"])
     it "should not do any thing if user is not found" $
       (execState (WindowsCommand.runKillCommand("yasha1")) ([(ExitSuccess, x, "")], [""], [""])) 
         `shouldBe` ([],["", "query user yasha1"],[""])
