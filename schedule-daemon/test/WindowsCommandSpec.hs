@@ -34,10 +34,13 @@ spec = describe "WindowsCommand" $ do
     it "should not do any thing if user is not found" $
       (execState (WindowsCommand.runKillCommand("yasha1")) ([(ExitSuccess, x, "")], [""], [""])) 
         `shouldBe` ([],["", "query user yasha1"],[""])
+    
     it "should check existing of user by name" $
       (runState (WindowsCommand.runCheckCommand("yasha")) ([(ExitSuccess, x, "")], [""], [""])) 
         `shouldBe` (True, ([],["", "query user yasha"],[""]))
     it "should check existing of user by name (for wrong user)" $
       (runState (WindowsCommand.runCheckCommand("yasha1")) ([(ExitSuccess, x, "")], [""], [""])) 
         `shouldBe` (False, ([],["", "query user yasha1"],[""]))
-
+    it "should send warning messages to a user" $
+      (runState (WindowsCommand.runMessageCommand("yasha")) ([(ExitSuccess, x, "")], [""], [""])) 
+        `shouldBe` ((), ([],["", "msg yasha /10 User will be killed in a few minutes"],["", "Message to user yasha has been send"]))

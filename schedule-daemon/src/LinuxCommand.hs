@@ -31,6 +31,7 @@ import Text.Printf
 
 -- # Command which should kill/logout a user
 -- kill: "skill -KILL -u {0}"
+
 runKillCommand :: String -> IO ()
 runKillCommand userName = do
   (errCode, stdout', stderr') <- readProcessWithExitCode "skill" ["-KILL", (format "-u {0}" [userName])] ""
