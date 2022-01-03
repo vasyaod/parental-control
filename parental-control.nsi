@@ -23,11 +23,12 @@ SetOutPath $INSTDIR
 ; Put file there
 File parental-control.exe
 File parental-control-web.exe
-File parental-control-starter.exe
-File parental-control-starter.xml
+File parental-control-service.exe
+File parental-control-service.xml
 File config.yml
 
 WriteUninstaller $INSTDIR\Uninstall.exe
+; nsExec::ExecToStack '"$INSTDIR\reic\refresh.bat"'
 
 SectionEnd ; end the section
 
@@ -37,4 +38,9 @@ Section "Uninstall"
 RMDir /r "$INSTDIR\*.*"
 RMDir $INSTDIR
 
-SectionEnd 
+SectionEnd
+
+Function .OnInstSuccess
+  Exec "parental-control-service.exe install"
+  Exec "parental-control-service.exe start"
+FunctionEnd

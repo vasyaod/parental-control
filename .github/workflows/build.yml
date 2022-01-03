@@ -6,14 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      # - run: wget -qO- https://get.haskellstack.org/ | sh
-      #- uses: actions/setup-haskell@v1.1
-      #  with:
-      #    #ghc-version: '8.8.3' # Exact version of ghc to use
-      #    # cabal-version: 'latest'. Omitted, but defalts to 'latest'
-      #    enable-stack: true
-      #    stack-version: 'latest'
-
       - name: Cache of Stack
         uses: actions/cache@v2
         with:
@@ -28,7 +20,7 @@ jobs:
       - run: ./build-deb-all                   # build bundle with schedule daemon web interface
       - uses: actions/upload-artifact@v2
         with:
-          name: parental-control
+          name: parental-control-linux
           path: |
             dist/*.rpm
             dist/*.deb
@@ -39,13 +31,11 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v2
-
       - name: Cache of Stack
         uses: actions/cache@v2
         with:
           path: ~\AppData\Local\Programs\stack
           key: ${{ runner.os }}
-
       - run: cd schedule-daemon && stack build --copy-bins
       - name: Prepare files for contribution
         shell: cmd
@@ -55,6 +45,8 @@ jobs:
         with:
           arguments: "/V3"
           script-file: "parental-control.nsi"
-
-#      - run: wget https://get.haskellstack.org/stable/windows-x86_64-installer.exe
-#      -
+      - uses: actions/upload-artifact@v2
+        with:
+          name: parental-control-windows
+          path: |
+            parental-control-setup.exe
