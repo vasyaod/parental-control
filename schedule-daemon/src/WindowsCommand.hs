@@ -39,10 +39,11 @@ runKillCommand userName = do
   (errCode1, stdout1, stderr1) <- exec "query" ["user", userName]
   let _lines = map (\s -> words s) (lines stdout1)
   let filteredLines = filter (\line -> head line == userName) _lines
-  loggg(show (length filteredLines))
   if (length filteredLines) > 0
-      then (do 
-          (errCode1, stdout1, stderr1) <- exec "logoff" [(head filteredLines) !! 2]
+      then (do
+          let sessionId = (show ((head filteredLines) !! 2))
+          loggg("User found in system with session ID " ++ sessionId)
+          (errCode1, stdout1, stderr1) <- exec "logoff" [sessionId]
           return ()
           )
       else return ()
