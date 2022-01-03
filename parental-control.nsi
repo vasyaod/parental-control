@@ -30,16 +30,16 @@ File config.yml
 WriteUninstaller $INSTDIR\Uninstall.exe
 ; nsExec::ExecToStack '"$INSTDIR\reic\refresh.bat"'
 
-ExecWait '"$INSTDIR\parental-control-service.exe install"'
-ExecWait '"$INSTDIR\parental-control-service.exe start"'
+ExecWait '"$INSTDIR\parental-control-service.exe" install'
+ExecWait '"$INSTDIR\parental-control-service.exe" start'
 
 SectionEnd ; end the section
 
 ; The uninstall section
 Section "Uninstall"
 
-ExecWait '"$INSTDIR\parental-control-service.exe stop"'
-ExecWait '"$INSTDIR\parental-control-service.exe uninstall"'
+ExecWait '"$INSTDIR\parental-control-service.exe" stop'
+ExecWait '"$INSTDIR\parental-control-service.exe" uninstall'
 
 RMDir /r "$INSTDIR\*.*"
 RMDir $INSTDIR
