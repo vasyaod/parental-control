@@ -24,6 +24,17 @@ jobs:
           path: |
             dist/*.rpm
             dist/*.deb
+      - name: Assets Uploading # https://gist.github.com/joncardasis/e6494afd538a400722545163eb2e1fa5
+        run: |
+          cp dist/*.rpm ./
+          cp dist/*.deb ./
+          git config --global user.name 'Automation'
+          git config --global user.email 'your-username@users.noreply.github.com'
+          git checkout --orphan linux-assets
+          git add *.rpm
+          git add *.deb
+          git commit -am "Linux assets"
+          git push -f
 
   build-windows-verson:
     name: Windows build
