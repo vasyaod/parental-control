@@ -31,10 +31,10 @@ jobs:
           git config --global user.name 'Automation'
           git config --global user.email 'your-username@users.noreply.github.com'
           git checkout --orphan linux-assets
-          git add *.rpm
-          git add *.deb
-          git commit -am "Linux assets"
-          git push -f
+          git rm -rf .
+          git add *.rpm *.deb
+          git commit -m "Linux assets"
+          git push -f origin linux-assets
 
   build-windows-verson:
     name: Windows build
