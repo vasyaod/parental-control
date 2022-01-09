@@ -56,7 +56,7 @@ jobs:
         with:
           arguments: "/V3"
           script-file: "parental-control.nsi"
-      - uses: actions/upload-artifact@v2
+        #- uses: actions/upload-artifact@v2
         # with:
         #   name: parental-control-windows
         #   path: |
