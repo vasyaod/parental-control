@@ -45,8 +45,8 @@ but with more features
   
 _The OS was not tested_
     
-  * Download [parental-control-all-1.0.0.x86_64.rpm](../linux-assets/parental-control-all-1.0.0.x86_64.rpm?raw=true)
-  * Install the package by `rpm –i parental-control-all-1.0.0.x86_64.rpm` 
+  * Download [parental-control-all-1.0-1.x86_64.rpm](../linux-assets/parental-control-all-1.0-1.x86_64.rpm?raw=true)
+  * Install the package by `rpm –i parental-control-all-1.0-1.x86_64.rpm` 
   * Also there is a way set up only the schedule daemon without a web interface by `rpm –i parental-control-1.0.0.x86_64.rpm`
 
 ## Config
