@@ -32,24 +32,22 @@ but with more features
 
 ### Windows
 
-  * Download [zip file](https://github.com/vasyaod/parental-control/suites/4814603333/artifacts/135580331)
+  * Download [parental-control-setup.exe](../windows-assets/parental-control-setup.exe?raw=true)
   * Run parental-control-setup.exe
 
 ### Debian/Ubuntu
     
-  * Download [zip file](https://github.com/vasyaod/parental-control/suites/4814603333/artifacts/135580330)
-  * Extract the *.dep package
+  * Download [parental-control-all-1.0.0.deb](../linux-assets/parental-control-all-1.0.0.deb?raw=true)
   * Install the package by `dpkg -i parental-control-all-1.0.0.deb` 
-  * Also there is a way set up only the schedule daemon without web interface by `dpkg -i parental-control-1.0.0.deb`
+  * Also there is a way set up only the schedule daemon without a web interface by `dpkg -i parental-control-1.0.0.deb`
 
 ### CentOS/Redhat/Fedora
   
 _The OS was not tested_
     
-  * Download [zip file](https://github.com/vasyaod/parental-control/suites/4814603333/artifacts/135580330)
-  * Extract the *.rpm package
+  * Download [parental-control-all-1.0.0.x86_64.rpm](../linux-assets/parental-control-all-1.0.0.x86_64.rpm?raw=true)
   * Install the package by `rpm –i parental-control-all-1.0.0.x86_64.rpm` 
-  * Also there is a way set up only the schedule daemon without web interface by `rpm –i parental-control-1.0.0.x86_64.rpm`
+  * Also there is a way set up only the schedule daemon without a web interface by `rpm –i parental-control-1.0.0.x86_64.rpm`
 
 ## Config
 
