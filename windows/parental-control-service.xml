@@ -1,0 +1,9 @@
+<service>
+
+  <id>parental-control</id>
+  <name>Parental control (Third Party Service)</name>
+  <description>Control uptime of accounts</description>
+  <executable>parental-control</executable>
+  <log mode="roll" />
+
+</service>

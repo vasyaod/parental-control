@@ -10,6 +10,7 @@ import qualified Data.Yaml as Y
 
 data MyConfig = MyConfig
   { statePath :: String,
+    httpEnable :: Bool,
     httpPort :: Int,
     httpInterface :: String,
     httpStaticPath :: String,
@@ -21,6 +22,7 @@ instance FromJSON MyConfig where
   parseJSON (Y.Object m) =
     MyConfig
       <$> m .:? pack ("statePath") .!= "/var/lib/parental-control"
+      <*> m .:? pack ("httpEnable") .!= True
       <*> m .:? pack ("httpPort") .!= 8090
       <*> m .:? pack ("httpInterface") .!= "127.0.0.1"
       <*> m .:? pack ("httpStaticPath") .!= "/usr/share/parental-control"

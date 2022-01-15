@@ -2,10 +2,19 @@
 # Basically it is one of ways to et information about users
 statePath: /var/lib/parental-control
 
+# The param allows to use http interface getting reports The param works if parental-control-web is set up
+httpEnable: true
+
 # The param works if parental-control-web is set up
 httpPort: 8090
 
 # Interface where UI will be available. The param works if parental-control-web is set up
+# The param could also has the next values
+#  * means HostAny
+#  *4 means HostIPv4
+#  !4 means HostIPv4Only
+#  *6 means HostIPv6
+#  !6 means HostIPv6Only
 httpInterface: 127.0.0.1
 
 # PAth to http static content, like html pages and JS scripts
