@@ -61,6 +61,9 @@ Weakly schedule for multiple users looks like:
 # Basically it is one of ways to et information about users
 statePath: /var/lib/parental-control
 
+# The param allows to use http interface getting reports The param works if parental-control-web is set up
+httpEnable: true
+
 # The param could also has the next values
 #  * means HostAny
 #  *4 means HostIPv4

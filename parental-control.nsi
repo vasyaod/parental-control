@@ -4,7 +4,6 @@ Name "Parental Control"
 ; The file to write
 OutFile "parental-control-setup.exe"
 
-!insertmacro MUI_PAGE_LICENSE "LICENSE"
 !insertmacro MUI_PAGE_DIRECTORY
 ; Uninstall pages
 !insertmacro MUI_UNPAGE_CONFIRM
