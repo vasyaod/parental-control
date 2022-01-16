@@ -49,6 +49,7 @@ jobs:
           path: ~\AppData\Roaming\stack
           key: ${{ runner.os }}
       - run: cd schedule-daemon && stack build --test --copy-bins
+      - run: cd web-ui && npm install && npm run build
       - name: Prepare files for contribution
         shell: cmd
         run: .\build-windows.bat
