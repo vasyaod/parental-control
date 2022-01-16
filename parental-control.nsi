@@ -5,9 +5,10 @@ Name "Parental Control"
 OutFile "parental-control-setup.exe"
 
 !include "MUI.nsh"
+!insertmacro MUI_PAGE_LICENSE "LICENSE"
 !insertmacro MUI_PAGE_DIRECTORY
-; !insertmacro MUI_PAGE_INSTFILES
-; !insertmacro MUI_PAGE_FINISH
+!insertmacro MUI_PAGE_INSTFILES
+!insertmacro MUI_PAGE_FINISH
 ; Uninstall pages
 !insertmacro MUI_UNPAGE_CONFIRM
 
@@ -36,6 +37,7 @@ File parental-control-service.exe
 File parental-control-service.xml
 File config.yml
 File README.md
+File LICENSE
 
 WriteUninstaller $INSTDIR\Uninstall.exe
 ; nsExec::ExecToStack '"$INSTDIR\reic\refresh.bat"'
