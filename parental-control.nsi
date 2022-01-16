@@ -59,6 +59,8 @@ SetOutPath $INSTDIR
 
 File parental-control-web-service.exe
 File parental-control-web-service.xml
+File bundle.js
+File index.html
 
 ExecWait '"$INSTDIR\parental-control-service.exe" install'
 ExecWait '"$INSTDIR\parental-control-service.exe" start'
