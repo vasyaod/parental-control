@@ -4,9 +4,10 @@ Name "Parental Control"
 ; The file to write
 OutFile "parental-control-setup.exe"
 
-#!insertmacro MUI_PAGE_DIRECTORY
+!include "MUI.nsh"
+!insertmacro MUI_PAGE_DIRECTORY
 ; Uninstall pages
-#!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_CONFIRM
 
 ; The default installation directory
 InstallDir $PROGRAMFILES64\parental-control
