@@ -1,0 +1,9 @@
+<service>
+
+  <id>parental-control-web</id>
+  <name>Parental control Web Interface(Third Party Service)</name>
+  <description>Web interface for Parental Control</description>
+  <executable>parental-control-web</executable>
+  <log mode="roll" />
+
+</service>

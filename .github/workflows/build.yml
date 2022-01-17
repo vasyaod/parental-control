@@ -24,6 +24,18 @@ jobs:
           path: |
             dist/*.rpm
             dist/*.deb
+      - name: Assets Uploading # https://gist.github.com/joncardasis/e6494afd538a400722545163eb2e1fa5
+        if: github.ref == 'refs/heads/master'
+        run: |
+          cp dist/*.rpm ./
+          cp dist/*.deb ./
+          git config --global user.name 'Automation'
+          git config --global user.email 'your-username@users.noreply.github.com'
+          git checkout --orphan linux-assets
+          git rm -rf .
+          git add *.rpm *.deb
+          git commit -m "Linux assets"
+          git push -f origin linux-assets
 
   build-windows-verson:
     name: Windows build
@@ -37,6 +49,7 @@ jobs:
           path: ~\AppData\Roaming\stack
           key: ${{ runner.os }}
       - run: cd schedule-daemon && stack build --test --copy-bins
+      - run: cd web-ui && npm install && npm run build
       - name: Prepare files for contribution
         shell: cmd
         run: .\build-windows.bat
@@ -50,3 +63,13 @@ jobs:
           name: parental-control-windows
           path: |
             parental-control-setup.exe
+      - name: Assets Uploading # https://gist.github.com/joncardasis/e6494afd538a400722545163eb2e1fa5
+        if: github.ref == 'refs/heads/master'
+        run: |
+          git config --global user.name 'Automation'
+          git config --global user.email 'your-username@users.noreply.github.com'
+          git checkout --orphan windows-assets
+          git rm -rf .
+          git add parental-control-setup.exe
+          git commit -m "Windows assets"
+          git push -f origin windows-assets

@@ -9,11 +9,16 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE OverloadedStrings #-}
 
+--(forever)
+--(threadDelay)
+
 module Main where
 
 import AppState
 import CliOpts
 import Config
+import Control.Concurrent
+import Control.Monad
 import Control.Monad.Except
 import Control.Monad.Reader
 import Data.Aeson
@@ -72,7 +77,11 @@ main = do
   args <- getArgs
   (opts, _) <- compilerOpts (args)
   config <- readConfig $ optConfigFilePath opts
-  dbConn <- open ((statePath config) ++ "/log.db")
---  execute_ dbConn "CREATE TABLE IF NOT EXISTS log (tm TIMESTAMP, user TEXT)"     we can not create a table here because user is NOBODY and the user doesn't have access to db file
-  let settings = setPort (httpPort config) $ setHost (fromString (httpInterface config)) defaultSettings
-  runSettings settings (app dbConn config)
+  if (httpEnable config) == True then do
+    dbConn <- open ((statePath config) ++ "/log.db")
+  --  execute_ dbConn "CREATE TABLE IF NOT EXISTS log (tm TIMESTAMP, user TEXT)"     we can not create a table here because user is NOBODY and the user doesn't have access to db file
+    let settings = setPort (httpPort config) $ setHost (fromString (httpInterface config)) defaultSettings
+    runSettings settings (app dbConn config)
+  else do
+    putStrLn "Http interface is disabled"
+    forever $ threadDelay (60 * 1000 * 1000)
