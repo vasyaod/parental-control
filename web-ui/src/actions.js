@@ -1,12 +1,10 @@
 
-import * as config from './config.js'
-
 export function loadData() {
   return async(dispatch) => {
 
-    const res = await fetch(`${config.url}/state`)
+    const res = await fetch(`/state`)
     const state = await res.json()
-    const res1 = await fetch(`${config.url}/stats`)
+    const res1 = await fetch(`/stats`)
     const stats = await res1.json()
 
     dispatch({
