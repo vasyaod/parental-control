@@ -39,33 +39,36 @@ File parental-control-service.xml
 File config.yml
 File README.md
 File LICENSE
-;File parental-control-web-service.exe
-;File parental-control-web-service.xml
-
-WriteUninstaller $INSTDIR\Uninstall.exe
-; nsExec::ExecToStack '"$INSTDIR\reic\refresh.bat"'
-
-ExecWait '"$INSTDIR\parental-control-web-service.exe" install'
-ExecWait '"$INSTDIR\parental-control-web-service.exe" start'
-
-;ExecWait '"$INSTDIR\parental-control-service.exe" install'
-;ExecWait '"$INSTDIR\parental-control-service.exe" start'
-
-SectionEnd ; end the section
-
-Section "Web interface"
-
-SetOutPath $INSTDIR
 
 File parental-control-web-service.exe
 File parental-control-web-service.xml
 File bundle.js
 File index.html
 
+WriteUninstaller $INSTDIR\Uninstall.exe
+; nsExec::ExecToStack '"$INSTDIR\reic\refresh.bat"'
+
 ExecWait '"$INSTDIR\parental-control-service.exe" install'
 ExecWait '"$INSTDIR\parental-control-service.exe" start'
 
-SectionEnd
+ExecWait '"$INSTDIR\parental-control-web-service.exe" install'
+ExecWait '"$INSTDIR\parental-control-web-service.exe" start'
+
+SectionEnd ; end the section
+
+;Section "Web interface"
+
+;SetOutPath $INSTDIR
+
+;File parental-control-web-service.exe
+;File parental-control-web-service.xml
+;File bundle.js
+;File index.html
+
+;ExecWait '"$INSTDIR\parental-control-service.exe" install'
+;ExecWait '"$INSTDIR\parental-control-service.exe" start'
+
+;SectionEnd
 
 ; The uninstall section
 Section "Uninstall"
