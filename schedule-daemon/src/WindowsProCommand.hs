@@ -1,12 +1,16 @@
-module WindowsCommand where
+module WindowsProCommand where
+
+import Config
+import Exec
 
 import System.Process
 import System.Exit
 import System.IO
 import Text.Format
 import Text.Printf
+import Hledger.Utils.String
 
--- The next command returns list of autorized in the system
+-- The next command returns list of authorized users in the system
 --  > query user $USER_NAME
 --
 -- the command returns
@@ -18,11 +22,7 @@ import Text.Printf
 --  > logoff $SESSION_ID
 
 -- The following command allows to send a message to user
---  > msg vasil /10 "Test"
-
-class Monad m => Exec m where
-  exec :: FilePath -> [String] -> m (ExitCode, String, String)
-  loggg :: String -> m ()
+--  > msg vasil :10 "Test"
 
 runKillCommand :: Exec m => String -> m ()
 runKillCommand userName = do
@@ -38,10 +38,12 @@ runKillCommand userName = do
           )
       else return ()
 
-runMessageCommand :: Exec m => String -> m ()  
-runMessageCommand userName = do
-  (errCode1, stdout1, stderr1) <- exec "msg" [userName, "/10", "User will be killed in a few minutes"]
-  loggg (printf "Message to user %s has been send" userName)
+runMessageCommand :: Exec m => Commands -> String -> m ()
+runMessageCommand commands userName = do
+  let command = format (message commands) [userName]
+  let args = words' command
+  (errCode1, stdout1, stderr1) <- exec (head args) (tail args)
+  loggg (printf "Message command for user %s has been executed" userName)
   return ()
 
 runCheckCommand :: Exec m => String -> m Bool

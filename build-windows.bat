@@ -1,6 +1,8 @@
 echo %homedrive%%homepath%
 
-copy config-windows.yml config.yml
+set arg1=%1
+
+copy %arg1% config.yml
 copy %homedrive%%homepath%\AppData\Roaming\local\bin\parental-control.exe parental-control.exe
 copy %homedrive%%homepath%\AppData\Roaming\local\bin\parental-control-web.exe parental-control-web.exe
 copy windows\parental-control-service.exe parental-control-service.exe

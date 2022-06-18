@@ -9,7 +9,9 @@ import Data.Yaml
 import qualified Data.Yaml as Y
 
 data MyConfig = MyConfig
-  { statePath :: String,
+  { os :: String,
+    commands :: Commands,
+    statePath :: String,
     httpEnable :: Bool,
     httpPort :: Int,
     httpInterface :: String,
@@ -21,12 +23,24 @@ data MyConfig = MyConfig
 instance FromJSON MyConfig where
   parseJSON (Y.Object m) =
     MyConfig
-      <$> m .:? pack ("statePath") .!= "/var/lib/parental-control"
+      <$> m .:? pack ("os") .!= "linux"
+      <*> m .:? pack ("commands") .!= fromJust (parseMaybe (\m -> parseJSON ((Object HM.empty) :: Value)) ())
+      <*> m .:? pack ("statePath") .!= "/var/lib/parental-control"
       <*> m .:? pack ("httpEnable") .!= True
       <*> m .:? pack ("httpPort") .!= 8090
       <*> m .:? pack ("httpInterface") .!= "127.0.0.1"
       <*> m .:? pack ("httpStaticPath") .!= "/usr/share/parental-control"
       <*> m .: pack ("users")
+  parseJSON x = fail ("not an object: " ++ show x)
+
+data Commands = Commands
+  { message :: String }
+  deriving (Eq, Show)
+
+instance FromJSON Commands where
+  parseJSON (Y.Object m) =
+    Commands
+      <$> m .:? pack ("message") .!= ""
   parseJSON x = fail ("not an object: " ++ show x)
 
 data User = User

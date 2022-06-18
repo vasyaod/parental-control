@@ -30,8 +30,15 @@ but with more features
   
 ## Installation 
 
-### Windows
+### Windows Home
+ 
+  * Be sure that your Windows veriosn is Home
+  * Download [parental-control-setup.exe](../windows-home-assets/parental-control-setup.exe?raw=true)
+  * Run parental-control-setup.exe
 
+### Windows Pro
+
+  * Be sure that your Windows veriosn is Pro
   * Download [parental-control-setup.exe](../windows-assets/parental-control-setup.exe?raw=true)
   * Run parental-control-setup.exe
 

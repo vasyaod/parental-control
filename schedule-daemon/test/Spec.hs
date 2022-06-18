@@ -3,7 +3,8 @@ import qualified ConfigSpec
 import qualified LogicSpec
 import qualified DbLogSpec
 import qualified StateLoggerSpec
-import qualified WindowsCommandSpec
+import qualified WindowsProCommandSpec
+import qualified WindowsHomeCommandSpec
 import Test.Hspec
 
 main :: IO ()
@@ -13,4 +14,5 @@ main = hspec $ do
   AppStateSpec.spec
   DbLogSpec.spec
   StateLoggerSpec.spec
-  WindowsCommandSpec.spec
+  WindowsHomeCommandSpec.spec
+  WindowsProCommandSpec.spec

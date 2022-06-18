@@ -2,6 +2,7 @@
 
 module LinuxCommand where
 
+import Config
 import System.Process
 import System.Exit
 import System.IO
@@ -38,8 +39,8 @@ runKillCommand userName = do
   putStrLn (printf "User %s has been killed" userName)
   return ()
 
-runMessageCommand :: String -> IO ()  
-runMessageCommand userName = do
+runMessageCommand :: Commands -> String -> IO ()
+runMessageCommand commands userName = do
   let command = format "echo {0}" [userName]
   createProcess (shell command) {std_out = CreatePipe}
   putStrLn (printf "Message to user %s has been send" userName)

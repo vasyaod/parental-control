@@ -1,0 +1,13 @@
+on: [pull_request]
+name: pr-check
+jobs:
+  check-linux-verson:
+    name: Linux Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache of Stack
+        uses: actions/cache@v2
+        with:
+          path: ~/.stack
+          key: ${{ runner.os }}

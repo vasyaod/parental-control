@@ -5,7 +5,7 @@ on:
 name: build
 jobs:
   build-linux-verson:
-    name: Linux build
+    name: Linux Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -40,8 +40,8 @@ jobs:
           git commit -m "Linux assets"
           git push -f origin linux-assets
 
-  build-windows-verson:
-    name: Windows build
+  build-windows-pro-verson:
+    name: Windows Pro Build
     runs-on: windows-2019
     steps:
       - name: Check out repo
@@ -55,7 +55,7 @@ jobs:
       - run: cd web-ui && npm install && npm run build
       - name: Prepare files for contribution
         shell: cmd
-        run: .\build-windows.bat
+        run: .\build-windows.bat config-windows-pro.yml
       - name: Create installer
         uses: joncloud/makensis-action@v3.6
         with:
@@ -76,3 +76,40 @@ jobs:
           git add parental-control-setup.exe
           git commit -m "Windows assets"
           git push -f origin windows-assets
+
+  build-windows-home-verson:
+    name: Windows Home Build
+    runs-on: windows-2019
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+      - name: Cache of Stack
+        uses: actions/cache@v2
+        with:
+          path: ~\AppData\Roaming\stack
+          key: ${{ runner.os }}
+      - run: cd schedule-daemon && stack build --test --copy-bins
+      - run: cd web-ui && npm install && npm run build
+      - name: Prepare files for contribution
+        shell: cmd
+        run: .\build-windows.bat config-windows-home.yml
+      - name: Create installer
+        uses: joncloud/makensis-action@v3.6
+        with:
+          arguments: "/V3"
+          script-file: "parental-control.nsi"
+      - uses: actions/upload-artifact@v2
+        with:
+          name: parental-control-windows
+          path: |
+            parental-control-setup.exe
+      - name: Assets Uploading # https://gist.github.com/joncardasis/e6494afd538a400722545163eb2e1fa5
+        if: github.ref == 'refs/heads/master'
+        run: |
+          git config --global user.name 'Automation'
+          git config --global user.email 'your-username@users.noreply.github.com'
+          git checkout --orphan windows-home-assets
+          git rm -rf .
+          git add parental-control-setup.exe
+          git commit -m "Windows Home Assets"
+          git push -f origin windows-home-assets
