@@ -30,16 +30,16 @@ but with more features
   
 ## Installation 
 
-### Windows Home
- 
-  * Be sure that your Windows veriosn is Home
-  * Download [parental-control-setup.exe](../windows-home-assets/parental-control-setup.exe?raw=true)
-  * Run parental-control-setup.exe
-
 ### Windows Pro
 
-  * Be sure that your Windows veriosn is Pro
-  * Download [parental-control-setup.exe](../windows-assets/parental-control-setup.exe?raw=true)
+* Be sure that your Windows version is Pro
+* Download [parental-control-setup.exe](../windows-assets/parental-control-setup.exe?raw=true)
+* Run parental-control-setup.exe
+
+### Windows Home (beta)
+ 
+  * Be sure that your Windows version is Home
+  * Download [parental-control-setup.exe](../windows-home-assets/parental-control-setup.exe?raw=true)
   * Run parental-control-setup.exe
 
 ### Debian/Ubuntu
@@ -87,6 +87,23 @@ httpPort: 8090
 # PAth to http static content, like html pages and JS scripts
 httpStaticPath: /usr/share/parental-control
 
+commands:
+  # Can be used following command
+  # notify-send 'Hello world!' 'This is an example notification.' --icon=dialog-information
+  # Taken from here https://wiki.archlinux.org/index.php/Desktop_notifications
+  #
+  # Example
+  #   message: "notify-send 'Your time is mostly up' 'You have only 5 minutes before logout.' --icon=dialog-information"
+  # or if to install "mpg321" command by "sudo apt install mpg321" any sound can be played
+  #   message: "mpg321 /usr/share/parental-control/alien-siren.mp3"
+  # or if to install "play" command by "sudo apt install sox" any sound can be played
+  #   message: "play /usr/share/parental-control/alien-siren.mp3"
+  #
+  # Template params
+  #   {0} is user name/login
+  #
+  message: "echo 'This is stub which is not sent a message anywhere, hello user {0}'"
+  
 users:
   - login: yasha
     timeLimit: 150             # Daily time limit (minutes)
