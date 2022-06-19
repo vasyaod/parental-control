@@ -22,7 +22,7 @@ import Hledger.Utils.String
 --  > logoff $SESSION_ID
 
 -- The following command allows to send a message to user
---  > msg vasil :10 "Test"
+--  > PowerShell -Command "Add-Type -AssemblyName PresentationFramework;[System.Windows.MessageBox]::Show('User will be killed in a few minutes')"
 
 runKillCommand :: Exec m => String -> m ()
 runKillCommand userName = do

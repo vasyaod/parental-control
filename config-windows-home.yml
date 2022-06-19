@@ -28,7 +28,7 @@ httpInterface: 127.0.0.1
 httpStaticPath: ./
 
 commands:
-  # Command which is unsing for nortification of user about the time state
+  # Command which is using for notification of user about the time state
   #
   # Template params
   #   {0} is user name/login
