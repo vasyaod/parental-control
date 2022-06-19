@@ -21,12 +21,6 @@ jobs:
       - run: ./build-deb-schedule              # build package for schedule daemon
       - run: ./build-deb-web                   # build package for web interface
       - run: ./build-deb-all                   # build bundle with schedule daemon web interface
-      - uses: actions/upload-artifact@v2
-        with:
-          name: parental-control-linux
-          path: |
-            dist/*.rpm
-            dist/*.deb
       - name: Assets Uploading # https://gist.github.com/joncardasis/e6494afd538a400722545163eb2e1fa5
         if: github.ref == 'refs/heads/master'
         run: |
@@ -61,11 +55,6 @@ jobs:
         with:
           arguments: "/V3"
           script-file: "parental-control.nsi"
-      - uses: actions/upload-artifact@v2
-        with:
-          name: parental-control-windows
-          path: |
-            parental-control-setup.exe
       - name: Assets Uploading # https://gist.github.com/joncardasis/e6494afd538a400722545163eb2e1fa5
         if: github.ref == 'refs/heads/master'
         run: |
@@ -98,11 +87,6 @@ jobs:
         with:
           arguments: "/V3"
           script-file: "parental-control.nsi"
-      - uses: actions/upload-artifact@v2
-        with:
-          name: parental-control-windows
-          path: |
-            parental-control-setup.exe
       - name: Assets Uploading # https://gist.github.com/joncardasis/e6494afd538a400722545163eb2e1fa5
         if: github.ref == 'refs/heads/master'
         run: |
