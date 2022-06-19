@@ -33,7 +33,7 @@ commands:
   # Template params
   #   {0} is user name/login
   #
-  message: "msg {0} :11 \"User will be killed in a few minutes"
+  message: "msg {0} :11 \"User will be killed in a few minutes\""
 
 users:
   - login: dummy-user             # System login / user name
