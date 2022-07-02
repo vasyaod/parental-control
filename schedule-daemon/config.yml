@@ -38,6 +38,12 @@ commands:
   #
   message: "echo 'This is stub which is not sent a message anywhere, hello user {0}'"
 
+  # Command which should kill/logout a user
+  #
+  # Template params
+  #   {0} is user name/login
+  kill: "skill -KILL -u {0}"
+  
 users:
   - login: dummy-user             # System login / user name
     timeLimit: 180                # Daily time limit (minutes)

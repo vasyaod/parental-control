@@ -2,13 +2,15 @@
 
 module LinuxCommand where
 
+import Exec
 import Config
+
 import System.Process
 import System.Exit
 import System.IO
 import Text.Format
 import Text.Printf
-
+import Hledger.Utils.String
 -- # Command checks user in a system.
 -- # The requirement is that the command should return 0 exit code if a user is in a system otherwise
 -- # return any another code.
@@ -33,17 +35,22 @@ import Text.Printf
 -- # Command which should kill/logout a user
 -- kill: "skill -KILL -u {0}"
 
-runKillCommand :: String -> IO ()
-runKillCommand userName = do
-  (errCode, stdout', stderr') <- readProcessWithExitCode "skill" ["-KILL", (format "-u {0}" [userName])] ""
-  putStrLn (printf "User %s has been killed" userName)
+runKillCommand :: Exec m => Commands -> String -> m ()
+runKillCommand commands userName = do
+  let command = format (kill commands) [userName]
+  let args = words' command
+  (errCode1, stdout1, stderr1) <- exec (head args) (tail args)
+
+  loggg (printf "User %s has been killed" userName)
   return ()
 
-runMessageCommand :: Commands -> String -> IO ()
+runMessageCommand :: Exec m => Commands -> String -> m ()
 runMessageCommand commands userName = do
-  let command = format "echo {0}" [userName]
-  createProcess (shell command) {std_out = CreatePipe}
-  putStrLn (printf "Message to user %s has been send" userName)
+  let command = format (message commands) [userName]
+  let args = words' command
+  (errCode1, stdout1, stderr1) <- exec (head args) (tail args)
+  loggg (printf "Message command for user %s has been executed" userName)
+
   return ()
 
 -- | Returns true if user in a system

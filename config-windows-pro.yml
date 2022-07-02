@@ -35,6 +35,12 @@ commands:
   #
   message: "msg {0} /TIME:10 \"User will be killed in a few minutes\""
 
+  # Command which should kill/logout a user
+  #
+  # Template params
+  #   {0} is user name/login/session_id
+  kill: "logoff {0}"
+
 users:
   - login: dummy-user             # System login / user name
     timeLimit: 180                # Daily time limit (minutes)

@@ -101,10 +101,10 @@ checkingLoop config conn state = forever $ do
   let localTime = utcToLocalTime timezone now
       logFn = logToDb conn localTime
       killFn = case os config of
-        "linux" -> LinuxCommand.runKillCommand
-        "windows-pro" -> WindowsProCommand.runKillCommand
-        "windows-home" -> WindowsHomeCommand.runKillCommand
-        _ -> WindowsProCommand.runKillCommand
+        "linux" -> LinuxCommand.runKillCommand (commands config)
+        "windows-pro" -> WindowsProCommand.runKillCommand (commands config)
+        "windows-home" -> WindowsHomeCommand.runKillCommand (commands config)
+        _ -> WindowsProCommand.runKillCommand (commands config)
       messageFn = case os config of
         "linux" -> LinuxCommand.runMessageCommand (commands config)
         "windows-pro" -> WindowsProCommand.runMessageCommand (commands config)

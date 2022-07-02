@@ -34,13 +34,16 @@ instance FromJSON MyConfig where
   parseJSON x = fail ("not an object: " ++ show x)
 
 data Commands = Commands
-  { message :: String }
+  { message :: String, 
+    kill :: String
+  }
   deriving (Eq, Show)
 
 instance FromJSON Commands where
   parseJSON (Y.Object m) =
     Commands
-      <$> m .:? pack ("message") .!= ""
+      <$> m .: pack ("message")
+      <*> m .: pack ("kill")
   parseJSON x = fail ("not an object: " ++ show x)
 
 data User = User

@@ -33,7 +33,13 @@ commands:
   # Template params
   #   {0} is user name/login
   #
-  message: "PowerShell -Command \"Add-Type -AssemblyName PresentationFramework;[System.Windows.MessageBox]::Show('User will be killed in a few minutes')\""
+  message: "echo"
+
+  # Command which should kill/logout a user
+  #
+  # Template params
+  #   {0} is user name/login/session_id
+  kill: "shutdown /s /t 60"
 
 users:
   - login: dummy-user             # System login / user name

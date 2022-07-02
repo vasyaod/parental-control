@@ -24,8 +24,8 @@ import Hledger.Utils.String
 -- The following command allows to send a message to user
 --  > PowerShell -Command "Add-Type -AssemblyName PresentationFramework;[System.Windows.MessageBox]::Show('User will be killed in a few minutes')"
 
-runKillCommand :: Exec m => String -> m ()
-runKillCommand userName = do
+runKillCommand :: Exec m => Commands -> String -> m ()
+runKillCommand commands userName = do
   (errCode1, stdout1, stderr1) <- exec "query" ["user", userName]
   let _lines = map (\s -> words s) (lines stdout1)
   let filteredLines = filter (\line -> head line == userName) _lines
@@ -33,7 +33,12 @@ runKillCommand userName = do
       then (do
           let sessionId = if (length (head filteredLines)) >= 8 then ((head filteredLines) !! 2) else (head filteredLines) !! 1
           loggg("User found in system with session ID " ++ sessionId)
-          (errCode1, stdout1, stderr1) <- exec "logoff" [sessionId]
+
+          let command = format (kill commands) [sessionId]
+          let args = words' command
+          (errCode1, stdout1, stderr1) <- exec (head args) (tail args)
+
+          loggg (printf "User %s has been killed" userName)
           return ()
           )
       else return ()

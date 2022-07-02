@@ -29,9 +29,13 @@ import Data.List
 -- The following command allows to send a message to user
 --  > msg vasil :10 "Test"
 
-runKillCommand :: Exec m => String -> m ()
-runKillCommand userName = do
-  (errCode1, stdout1, stderr1) <- exec "shutdown" ["/l"]
+runKillCommand :: Exec m => Commands -> String -> m ()
+runKillCommand commands userName = do
+  let command = format (kill commands) [userName]
+  let args = words' command
+  (errCode1, stdout1, stderr1) <- exec (head args) (tail args)
+
+  loggg (printf "User %s has been killed" userName)
   return ()
 
 runMessageCommand :: Exec m => Commands -> String -> m ()
