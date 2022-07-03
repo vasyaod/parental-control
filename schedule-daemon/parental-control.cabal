@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.4.
+-- This file has been generated from package.yaml by hpack version 0.33.0.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 00ebb8691f0981b52a962b8935701f5265dbb8f3bf6b637c79e0582c6b5a76f0
+-- hash: 7e289ec246707c77b708ca8570f2d9fdb5f48139db3721ad85dafdd174eb827e
 
 name:           parental-control
 version:        0.1.0.0
@@ -30,10 +30,12 @@ library
       CliOpts
       Config
       DbLog
+      Exec
       Lib
       LinuxCommand
       StateLogger
-      WindowsCommand
+      WindowsHomeCommand
+      WindowsProCommand
   other-modules:
       Paths_parental_control
   hs-source-dirs:
@@ -46,6 +48,7 @@ library
     , containers
     , directory
     , filepath
+    , hledger-lib
     , mtl
     , process
     , sqlite-simple
@@ -101,7 +104,8 @@ test-suite parental-control-test
       DbLogSpec
       LogicSpec
       StateLoggerSpec
-      WindowsCommandSpec
+      WindowsHomeCommandSpec
+      WindowsProCommandSpec
       Paths_parental_control
   hs-source-dirs:
       test

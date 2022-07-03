@@ -39,6 +39,7 @@ library:
     - text-format-simple
     - sqlite-simple
     - unordered-containers
+    - hledger-lib
 
 executables:
   parental-control:

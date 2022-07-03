@@ -3,11 +3,11 @@
 #  - windows-home
 #  - windows-pro
 #
-os: linux
+os: windows-pro
 
 # This app keep all state in memory but periodically can unload some information to file.
 # Basically it is one of ways to et information about users
-statePath: /var/lib/parental-control
+statePath: ./
 
 # The param allows to use http interface getting reports The param works if parental-control-web is set up
 httpEnable: true
@@ -25,30 +25,21 @@ httpPort: 8090
 httpInterface: 127.0.0.1
 
 # PAth to http static content, like html pages and JS scripts
-httpStaticPath: /usr/share/parental-control
+httpStaticPath: ./
 
 commands:
-  # Can be used following command
-  # notify-send 'Hello world!' 'This is an example notification.' --icon=dialog-information
-  # Taken from here https://wiki.archlinux.org/index.php/Desktop_notifications
-  #
-  # Example
-  #   message: "notify-send 'Your time is mostly up' 'You have only 5 minutes before logout.' --icon=dialog-information"
-  # or if to install "mpg321" command by "sudo apt install mpg321" any sound can be played
-  #   message: "mpg321 /usr/share/parental-control/alien-siren.mp3"
-  # or if to install "play" command by "sudo apt install sox" any sound can be played
-  #   message: "play /usr/share/parental-control/alien-siren.mp3"
+  # Command which is using for notification of user about the time state
   #
   # Template params
   #   {0} is user name/login
   #
-  message: "echo 'This is stub which is not sent a message anywhere'"
+  message: "msg {0} /TIME:10 \"User will be killed in a few minutes\""
 
   # Command which should kill/logout a user
   #
   # Template params
   #   {0} is user name/login/session_id
-  kill: "skill -KILL -u {0}"
+  kill: "logoff {0}"
 
 users:
   - login: dummy-user             # System login / user name

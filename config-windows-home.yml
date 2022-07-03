@@ -1,3 +1,10 @@
+# Type of opeation system, it could be one of those three
+#  - linux
+#  - windows-home
+#  - windows-pro
+#
+os: windows-home
+
 # This app keep all state in memory but periodically can unload some information to file.
 # Basically it is one of ways to et information about users
 statePath: ./
@@ -19,6 +26,20 @@ httpInterface: 127.0.0.1
 
 # PAth to http static content, like html pages and JS scripts
 httpStaticPath: ./
+
+commands:
+  # Command which is using for notification of user about the time state
+  #
+  # Template params
+  #   {0} is user name/login
+  #
+  message: "echo"
+
+  # Command which should kill/logout a user
+  #
+  # Template params
+  #   {0} is user name/login/session_id
+  kill: "shutdown /s /t 60 /c \"Time is Up!\""
 
 users:
   - login: dummy-user             # System login / user name

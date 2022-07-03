@@ -9,7 +9,10 @@ import AppState
 import Config
 import DbLog
 import LinuxCommand
-import WindowsCommand
+import WindowsProCommand
+import WindowsHomeCommand
+import Exec
+
 import Control.Concurrent
 import Control.Monad
 import Control.Monad.State
@@ -20,7 +23,7 @@ import Data.Time.Calendar
 import Data.Time.Clock
 import Data.Time.LocalTime
 import System.Console.GetOpt
-import System.Info (os)
+--import System.Info (os)
 import Database.SQLite.Simple
 import System.Process
 
@@ -97,18 +100,21 @@ checkingLoop config conn state = forever $ do
   timezone <- getCurrentTimeZone
   let localTime = utcToLocalTime timezone now
       logFn = logToDb conn localTime
-      killFn = case os of 
-        "linux" -> LinuxCommand.runKillCommand
-        "mingw32" -> WindowsCommand.runKillCommand
-        _ -> WindowsCommand.runKillCommand
-      messageFn = case os of 
-        "linux" -> LinuxCommand.runMessageCommand
-        "mingw32" -> WindowsCommand.runMessageCommand
-        _ -> WindowsCommand.runKillCommand
-      checkFn = case os of 
+      killFn = case os config of
+        "linux" -> LinuxCommand.runKillCommand (commands config)
+        "windows-pro" -> WindowsProCommand.runKillCommand (commands config)
+        "windows-home" -> WindowsHomeCommand.runKillCommand (commands config)
+        _ -> WindowsProCommand.runKillCommand (commands config)
+      messageFn = case os config of
+        "linux" -> LinuxCommand.runMessageCommand (commands config)
+        "windows-pro" -> WindowsProCommand.runMessageCommand (commands config)
+        "windows-home" -> WindowsHomeCommand.runMessageCommand (commands config)
+        _ -> WindowsProCommand.runMessageCommand (commands config)
+      checkFn = case os config of
         "linux" -> LinuxCommand.runCheckCommand
-        "mingw32" -> WindowsCommand.runCheckCommand
-        _ -> WindowsCommand.runCheckCommand
+        "windows-pro" -> WindowsProCommand.runCheckCommand
+        "windows-home" -> WindowsHomeCommand.runCheckCommand
+        _ -> WindowsProCommand.runCheckCommand
   
   appState <- readMVar state
   userStates <-

@@ -1,12 +1,16 @@
-module WindowsCommand where
+module WindowsProCommand where
+
+import Config
+import Exec
 
 import System.Process
 import System.Exit
 import System.IO
 import Text.Format
 import Text.Printf
+import Hledger.Utils.String
 
--- The next command returns list of autorized in the system
+-- The next command returns list of authorized users in the system
 --  > query user $USER_NAME
 --
 -- the command returns
@@ -18,14 +22,10 @@ import Text.Printf
 --  > logoff $SESSION_ID
 
 -- The following command allows to send a message to user
---  > msg vasil /10 "Test"
+--  > PowerShell -Command "Add-Type -AssemblyName PresentationFramework;[System.Windows.MessageBox]::Show('User will be killed in a few minutes')"
 
-class Monad m => Exec m where
-  exec :: FilePath -> [String] -> m (ExitCode, String, String)
-  loggg :: String -> m ()
-
-runKillCommand :: Exec m => String -> m ()
-runKillCommand userName = do
+runKillCommand :: Exec m => Commands -> String -> m ()
+runKillCommand commands userName = do
   (errCode1, stdout1, stderr1) <- exec "query" ["user", userName]
   let _lines = map (\s -> words s) (lines stdout1)
   let filteredLines = filter (\line -> head line == userName) _lines
@@ -33,15 +33,22 @@ runKillCommand userName = do
       then (do
           let sessionId = if (length (head filteredLines)) >= 8 then ((head filteredLines) !! 2) else (head filteredLines) !! 1
           loggg("User found in system with session ID " ++ sessionId)
-          (errCode1, stdout1, stderr1) <- exec "logoff" [sessionId]
+
+          let command = format (kill commands) [sessionId]
+          let args = words' command
+          (errCode1, stdout1, stderr1) <- exec (head args) (tail args)
+
+          loggg (printf "User %s has been killed" userName)
           return ()
           )
       else return ()
 
-runMessageCommand :: Exec m => String -> m ()  
-runMessageCommand userName = do
-  (errCode1, stdout1, stderr1) <- exec "msg" [userName, "/10", "User will be killed in a few minutes"]
-  loggg (printf "Message to user %s has been send" userName)
+runMessageCommand :: Exec m => Commands -> String -> m ()
+runMessageCommand commands userName = do
+  let command = format (message commands) [userName]
+  let args = words' command
+  (errCode1, stdout1, stderr1) <- exec (head args) (tail args)
+  loggg (printf "Message command for user %s has been executed" userName)
   return ()
 
 runCheckCommand :: Exec m => String -> m Bool

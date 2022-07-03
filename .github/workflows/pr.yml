@@ -1,8 +1,5 @@
-on:
-  push:
-    branches:
-      - master
-name: build
+on: [pull_request]
+name: pr-build
 jobs:
   build-linux-verson:
     name: Linux Build
@@ -14,25 +11,18 @@ jobs:
         with:
           path: ~/.stack
           key: ${{ runner.os }}
-
       - run: cd schedule-daemon && stack build --test --copy-bins
       - run: cd web-ui && npm install && npm run build
       - run: sudo apt-get update && sudo apt-get -y install alien
       - run: ./build-deb-schedule              # build package for schedule daemon
       - run: ./build-deb-web                   # build package for web interface
       - run: ./build-deb-all                   # build bundle with schedule daemon web interface
-      - name: Assets Uploading # https://gist.github.com/joncardasis/e6494afd538a400722545163eb2e1fa5
-        if: github.ref == 'refs/heads/master'
-        run: |
-          cp dist/*.rpm ./
-          cp dist/*.deb ./
-          git config --global user.name 'Automation'
-          git config --global user.email 'your-username@users.noreply.github.com'
-          git checkout --orphan linux-assets
-          git rm -rf .
-          git add *.rpm *.deb
-          git commit -m "Linux assets"
-          git push -f origin linux-assets
+      - uses: actions/upload-artifact@v2
+        with:
+          name: parental-control-linux
+          path: |
+            dist/*.rpm
+            dist/*.deb
 
   build-windows-pro-verson:
     name: Windows Pro Build
@@ -55,16 +45,12 @@ jobs:
         with:
           arguments: "/V3"
           script-file: "parental-control.nsi"
-      - name: Assets Uploading # https://gist.github.com/joncardasis/e6494afd538a400722545163eb2e1fa5
-        if: github.ref == 'refs/heads/master'
-        run: |
-          git config --global user.name 'Automation'
-          git config --global user.email 'your-username@users.noreply.github.com'
-          git checkout --orphan windows-assets
-          git rm -rf .
-          git add parental-control-setup.exe
-          git commit -m "Windows assets"
-          git push -f origin windows-assets
+      - run: cp .\parental-control-setup.exe ./parental-control-setup-win-pro.exe
+      - uses: actions/upload-artifact@v2
+        with:
+          name: parental-control-windows-pro
+          path: |
+            parental-control-setup-win-pro.exe
 
   build-windows-home-verson:
     name: Windows Home Build
@@ -87,13 +73,9 @@ jobs:
         with:
           arguments: "/V3"
           script-file: "parental-control.nsi"
-      - name: Assets Uploading # https://gist.github.com/joncardasis/e6494afd538a400722545163eb2e1fa5
-        if: github.ref == 'refs/heads/master'
-        run: |
-          git config --global user.name 'Automation'
-          git config --global user.email 'your-username@users.noreply.github.com'
-          git checkout --orphan windows-home-assets
-          git rm -rf .
-          git add parental-control-setup.exe
-          git commit -m "Windows Home Assets"
-          git push -f origin windows-home-assets
+      - run: cp .\parental-control-setup.exe ./parental-control-setup-win-home.exe
+      - uses: actions/upload-artifact@v2
+        with:
+          name: parental-control-windows-home
+          path: |
+            parental-control-setup-win-home.exe
