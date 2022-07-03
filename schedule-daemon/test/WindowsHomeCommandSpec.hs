@@ -26,12 +26,15 @@ x = "UserName \n\
 
 spec :: SpecWith ()
 spec = describe "WindowsHomeCommand" $ do
-    let command = Commands  {message = "PowerShell -Command \"Add-Type -AssemblyName PresentationFramework;[System.Windows.MessageBox]::Show('User will be killed in a few minutes')\""}
+    let command = Commands  {
+      message = "PowerShell -Command \"Add-Type -AssemblyName PresentationFramework;[System.Windows.MessageBox]::Show('User will be killed in a few minutes')\"",
+      kill = "shutdown /s /t 60 /c \"Time is Up!\""
+    }
 
     it "should kill user by name" $
-      (execState (WindowsHomeCommand.runKillCommand("yasha")) ([(ExitSuccess, x, ""), (ExitSuccess, "", "")], [""], [""]))
+      (execState (WindowsHomeCommand.runKillCommand command "yasha") ([(ExitSuccess, x, ""), (ExitSuccess, "", "")], [""], [""]))
 --        `shouldBe` ([],["", "query user yasha", "logoff 5"],["", "User found in system with session ID 5"])
-        `shouldBe` ([(ExitSuccess,"","")],["","shutdown /l"],[""])
+        `shouldBe` ([(ExitSuccess,"","")],["","shutdown /s /t 60 /c Time is Up!"],["", "User yasha has been killed"])
 
     it "should check existing of user by name" $
       (runState (WindowsHomeCommand.runCheckCommand("yasha")) ([(ExitSuccess, x, "")], [""], [""]))

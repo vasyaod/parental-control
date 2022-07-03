@@ -27,19 +27,22 @@ x = " USERNAME              SESSIONNAME        ID  STATE   IDLE TIME  LOGON TIME
 
 spec :: SpecWith ()
 spec = describe "WindowsProCommand" $ do
-    let command = Commands  {message = "msg {0} /11 \"User will be killed in a few minutes\""}
+    let command = Commands  {
+      message = "msg {0} /11 \"User will be killed in a few minutes\"",
+      kill = "logoff {0}"
+    }
 
     it "should kill user by name" $
-      (execState (WindowsProCommand.runKillCommand("yasha")) ([(ExitSuccess, x, ""), (ExitSuccess, "", "")], [""], [""]))
-        `shouldBe` ([],["", "query user yasha", "logoff 5"],["", "User found in system with session ID 5"])
+      (execState (WindowsProCommand.runKillCommand command "yasha") ([(ExitSuccess, x, ""), (ExitSuccess, "", "")], [""], [""]))
+        `shouldBe` ([],["", "query user yasha", "logoff 5"],["", "User found in system with session ID 5", "User yasha has been killed"])
 
 
     it "should kill user by name, part2" $
-      (execState (WindowsProCommand.runKillCommand("dummy-user")) ([(ExitSuccess, x, ""), (ExitSuccess, "", "")], [""], [""]))
-        `shouldBe` ([],["", "query user dummy-user", "logoff 4"],["", "User found in system with session ID 4"])
+      (execState (WindowsProCommand.runKillCommand command "dummy-user") ([(ExitSuccess, x, ""), (ExitSuccess, "", "")], [""], [""]))
+        `shouldBe` ([],["", "query user dummy-user", "logoff 4"],["", "User found in system with session ID 4", "User dummy-user has been killed"])
 
     it "should not do any thing if user is not found" $
-      (execState (WindowsProCommand.runKillCommand("yasha1")) ([(ExitSuccess, x, "")], [""], [""]))
+      (execState (WindowsProCommand.runKillCommand command "yasha1") ([(ExitSuccess, x, "")], [""], [""]))
         `shouldBe` ([],["", "query user yasha1"],[""])
 
     it "should check existing of user by name" $

@@ -39,7 +39,7 @@ commands:
   #
   # Template params
   #   {0} is user name/login/session_id
-  kill: "shutdown /s /t 60"
+  kill: "shutdown /s /t 60 /c \"Time is Up!\""
 
 users:
   - login: dummy-user             # System login / user name
