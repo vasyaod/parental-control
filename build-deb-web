@@ -19,6 +19,10 @@ touch $DIR/DEBIAN/changelog
 mkdir -p $DIR/usr/bin/
 cp $HOME/.local/bin/parental-control-web $DIR/usr/bin/
 
+mkdir -p $DIR/etc/parental-control
+cp ../config-linux.yml $DIR/etc/parental-control/config.yml
+cp ../users-config.yml $DIR/etc/parental-control/users-config.yml
+
 mkdir -p $DIR/etc/init.d
 cp ../scripts/web/parental-control-web $DIR/etc/init.d/
 

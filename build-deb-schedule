@@ -20,8 +20,9 @@ echo "/etc/parental-control.yml" > $DIR/DEBIAN/conffiles
 mkdir -p $DIR/usr/bin/
 cp $HOME/.local/bin/parental-control $DIR/usr/bin/
 
-mkdir -p $DIR/etc
-cp ../config-linux.yml $DIR/etc/parental-control.yml
+mkdir -p $DIR/etc/parental-control
+cp ../config-linux.yml $DIR/etc/parental-control/config.yml
+cp ../users-config.yml $DIR/etc/parental-control/users-config.yml
 
 mkdir -p $DIR/etc/init.d
 cp ../scripts/daemon/parental-control $DIR/etc/init.d/

@@ -56,121 +56,16 @@ _The OS was not tested_
   * Install the package by `rpm –i parental-control-all-1.0-1.x86_64.rpm` 
   * Also there is a way set up only the schedule daemon without a web interface by `rpm –i parental-control-1.0-1.x86_64.rpm`
 
-## Config
+## Configs
 
-  * After installation the config file can be found `/etc/parental-control.yml` (or `C:\Program Files\parental-control` for Windows)
-  * Example of the config file with parameter description is awailable in the repo [config.yml](./schedule-daemon/config.yml)
+There are two type for configs
+  * permanent config which is loaded during of application start, the config file can be found in `/etc/parental-control/config.yml` 
+    (or `C:\Program Files\parental-control\config.yml` for Windows) and has primary setting of the service
+  * dynamic config for schedule of users. It's dynamic because the file periodically (5 mins) loads from given source and by default
+    it can be found `/etc/parental-control/users-config.yml`
 
-Weakly schedule for multiple users looks like:
+Examples of the config files with parameter description is available in the repo [config.yml](./schedule-daemon/config.yml) and [user-sconfig.yml](./schedule-daemon/users-config.yml)
 
-```yaml
-# This app keep all state in memory but periodically can unload some information to file.
-# Basically it is one of ways to et information about users
-statePath: /var/lib/parental-control
-
-# The param allows to use http interface getting reports The param works if parental-control-web is set up
-httpEnable: true
-
-# The param could also has the next values
-#  * means HostAny
-#  *4 means HostIPv4
-#  !4 means HostIPv4Only
-#  *6 means HostIPv6
-#  !6 means HostIPv6Only
-#
-# The param works if parental-control-web is set up
-httpInterface: 127.0.0.1
-
-# The param works if parental-control-web is set up 
-httpPort: 8090
-
-# PAth to http static content, like html pages and JS scripts
-httpStaticPath: /usr/share/parental-control
-
-commands:
-  # Can be used following command
-  # notify-send 'Hello world!' 'This is an example notification.' --icon=dialog-information
-  # Taken from here https://wiki.archlinux.org/index.php/Desktop_notifications
-  #
-  # Example
-  #   message: "notify-send 'Your time is mostly up' 'You have only 5 minutes before logout.' --icon=dialog-information"
-  # or if to install "mpg321" command by "sudo apt install mpg321" any sound can be played
-  #   message: "mpg321 /usr/share/parental-control/alien-siren.mp3"
-  # or if to install "play" command by "sudo apt install sox" any sound can be played
-  #   message: "play /usr/share/parental-control/alien-siren.mp3"
-  #
-  # Template params
-  #   {0} is user name/login
-  #
-  message: "echo 'This is stub which is not sent a message anywhere, hello user {0}'"
-  
-users:
-  - login: yasha
-    timeLimit: 150             # Daily time limit (minutes)
-    noticePeriod: 3            # Notice period is the time period between the sending message and the killing of a user (minutes)
-    # Format of time should be HH:mm (2 digits per hour and minute fields), like
-    #  07:01
-    #  13:06
-    #  17:38
-    schedule:
-      mon:
-        - start: 07:00
-          end: 08:00
-        - start: 14:00
-          end: 20:00
-      tue:
-        - start: 07:00
-          end: 08:00
-        - start: 14:00
-          end: 21:00
-      wed:
-        - start: 07:00
-          end: 08:00
-        - start: 14:00
-          end: 21:00
-      thu:
-        - start: 07:00
-          end: 08:00
-        - start: 14:00
-          end: 21:00
-      fri:
-        - start: 07:00
-          end: 08:00
-        - start: 14:00
-          end: 21:00
-      sat:
-        - start: 07:00
-          end: 21:00
-      sun:
-        - start: 07:00
-          end: 21:00
-
-  - login: sunny
-    timeLimit: 18000           # Minutes
-    noticePeriod: 3            # Notice period is the time period between the sending message and the killing of a user (minutes)
-    schedule:
-      mon:
-        - start: 05:00
-          end: 22:00
-      tue:
-        - start: 05:00
-          end: 22:00
-      wed:
-        - start: 05:00
-          end: 22:00
-      thu:
-        - start: 05:00
-          end: 22:00
-      fri:
-        - start: 05:00
-          end: 22:00
-      sat:
-        - start: 05:00
-          end: 22:00
-      sun:
-        - start: 05:00
-          end: 22:00
-```
 
 ## HTTP interface
 

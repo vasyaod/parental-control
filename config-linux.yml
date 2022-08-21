@@ -50,35 +50,4 @@ commands:
   #   {0} is user name/login/session_id
   kill: "skill -KILL -u {0}"
 
-users:
-  - login: dummy-user             # System login / user name
-    timeLimit: 180                # Daily time limit (minutes)
-    noticePeriod: 5               # Notice period is the time period between the sending message and the killing of a user (minutes)
-    
-    # Format of time should be HH:mm (2 digits per hour and minute fields), like
-    #  07:01 (not 7:1)
-    #  13:06
-    #  17:38
-    #  00:00 (not 0:0)
-    schedule:
-      mon:
-        - start: 00:00
-          end: 23:59
-      tue:
-        - start: 00:00
-          end: 23:59
-      wed:
-        - start: 00:00
-          end: 23:59
-      thu:
-        - start: 00:00
-          end: 23:59
-      fri:
-        - start: 00:00
-          end: 23:59
-      sat:
-        - start: 00:00
-          end: 23:59
-      sun:
-        - start: 00:00
-          end: 23:59
+usersConfigPath: /etc/parental-control/users-config.yml

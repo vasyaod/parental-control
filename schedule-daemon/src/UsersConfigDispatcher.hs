@@ -27,6 +27,7 @@ dispatchUsersConfig usersConfigPath userDispatcherFactory oldUsersConfig oldThre
           Nothing -> return ()
         -- And run a new dispatcher
         threadId <- forkIO $ userDispatcherFactory (UsersConfig.users usersConfig)
+        putStrLn "New configuration has been loaded"
         return $ Just threadId
   
   threadDelay (1 * 1000 * 1000)

@@ -3,9 +3,10 @@ module Lib where
 
 import UsersDispatcher
 import UsersConfigDispatcher
-
+import UsersConfig
 import CliOpts
 import Config
+
 import Control.Concurrent
 import Control.Monad
 import StateLogger
@@ -37,6 +38,6 @@ someFunc = do
   -- If schedule in a separated file we'll run another dispatcher for to reloading of that
   let userDispatcherFactory = dispatchUsers config conn state  
   case usersConfigPath config of 
-    Just path  ->  dispatchUsersConfig path userDispatcherFactory Nothing Nothing
-    Nothing    ->  userDispatcherFactory $ users config
+    Just path  -> dispatchUsersConfig path userDispatcherFactory Nothing Nothing
+    Nothing    -> dispatchUsersConfig (optConfigFilePath opts) userDispatcherFactory Nothing Nothing
 

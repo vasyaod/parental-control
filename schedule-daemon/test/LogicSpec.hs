@@ -1,7 +1,7 @@
 module LogicSpec where
 
 import AppState
-import Checking
+import UsersDispatcher
 import Config
 import Control.Concurrent
 import Control.Monad.State
