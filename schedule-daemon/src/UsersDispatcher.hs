@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Checking where
+module UsersDispatcher where
 
 --(forever)
 --(threadDelay)
@@ -94,8 +94,8 @@ checkUser localTime checkFn killFn messageFn logFn userConfig = do
 
   return ()
 
-checkingLoop :: MyConfig -> Connection-> MVar AppState -> IO ()
-checkingLoop config conn state = forever $ do
+dispatchUsers :: MyConfig -> Connection -> MVar AppState -> [User] -> IO ()
+dispatchUsers config conn state users = forever $ do
   now <- getCurrentTime
   timezone <- getCurrentTimeZone
   let localTime = utcToLocalTime timezone now
@@ -124,7 +124,7 @@ checkingLoop config conn state = forever $ do
               userState <- execStateT (checkUser localTime checkFn killFn messageFn logFn userConfig) (userStateOrDefault appState (login userConfig) localTime)
               return ((login userConfig), userState)
           )
-          (users config)
+          users
       )
   swapMVar state (AppState {userStates = Map.fromList userStates})
   threadDelay (60 * 1000 * 1000)

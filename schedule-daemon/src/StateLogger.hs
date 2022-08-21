@@ -17,17 +17,6 @@ import qualified Data.ByteString.Lazy as B
 import Data.Text
 import Data.Time
 
---loadState :: String -> IO (AppState)
---loadState stateFile = do
---  x <- try (liftIO (eitherDecodeFileStrict stateFile >>= either fail return))
---  fromRight (return AppState {userStates = Map.empty}) x
---  x1 <- case x of
---    Left e ->
---      return AppState {userStates = Map.empty}
---    Right state ->
---      return state
---  return x1
-
 loadState :: String -> IO (AppState)
 loadState stateFile = do
   x <- try (liftIO (eitherDecodeFileStrict stateFile >>= either fail return)) :: IO (Either IOException AppState)
@@ -37,6 +26,7 @@ loadState stateFile = do
     Right state ->
       return state
 
+-- Periodically save a dump of app state to a file
 stateLoggerLoop :: String -> MVar AppState -> IO ()
 stateLoggerLoop stateFile state = forever $ do
   st <- readMVar state
