@@ -41,4 +41,13 @@ commands:
   #   {0} is user name/login/session_id
   kill: "logoff {0}"
 
-usersConfigPath: ./users-config.yml
+# Path to dynamic config with users information and schedules, by default it is in local 
+# file system file:///etc/parental-control/users-config.yml but it could be downloaded from
+# any http/https source.
+# Examples:
+#  file:///etc/parental-control/users-config.yml
+#  http://parental-control.link/vasyaod/users-config
+usersConfigPath: file://./users-config.yml
+
+# Reload period (sec) of users config, by default 300 sec.
+usersConfigRefreshPeriod: 300

@@ -51,3 +51,6 @@ commands:
 #  file:///etc/parental-control/users-config.yml
 #  http://parental-control.link/vasyaod/users-config
 usersConfigPath: file:///etc/parental-control/users-config.yml
+
+# Reload period (sec) of users config, by default 300 sec.
+usersConfigRefreshPeriod: 300

@@ -16,7 +16,8 @@ data MyConfig = MyConfig
     httpPort :: Int,
     httpInterface :: String,
     httpStaticPath :: String,
-    usersConfigPath :: Maybe String
+    usersConfigPath :: Maybe String,
+    usersConfigRefreshPeriod :: Int
   }
   deriving (Eq, Show)
 
@@ -30,7 +31,8 @@ instance FromJSON MyConfig where
       <*> m .:? pack ("httpPort") .!= 8090
       <*> m .:? pack ("httpInterface") .!= "127.0.0.1"
       <*> m .:? pack ("httpStaticPath") .!= "/usr/share/parental-control"
-      <*> m .:? pack ("usersConfigPath")
+      <*> m .:? pack ("usersConfigPath") 
+      <*> m .:? pack ("usersConfigRefreshPeriod") .!= 300
   parseJSON x = fail ("not an object: " ++ show x)
 
 data Commands = Commands

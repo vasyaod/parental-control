@@ -45,8 +45,8 @@ readUsersConfig uri | Just path <- stripPrefix "https://" uri = readUsersConfigF
 readUsersConfig uri = return $ Left $ userError "Unknown schema for the parameter 'usersConfigPath', it should be one of file://, http:// or https://"
 
 -- Periodically reload schedule from a file and 
-dispatchUsersConfig :: String -> ([User] -> IO ()) -> Maybe UsersConfig -> Maybe ThreadId -> IO ()
-dispatchUsersConfig usersConfigPath userDispatcherFactory oldUsersConfig oldThreadId = do
+dispatchUsersConfig :: String -> Int-> ([User] -> IO ()) -> Maybe UsersConfig -> Maybe ThreadId -> IO ()
+dispatchUsersConfig usersConfigPath refreshPeriod userDispatcherFactory oldUsersConfig oldThreadId = do
   -- get users config source
   usersConfigEither <- readUsersConfig usersConfigPath
   
@@ -74,5 +74,5 @@ dispatchUsersConfig usersConfigPath userDispatcherFactory oldUsersConfig oldThre
             return $ Just threadId
       Nothing -> return oldThreadId
   
-  threadDelay (1 * 1000 * 1000)
-  dispatchUsersConfig usersConfigPath userDispatcherFactory usersConfigMaybe threadIdMaybe
+  threadDelay (refreshPeriod * 1000 * 1000)
+  dispatchUsersConfig usersConfigPath refreshPeriod userDispatcherFactory usersConfigMaybe threadIdMaybe
