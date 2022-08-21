@@ -50,6 +50,7 @@ data User = User
   { login :: String,
     timeLimit :: Int,
     noticePeriod :: Int,
+    extendedTime :: [ExtendedTime],
     schedule :: Schedule
   }
   deriving (Eq, Show)
@@ -60,7 +61,21 @@ instance FromJSON User where
       <$> m .: pack ("login")
       <*> m .:? pack ("timeLimit") .!= 1500
       <*> m .:? pack ("noticePeriod") .!= 5
+      <*> m .:? pack ("extendedTime") .!= []
       <*> m .: pack ("schedule")
+  parseJSON x = fail ("not an object: " ++ show x)
+
+data ExtendedTime = ExtendedTime
+  { date :: String,
+    timeCount :: Int
+  }
+  deriving (Eq, Show)
+
+instance FromJSON ExtendedTime where
+  parseJSON (Y.Object m) =
+    ExtendedTime
+      <$> m .: pack ("date")
+      <*> m .: pack ("timeCount")
   parseJSON x = fail ("not an object: " ++ show x)
 
 data Schedule = Schedule

@@ -1,4 +1,4 @@
-module LogicSpec where
+module UsersDispatcherSpec where
 
 import AppState
 import UsersDispatcher
@@ -8,6 +8,7 @@ import Control.Monad.State
 import qualified Data.Map as Map
 import Data.Time
 import Test.Hspec
+import Data.List
 
 commonSchedule =
   Schedule
@@ -35,11 +36,12 @@ userConf =
     { login = "vasyaod",
       timeLimit = 10,
       noticePeriod = 5,
+      extendedTime = [],
       schedule = commonSchedule
     }
 
 spec :: SpecWith ()
-spec = describe "Primary logic" $ do
+spec = describe "Users dispatcher logic" $ do
   describe "checkTime" $ do
     it "should return True if time fits for range" $
       let time = parseTimeOrError True defaultTimeLocale "%H:%M" "10:30" -- Test time
@@ -77,6 +79,16 @@ spec = describe "Primary logic" $ do
                 end = parseTimeOrError True defaultTimeLocale "%H:%M" "11:30"
               }
        in checkTimes time [range] `shouldBe` False
+
+  describe "extendedTimeForDate" $ do
+    it "should look ext time by local date" $
+      let time = parseTimeOrError True defaultTimeLocale "%Y-%m-%d" "2020-01-01" -- Test time
+          ets = [(ExtendedTime "2020-01-01" 1), (ExtendedTime "2020-01-02" 2)]
+       in extendedTimeForDate time ets `shouldBe` (ExtendedTime "2020-01-01" 1)
+    it "should return 0 for unkwnown date" $
+      let time = parseTimeOrError True defaultTimeLocale "%Y-%m-%d" "2020-01-05" -- Test time
+          ets = [(ExtendedTime "2020-01-01" 1), (ExtendedTime "2020-01-02" 2)]
+       in extendedTimeForDate time ets `shouldBe` (ExtendedTime "2020-01-05" 0)
 
   describe "checkUser" $ do
     it "should increase state if it happens in schedule" $

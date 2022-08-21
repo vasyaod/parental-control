@@ -17,6 +17,6 @@ data UsersConfig = UsersConfig
 
 instance FromJSON UsersConfig
 
-readUsersConfig :: String -> IO (UsersConfig)
-readUsersConfig = decodeFileThrow
+readUsersConfig' :: String -> IO (UsersConfig)
+readUsersConfig' = decodeFileThrow
 

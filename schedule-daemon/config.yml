@@ -44,35 +44,10 @@ commands:
   #   {0} is user name/login
   kill: "skill -KILL -u {0}"
 
-users:
-  - login: dummy-user             # System login / user name
-    timeLimit: 180                # Daily time limit (minutes)
-    noticePeriod: 5               # Notice period is the time period between the sending message and the killing of a user (minutes)
-    
-    # Format of time should be HH:mm (2 digits per hour and minute fields), like
-    #  07:01 (not 7:1)
-    #  13:06
-    #  17:38
-    #  00:00 (not 0:0)
-    schedule:
-      mon:
-        - start: 00:00
-          end: 23:59
-      tue:
-        - start: 00:00
-          end: 23:59
-      wed:
-        - start: 00:00
-          end: 23:59
-      thu:
-        - start: 00:00
-          end: 23:59  
-      fri:
-        - start: 00:00
-          end: 23:59
-      sat:
-        - start: 00:00
-          end: 23:59
-      sun:
-        - start: 00:00
-          end: 23:59
+# Path to dynamic config with users information and schedules, by default it is in local 
+# file system file:///etc/parental-control/users-config.yml but it could be downloaded from
+# any http/https source.
+# Examples:
+#  file:///etc/parental-control/users-config.yml
+#  http://parental-control.link/vasyaod/users-config
+usersConfigPath: file:///etc/parental-control/users-config.yml
