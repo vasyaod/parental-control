@@ -40,8 +40,8 @@ readUsersConfigFromHttp url = do
 
 readUsersConfig :: String -> IO (Either IOException UsersConfig)
 readUsersConfig uri | Just path <- stripPrefix "file://" uri = readYamlUsersConfigFile(path)
-readUsersConfig uri | Just path <- stripPrefix "http://" uri = readUsersConfigFromHttp(path)
-readUsersConfig uri | Just path <- stripPrefix "https://" uri = readUsersConfigFromHttp(path)
+readUsersConfig uri | Just path <- stripPrefix "http://" uri = readUsersConfigFromHttp(uri)
+readUsersConfig uri | Just path <- stripPrefix "https://" uri = readUsersConfigFromHttp(uri)
 readUsersConfig uri = return $ Left $ userError "Unknown schema for the parameter 'usersConfigPath', it should be one of file://, http:// or https://"
 
 -- Periodically reload schedule from a file and 

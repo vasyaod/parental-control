@@ -19,3 +19,10 @@ spec = describe "UsersConfigDispatcher" $ do
       Left config <- readUsersConfig "file1://./users-config.yml"
       return ()
       `shouldReturn` ()
+
+  it "should be able load file from http/https" $
+    do
+      Right config <- readUsersConfig "https://raw.githubusercontent.com/vasyaod/parental-control/dynamic-users-config/schedule-daemon/users-config.yml"
+      let userConf = head (users config)
+      return (login userConf)
+      `shouldReturn` "dummy-user"
