@@ -27,7 +27,7 @@ cp ../scripts/all/parental-control-web $DIR/etc/init.d/
 
 mkdir -p $DIR/etc/parental-control
 cp ../config-linux.yml $DIR/etc/parental-control/config.yml
-cp ../users-config.yml $DIR/etc/parental-control/users-config.yml
+cp ../schedule-daemon/users-config.yml $DIR/etc/parental-control/users-config.yml
 
 mkdir -p $DIR/usr/share/parental-control
 cp ../web-ui/bundle.js $DIR/usr/share/parental-control

@@ -85,7 +85,8 @@ spec = describe "Users dispatcher logic" $ do
       let time = parseTimeOrError True defaultTimeLocale "%Y-%m-%d" "2020-01-01" -- Test time
           ets = [(ExtendedTime "2020-01-01" 1), (ExtendedTime "2020-01-02" 2)]
        in extendedTimeForDate time ets `shouldBe` (ExtendedTime "2020-01-01" 1)
-    it "should return 0 for unkwnown date" $
+    
+    it "should return 0 for unknown date" $
       let time = parseTimeOrError True defaultTimeLocale "%Y-%m-%d" "2020-01-05" -- Test time
           ets = [(ExtendedTime "2020-01-01" 1), (ExtendedTime "2020-01-02" 2)]
        in extendedTimeForDate time ets `shouldBe` (ExtendedTime "2020-01-05" 0)
