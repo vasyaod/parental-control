@@ -16,7 +16,8 @@ data MyConfig = MyConfig
     httpPort :: Int,
     httpInterface :: String,
     httpStaticPath :: String,
-    users :: [User]
+    usersConfigPath :: Maybe String,
+    usersConfigRefreshPeriod :: Int
   }
   deriving (Eq, Show)
 
@@ -30,7 +31,8 @@ instance FromJSON MyConfig where
       <*> m .:? pack ("httpPort") .!= 8090
       <*> m .:? pack ("httpInterface") .!= "127.0.0.1"
       <*> m .:? pack ("httpStaticPath") .!= "/usr/share/parental-control"
-      <*> m .: pack ("users")
+      <*> m .:? pack ("usersConfigPath") 
+      <*> m .:? pack ("usersConfigRefreshPeriod") .!= 300
   parseJSON x = fail ("not an object: " ++ show x)
 
 data Commands = Commands
@@ -50,6 +52,7 @@ data User = User
   { login :: String,
     timeLimit :: Int,
     noticePeriod :: Int,
+    extendedTime :: [ExtendedTime],
     schedule :: Schedule
   }
   deriving (Eq, Show)
@@ -60,7 +63,21 @@ instance FromJSON User where
       <$> m .: pack ("login")
       <*> m .:? pack ("timeLimit") .!= 1500
       <*> m .:? pack ("noticePeriod") .!= 5
+      <*> m .:? pack ("extendedTime") .!= []
       <*> m .: pack ("schedule")
+  parseJSON x = fail ("not an object: " ++ show x)
+
+data ExtendedTime = ExtendedTime
+  { date :: String,
+    timeCount :: Int
+  }
+  deriving (Eq, Show)
+
+instance FromJSON ExtendedTime where
+  parseJSON (Y.Object m) =
+    ExtendedTime
+      <$> m .: pack ("date")
+      <*> m .: pack ("timeCount")
   parseJSON x = fail ("not an object: " ++ show x)
 
 data Schedule = Schedule
@@ -100,4 +117,4 @@ instance FromJSON Range where
   parseJSON x = fail ("not an object: " ++ show x)
 
 readConfig :: String -> IO (MyConfig)
-readConfig configFileName = decodeFileThrow configFileName
+readConfig = decodeFileThrow 

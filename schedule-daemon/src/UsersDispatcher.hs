@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Checking where
+module UsersDispatcher where
 
 --(forever)
 --(threadDelay)
@@ -23,9 +23,10 @@ import Data.Time.Calendar
 import Data.Time.Clock
 import Data.Time.LocalTime
 import System.Console.GetOpt
---import System.Info (os)
 import Database.SQLite.Simple
 import System.Process
+import Data.List
+
 
 instance Exec IO where
   exec command args = readProcessWithExitCode command args ""
@@ -52,6 +53,12 @@ checkSchedule schedule localTime =
       ranges = (getTimesForDayOfWeek dayOfW) $ schedule
    in checkTimes localTime ranges
 
+-- Find extended time for given date, the field 'date' of ExtendedTime structure should be in format 2020-02-05
+extendedTimeForDate :: LocalTime -> [ExtendedTime] -> ExtendedTime
+extendedTimeForDate localTime ets  = 
+  fromMaybe (ExtendedTime d 0) (find (\et -> (Config.date et) == d) ets)
+  where d = formatTime defaultTimeLocale "%Y-%m-%d" localTime
+
 checkUser :: LocalTime -> (String -> IO Bool) -> (String -> IO ()) -> (String -> IO ()) -> (String -> IO ()) -> User -> StateT UserState IO ()
 checkUser localTime checkFn killFn messageFn logFn userConfig = do
   let isScheduled = checkSchedule (schedule userConfig) localTime
@@ -63,7 +70,8 @@ checkUser localTime checkFn killFn messageFn logFn userConfig = do
   inTheSystem <- liftIO $ checkFn userName
   st <- get
 
-  let isAllMinutesUsed = (usedMinutes st localTime) > (timeLimit userConfig) -- true if user time is up
+  let extTime = timeCount (extendedTimeForDate localTime (extendedTime userConfig))
+      isAllMinutesUsed = (usedMinutes st localTime) > ((timeLimit userConfig) + extTime) -- true if user time is up
       isAlmostAllMinutesUsed = ((usedMinutes st localTime) /= 0)  && ((usedMinutes st localTime) + noticePeriodVal > (timeLimit userConfig))  -- The flag is true if user time is mostly up
 
   liftIO $ putStrLn ("User " ++ show (userName, inTheSystem, isScheduled, isAllMinutesUsed, isAlmostAllMinutesUsed, isScheduledForShifted))
@@ -94,8 +102,8 @@ checkUser localTime checkFn killFn messageFn logFn userConfig = do
 
   return ()
 
-checkingLoop :: MyConfig -> Connection-> MVar AppState -> IO ()
-checkingLoop config conn state = forever $ do
+dispatchUsers :: MyConfig -> Connection -> MVar AppState -> [User] -> IO ()
+dispatchUsers config conn state users = forever $ do
   now <- getCurrentTime
   timezone <- getCurrentTimeZone
   let localTime = utcToLocalTime timezone now
@@ -124,7 +132,7 @@ checkingLoop config conn state = forever $ do
               userState <- execStateT (checkUser localTime checkFn killFn messageFn logFn userConfig) (userStateOrDefault appState (login userConfig) localTime)
               return ((login userConfig), userState)
           )
-          (users config)
+          users
       )
   swapMVar state (AppState {userStates = Map.fromList userStates})
   threadDelay (60 * 1000 * 1000)

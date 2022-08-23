@@ -1,7 +1,6 @@
 module CliOpts where
 
 import AppState
-import Checking
 import Config
 import Control.Concurrent
 import Control.Monad
@@ -11,7 +10,6 @@ import StateLogger
 import System.Console.GetOpt
 import System.Environment
 import System.IO
-import System.Process
 import System.Directory
 import System.FilePath
 

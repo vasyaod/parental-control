@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7e289ec246707c77b708ca8570f2d9fdb5f48139db3721ad85dafdd174eb827e
+-- hash: 43ed0cf2fb08afad38c73de3c6c5e4e2ad56b0e1e145eace2cd8686bca110f10
 
 name:           parental-control
 version:        0.1.0.0
@@ -12,7 +12,7 @@ description:    Please see the README on GitHub at <https://github.com/githubuse
 homepage:       https://github.com/githubuser/parental-control#readme
 bug-reports:    https://github.com/githubuser/parental-control/issues
 author:         Vasilii Vazhesov
-maintainer:     example@example.com
+maintainer:     vasilii.vazhesov@gmail.com
 copyright:      Vasilii Vazhesov
 license:        MIT
 build-type:     Simple
@@ -26,7 +26,6 @@ source-repository head
 library
   exposed-modules:
       AppState
-      Checking
       CliOpts
       Config
       DbLog
@@ -34,6 +33,9 @@ library
       Lib
       LinuxCommand
       StateLogger
+      UsersConfig
+      UsersConfigDispatcher
+      UsersDispatcher
       WindowsHomeCommand
       WindowsProCommand
   other-modules:
@@ -49,6 +51,7 @@ library
     , directory
     , filepath
     , hledger-lib
+    , lens
     , mtl
     , process
     , sqlite-simple
@@ -56,6 +59,7 @@ library
     , text-format-simple
     , time
     , unordered-containers
+    , wreq
     , yaml
   default-language: Haskell2010
 
@@ -67,7 +71,7 @@ executable parental-control
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      base >=4.9 && <5
     , parental-control
   default-language: Haskell2010
 
@@ -102,8 +106,10 @@ test-suite parental-control-test
       AppStateSpec
       ConfigSpec
       DbLogSpec
-      LogicSpec
       StateLoggerSpec
+      UsersConfigDispatcherSpec
+      UsersConfigSpec
+      UsersDispatcherSpec
       WindowsHomeCommandSpec
       WindowsProCommandSpec
       Paths_parental_control
@@ -111,7 +117,7 @@ test-suite parental-control-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      base >=4.9 && <5
     , containers
     , hspec
     , mtl

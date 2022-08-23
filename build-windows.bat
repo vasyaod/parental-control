@@ -3,6 +3,7 @@ echo %homedrive%%homepath%
 set arg1=%1
 
 copy %arg1% config.yml
+copy schedule-daemon\users-config.yml users-config.yml
 copy %homedrive%%homepath%\AppData\Roaming\local\bin\parental-control.exe parental-control.exe
 copy %homedrive%%homepath%\AppData\Roaming\local\bin\parental-control-web.exe parental-control-web.exe
 copy windows\parental-control-service.exe parental-control-service.exe

@@ -37,6 +37,7 @@ File parental-control-web.exe
 File parental-control-service.exe
 File parental-control-service.xml
 File config.yml
+File users-config.yml
 File README.md
 File LICENSE
 

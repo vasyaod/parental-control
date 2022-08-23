@@ -2,7 +2,6 @@
 
 module DbLogSpec where
 
-import Checking
 import Data.Time
 import Data.Time.Calendar
 import Data.Time.Clock

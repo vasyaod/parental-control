@@ -1,9 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Lib where
 
-import Checking
+import UsersDispatcher
+import UsersConfigDispatcher
+import UsersConfig
 import CliOpts
 import Config
+
 import Control.Concurrent
 import Control.Monad
 import StateLogger
@@ -13,6 +16,7 @@ import System.FilePath
 import System.IO
 import System.Process
 import Database.SQLite.Simple
+import Data.Maybe (Maybe(Nothing))
 
 someFunc :: IO ()
 someFunc = do
@@ -27,5 +31,14 @@ someFunc = do
   createDirectoryIfMissing True (statePath config)
   conn <- open ((statePath config) ++ "/log.db")               -- Open data base file
   execute_ conn "CREATE TABLE IF NOT EXISTS log (tm TIMESTAMP, user TEXT)"
+
+  -- Run state logger in another thread
   forkIO $ stateLoggerLoop stateFile state
-  checkingLoop config conn state
+  
+  -- If schedule in a separated file we'll run another dispatcher for to reloading of that
+  let userDispatcherFactory = dispatchUsers config conn state  
+  let refreshPeriod = usersConfigRefreshPeriod config
+  case usersConfigPath config of 
+    Just path  -> dispatchUsersConfig path refreshPeriod userDispatcherFactory Nothing Nothing
+    Nothing    -> dispatchUsersConfig (optConfigFilePath opts) refreshPeriod userDispatcherFactory Nothing Nothing
+
